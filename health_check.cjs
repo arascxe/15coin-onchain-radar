@@ -18,9 +18,9 @@ function review(d,now=Date.now()){
  bad("SPOT_NOT_15",spot.counts?.ohlcvReceived===15&&spot.coins?.filter(c=>c.status==="OHLCV_RECEIVED").length===15);
  const spotSyms=new Set(spot.coins?.map(x=>x.symbol));
  bad("SPOT_SYMBOLS_MISSING",SYMS.every(s=>spotSyms.has(s))&&spotSyms.size===15);
- bad("V3_POOL_READ_INCOMPLETE",pool.coins?.filter(c=>c.status==="READ_OK").length===10);
- bad("INFINITY_POOL_READ_INCOMPLETE",pool.infinityOnchain?.filter(c=>c.status==="READ_OK").length===3);
- bad("WATCHED_BALANCE_READ_INCOMPLETE",pool.holderObservations?.filter(c=>c.status==="READ_OK").length===42);
+ bad("V3_POOL_READ_INCOMPLETE",pool.coins?.filter(c=>c.status==="READ_OK"&&c.poolTokenBalanceRaw!=null&&c.activeV3LiquidityRaw!=null&&Number.isInteger(c.decimals)&&Number.isFinite(c.currentTick)).length===10);
+ bad("INFINITY_POOL_READ_INCOMPLETE",pool.infinityOnchain?.filter(c=>c.status==="READ_OK"&&c.activeLiquidityRaw!=null&&Number.isFinite(c.tick)).length===3);
+ bad("WATCHED_BALANCE_READ_INCOMPLETE",pool.holderObservations?.filter(c=>c.status==="READ_OK"&&c.balanceRaw!=null&&Number.isFinite(c.toBlock)).length===42);
  const bsc=chain.chains?.find(c=>c.chain==="bsc"),base=chain.chains?.find(c=>c.chain==="base");
  const valid=(c)=>c&&["SUCCESS","NO_NEW_BLOCKS"].includes(c.coverage);
  bad("BSC_OLD_CURSOR_SCAN_FAILED",valid(bsc)&&bsc.method==="eth_getBlockReceipts");
