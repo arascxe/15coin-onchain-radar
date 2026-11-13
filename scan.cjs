@@ -23,8 +23,8 @@ const MONITORS=[
 ["LYN","bsc","0x302dfaf2cdbe51a18d97186a7384e87cf599877d","0x302642976506d247c7017b85ddc89e3956f96ba1","v3-unverified"]
 ].map(([symbol,chain,token,pool,kind])=>({symbol,chain,token,pool,kind}));
 const CHAIN={
-bsc:{id:56,blockSeconds:0.75,rpcs:["https://1rpc.io/bnb","https://bsc.meowrpc.com","https://rpc.nodeflare.app/bnb/public","https://bnb.rpc.subquery.network/public","https://56.rpc.thirdweb.com","https://bsc.blockpi.network/v1/rpc/public","https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
-base:{id:8453,blockSeconds:2,rpcs:["https://base-rpc.publicnode.com","https://mainnet.base.org"]}
+bsc:{id:56,blockSeconds:0.43,rpcs:["https://1rpc.io/bnb","https://bsc.meowrpc.com","https://rpc.nodeflare.app/bnb/public","https://bnb.rpc.subquery.network/public","https://56.rpc.thirdweb.com","https://bsc.blockpi.network/v1/rpc/public","https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
+base:{id:8453,blockSeconds:0.2,rpcs:["https://base-rpc.publicnode.com","https://mainnet.base.org"]}
 };
 const TRANSFER="0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
 const MINT="0x7a53080ba414158be7ec69b987b5fb7d07dee101fe85488f0853ae16239d0bde",BURN="0x0c396cd989a39f4459b5fa1aed6a9a8dcdbc45908acfd67e028cd568da98982c";
@@ -132,9 +132,9 @@ async function collectBscReceipts(state){
   const saved=Number(state.cursors.bsc||0);
   // First activation is explicitly a recent-only bootstrap, NOT historic coverage.
   const from=saved?saved+1:Math.max(1,safeHead-480);
-  const until=Math.min(safeHead,from+1999);
+  const until=Math.min(safeHead,from+3599); // 3600 blocks per run; measured BSC creates ~2070 blocks/15m
   if(from>safeHead)return {chain,provider:url,head,from,to:saved,coverage:"NO_NEW_BLOCKS",backlog:0,coins:[],method:"eth_getBlockReceipts",errors:[]};
-  const allLogs=[], deadline=Date.now()+165000, batchSize=24;
+  const allLogs=[], deadline=Date.now()+240000, batchSize=24;
   let last=from-1, fetchFailure=null, blocksScanned=0, receiptsScanned=0;
   for(let first=from;first<=until;first+=batchSize){
    if(Date.now()>deadline){fetchFailure="TIME_BUDGET_EXHAUSTED";break}
@@ -209,7 +209,7 @@ async function collectBscReceipts(state){
 
 async function collect(chain,state){if(chain==="bsc")return collectBscReceipts(state);const c=CHAIN[chain],errs=[];for(const url of c.rpcs){try{
 const status=await verifyProvider(chain,url);const head=status.head;const cursor=Number(chain==="base"?(state.cursors.baseLive||0):(state.cursors[chain]||0));const from=cursor?cursor+1:Math.max(1,head-Math.ceil(900/c.blockSeconds));
-const to=Math.min(head-5,from+Math.ceil(3600/c.blockSeconds)-1);if(to<from)return {chain,provider:url,...status,from,to,coverage:"NO_NEW_BLOCKS",coins:[],backlog:0};
+const to=Math.min(head-5,from+Math.ceil(2400/c.blockSeconds)-1);if(to<from)return {chain,provider:url,...status,from,to,coverage:"NO_NEW_BLOCKS",coins:[],backlog:0};
 const tokens=MONITORS.filter(x=>x.chain===chain);const transfer=await getLogs(url,{address:tokens.map(x=>x.token),topics:[TRANSFER]},from,to);
 let lps=[];if(chain==="bsc"){
 const infinity=tokens.filter(x=>x.kind==="infinity");const v3=tokens.filter(x=>x.kind==="v3");const ilogs=await getLogs(url,{address:MANAGER,topics:[MOD,infinity.map(t=>t.pool)]},from,to);
@@ -237,9 +237,9 @@ for(const chain of ["bsc","base"]){
   state.cursors[chain==="base"?"baseLive":chain]=r.to;
  }
  // Priority live lane: keep scanning the oldest missing blocks with the cursor,
- // but ALSO capture the last ~15m (BSC) / ~20m (Base) when an outage created backlog.
+ // but ALSO capture ~21m of BSC / ~20m of Base (measured live block rates) if backlogged.
  // The live lane does not advance the historical cursor and MUST NOT hide gaps.
- const gap=Number(r.backlog||0),threshold=chain==="bsc"?300:150,window=chain==="bsc"?1200:600;
+ const gap=Number(r.backlog||0),threshold=chain==="bsc"?300:150,window=chain==="bsc"?3000:6000;
  if(gap>threshold&&Number.isFinite(r.head)&&Number.isFinite(r.to)){
   const tipCursor=Math.max(1,r.head-5-window);
   const replica={...state,cursors:{...state.cursors,[chain==="base"?"baseLive":"bsc"]:tipCursor}};
