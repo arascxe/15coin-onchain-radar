@@ -18,7 +18,25 @@ const targets=[
 ["STAR","0x8fce7206e3043dd360f115afa956ee31b90b787c","0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af"],
 ["LYN","0x302dfaf2cdbe51a18d97186a7384e87cf599877d","0x302642976506d247c7017b85ddc89e3956f96ba1"]];
 const rpcUrls=["https://bsc-dataseed.bnbchain.org","https://bsc-dataseed-public.bnbchain.org","https://bsc-dataseed1.binance.org"];
-const call=async(url,method,params)=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),10000);try{const r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method,params}),signal:ac.signal});if(!r.ok)throw Error("HTTP "+r.status);let j=await r.json();if(j.error)throw Error(JSON.stringify(j.error));return j.result}finally{clearTimeout(t)}};
+const sleep=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+const rpcStats={attempts:0,retries:0,fallbacks:0,failures:0};
+const rawCall=async(url,method,params)=>{const ac=new AbortController(),t=setTimeout(()=>ac.abort(),10000);try{
+ const r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method,params}),signal:ac.signal});
+ if(!r.ok)throw Error("HTTP "+r.status);const j=await r.json();if(j.error)throw Error(JSON.stringify(j.error));return j.result;
+}finally{clearTimeout(t)}};
+const call=async(url,method,params)=>{
+ const other=rpcUrls.filter(x=>x!==url),order=[url,url,other[0]||url,other[1]||url,url];
+ let last;
+ for(let i=0;i<order.length;i++){
+  try{rpcStats.attempts++;const v=await rawCall(order[i],method,params);if(order[i]!==url)rpcStats.fallbacks++;return v}
+  catch(e){
+   last=e;const msg=String(e.message);
+   if(!/limit exceeded|rate.limit|too many requests|HTTP (401|403|429|500|502|503|504)|fetch failed|abort|timeout|network/i.test(msg))throw e;
+   rpcStats.retries++;if(i+1<order.length)await sleep(180*(i+1));
+  }
+ }
+ rpcStats.failures++;throw last;
+};
 const addrWord=a=>a.slice(2).toLowerCase().padStart(64,"0");
 const cleanAddress=x=>typeof x==="string"&&x.length>=66?"0x"+x.slice(-40).toLowerCase():null;
 const named=(x)=>x==null?null:BigInt(x).toString();
@@ -34,6 +52,8 @@ async function query(url,token,pool,blockTag){
    call(url,"eth_call",[{to:pool,data:"0xd21220a7"},blockTag])
   ]);
  const val=x=>x.status==="fulfilled"?x.value:null;
+ const required=[dec,bal,liquid,slot,p0,p1];
+ if(required.some(x=>x.status!=="fulfilled"))return {status:"RPC_PARTIAL",error:required.filter(x=>x.status!=="fulfilled").map(x=>String(x.reason?.message||"unknown").slice(0,90)).join(";")};
  const a0=cleanAddress(val(p0)),a1=cleanAddress(val(p1)),matched=a0?.toLowerCase()===token||a1?.toLowerCase()===token;
  if(!matched)return {status:"POOL_TOKEN_MISMATCH_OR_UNAVAILABLE",token0:a0,token1:a1};
  const decimals=val(dec)==null?null:Number(BigInt(val(dec)));
@@ -59,13 +79,14 @@ const walletSeeds=[
 ];
 report.holderObservations=[];
 const holderJobs=targets.flatMap(([symbol,token])=>walletSeeds.map(w=>({symbol,token,address:w.address,thirdPartyLabel:w.thirdPartyLabel,identityVerified:false})));
-for(let i=0;i<holderJobs.length;i+=7){const part=await Promise.all(holderJobs.slice(i,i+7).map(async j=>{try{
+for(let i=0;i<holderJobs.length;i+=3){const part=await Promise.all(holderJobs.slice(i,i+3).map(async j=>{try{
 const raw=await call(url,"eth_call",[{to:j.token,data:"0x70a08231"+addrWord(j.address)},"0x"+head.toString(16)]);
 const now=BigInt(raw).toString();
 const before=prev.holderObservations?.find(x=>x.symbol===j.symbol&&x.address===j.address&&x.status==="READ_OK");
 const delta=before?.balanceRaw!=null&&prev.blockNumber<head?(BigInt(now)-BigInt(before.balanceRaw)).toString():null;
 return {...j,status:"READ_OK",balanceRaw:now,deltaRaw:delta,fromBlock:delta==null?null:prev.blockNumber,toBlock:head}
-}catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part)}
+}catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part);if(i+3<holderJobs.length)await sleep(140)}
+report.rpcStats=rpcStats;
 report.caveat="Wallet labels are unverified third-party attribution, not verified full exchange entity net reserves. Do not infer actual buyers or bullish accumulation from balance deltas alone.";
 const infinityPools=[
 {symbol:"BSB",poolId:"0x26a8e4591b7a0efcd45a577ad0d54aa64a99efaf2546ad4d5b0454c99eb70eab"},
@@ -128,5 +149,5 @@ for(const [symbol,token] of targets){
 }
 report.preparationCandidateCount=report.preparationCandidates.length;
 save("pool_state_latest.json",report);if(report.coins.some(x=>x.status==="READ_OK"))save("pool_state.json",report);
-console.log(JSON.stringify({status:report.status,provider:url,head,readOk:report.coins.filter(x=>x.status==="READ_OK").length,deltas:report.coins.filter(x=>x.deltas).length,failed:report.coins.filter(x=>x.status==="RPC_CALL_FAILED").length}));}
+console.log(JSON.stringify({status:report.status,provider:url,head,rpcStats,readOk:report.coins.filter(x=>x.status==="READ_OK").length,deltas:report.coins.filter(x=>x.deltas).length,failed:report.coins.filter(x=>x.status==="RPC_PARTIAL"||x.status==="RPC_CALL_FAILED").length}));}
 main().catch(e=>{console.error(e);process.exitCode=1});
