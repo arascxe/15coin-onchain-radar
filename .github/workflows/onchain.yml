@@ -9,7 +9,7 @@ on:
       - ".github/workflows/onchain.yml"
   workflow_dispatch:
   schedule:
-    - cron: "7,22,37,52 * * * *"
+    - cron: "8,23,38,53 * * * *"
 permissions:
   contents: write
 concurrency:
@@ -68,3 +68,22 @@ jobs:
             git commit -m "Onchain evidence snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
           fi
+
+      - name: Verify onchain health after data is persisted
+        shell: bash
+        run: |
+          node <<'JS'
+          const fs=require('fs');
+          const file='radar_data/latest.json';
+          if(!fs.existsSync(file)){console.error('Missing fresh onchain evidence');process.exit(1)}
+          const data=JSON.parse(fs.readFileSync(file,'utf8'));
+          const age=Date.now()-Date.parse(data.asOfUtc||'');
+          const bsc=data.chains?.find(c=>c.chain==='bsc');
+          const base=data.chains?.find(c=>c.chain==='base');
+          console.log('BSC:',bsc?.coverage,bsc?.method,'blocks:',bsc?.blocksScanned,'backlog:',bsc?.backlog);
+          console.log('BASE:',base?.coverage,'from:',base?.from,'to:',base?.to,'historical gap:',base?.historicalUnscannedFrom,base?.historicalUnscannedTo);
+          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS'){
+            console.error('DATA HEALTH FAILED: green Actions status must not mask missing or partial live onchain coverage');
+            process.exit(1)
+          }
+          JS
