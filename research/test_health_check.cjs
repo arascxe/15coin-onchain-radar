@@ -12,7 +12,7 @@ function fixture(){
    liveTips:[{chain:"bsc",coverage:"SUCCESS",from:1500,to:5095,head:5100,coins:Array(14).fill({symbol:"ON"}),missingMiddleRange:{from:1001,to:1499}},
    {chain:"base",coverage:"SUCCESS",from:1500,to:8100,head:8105,coins:[{symbol:"TRUST"}],missingMiddleRange:{from:1001,to:1499}}]},
   spot:{asOfUtc:at,counts:{ohlcvReceived:15},coins:syms.map(symbol=>({symbol,status:"OHLCV_RECEIVED"}))},
-  pool:{asOfUtc:at,coins:Array(10).fill({status:"READ_OK"}),infinityOnchain:Array(3).fill({status:"READ_OK"}),holderObservations:Array(42).fill({status:"READ_OK"})},
+  pool:{asOfUtc:at,coins:Array(10).fill({status:"READ_OK",poolTokenBalanceRaw:"1000",activeV3LiquidityRaw:"2000",decimals:18,currentTick:123}),infinityOnchain:Array(3).fill({status:"READ_OK",activeLiquidityRaw:"1000",tick:42}),holderObservations:Array(42).fill({status:"READ_OK",balanceRaw:"123",toBlock:2000})},
   history:{runs:[{asOfUtc:at}]},
   prep:{asOfUtc:at,status:"DATA_FRESH",counts:{currentData:15},newAlerts:[],coins:syms.map(symbol=>({symbol}))},
   wallet:{asOfUtc:at,status:"SNAPSHOT_ATTEMPTED",dataFresh:true,snapshotBlocks:{bsc:3000,base:2000},counts:{failedRPC:0}}
@@ -32,4 +32,5 @@ assert.equal(review(clean,now).errors.length,0,"Contiguous recent scan should al
 const deadBase=fixture();deadBase.chain.liveTips[1].to=1500;assert(review(deadBase,now).errors.includes("BASE_LIVE_TIP_NOT_CONFIRMED"));
 const shortBsc=fixture();shortBsc.chain.liveTips[0].from=3300;assert(review(shortBsc,now).errors.includes("BSC_LIVE_TIP_NOT_CONFIRMED"),"Short BSC window cannot be 15m complete");
 const shortBase=fixture();shortBase.chain.liveTips[1].from=4500;assert(review(shortBase,now).errors.includes("BASE_LIVE_TIP_NOT_CONFIRMED"),"Short Base window cannot be 15m complete");
-console.log(JSON.stringify({testsPassed:11,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
+const incompletePool=fixture();incompletePool.pool.coins[0]={status:"READ_OK",poolTokenBalanceRaw:null,activeV3LiquidityRaw:"2000",decimals:18,currentTick:0};assert(review(incompletePool,now).errors.includes("V3_POOL_READ_INCOMPLETE"),"A false green V3 read must fail");
+console.log(JSON.stringify({testsPassed:12,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
