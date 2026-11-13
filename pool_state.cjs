@@ -98,7 +98,7 @@ const tvl=Number(d.reserve_in_usd),before=prev.infinitySnapshots?.find(x=>x.symb
 report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"READ_OK",source:"GeckoTerminal not onchain LP event",sourceTimeUtc:at,network:"bsc",tvlUsd:Number.isFinite(tvl)?tvl:null,tvlChangePct:before?.tvlUsd>0&&Number.isFinite(tvl)?100*(tvl/before.tvlUsd-1):null,volume24hUsd:d.volume_usd?.h24??null,transactions24h:d.transactions?.h24??null,limitations:"TVL changes can be price/swap effect, NOT proof of LP mint/burn"})
 }catch(e){report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"FETCH_FAILED",error:String(e.message).slice(0,130)})}}
 // Cross-check actual chain-state changes with fresh, independent spot price to flag PRE-IGNITION *research candidates*.
-let spotSnapshot={};try{spotSnapshot=JSON.parse(fs.readFileSync(path.join(dir,"spot_latest.json"),"utf8")))}catch{}
+let spotSnapshot={};try{spotSnapshot=JSON.parse(fs.readFileSync(path.join(dir,"spot_latest.json"),"utf8"))}catch{}
 report.preparationCandidates=[];
 const spotFresh=spotSnapshot?.asOfUtc&&(Date.now()-Date.parse(spotSnapshot.asOfUtc)<90*60000);
 const spotBySymbol=new Map((spotFresh?spotSnapshot.coins:[]).filter(x=>x.priceUSDT>0).map(x=>[x.symbol,x]));
