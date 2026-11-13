@@ -1,21 +1,21 @@
 {
   "schema": "15coin-chain-evidence-v2",
-  "asOfUtc": "2026-11-13T18:23:37.439Z",
+  "asOfUtc": "2026-11-13T18:25:28.112Z",
   "status": "COMPLETE",
-  "explicitLimits": "Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",
+  "explicitLimits": "BSC: contiguous receipts. Base live cursor is separate from unresolved historic base cursor; historical gap NOT COVERED. Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP actions are NOT necessarily bullish. Unscanned blocks and failed RPC are NOT zero events.",
   "chains": [
     {
       "chain": "bsc",
       "provider": "https://bsc-dataseed.bnbchain.org",
       "method": "eth_getBlockReceipts",
       "positive": "ACTUAL_CONTIGUOUS_BLOCK_RECEIPTS",
-      "head": 133399113,
-      "from": 133398958,
-      "to": 133399108,
+      "head": 133399342,
+      "from": 133399109,
+      "to": 133399337,
       "coverage": "SUCCESS",
       "backlog": 0,
-      "blocksScanned": 151,
-      "receiptsScanned": 12592,
+      "blocksScanned": 229,
+      "receiptsScanned": 19047,
       "bootstrapFromRecent": false,
       "decodeErrors": [],
       "errors": []
@@ -24,11 +24,16 @@
       "chain": "base",
       "provider": "https://base-rpc.publicnode.com",
       "positive": "NO_KNOWN_POSITIVE",
-      "head": 57019208,
-      "from": 56781303,
-      "to": 56783102,
-      "backlog": 236101,
-      "coverage": "SUCCESS"
+      "head": 57019762,
+      "from": 57019312,
+      "to": 57019757,
+      "backlog": 0,
+      "coverage": "SUCCESS",
+      "method": "eth_getLogs",
+      "legacyBackfillCursor": 56783102,
+      "historicalUnscannedFrom": 56783103,
+      "historicalUnscannedTo": 57019311,
+      "liveOnlyBootstrap": true
     }
   ],
   "coins": [
@@ -38,22 +43,147 @@
       "token": "0x0e4f6209ed984b21edea43ace6e09559ed051d48",
       "pool": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 1,
+      "transferCount": 22,
       "observedTransfers": [
         {
-          "tx": "0xd1d398d66adcfd5bf8bbbfe9c078c446355bb28e0453d8a73b2b14326d067527",
-          "block": 133399095,
-          "logIndex": 50,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "tx": "0x5d1f14d4702ece69e2486064b0681e3fed6888b81058df4a3c00640bad10139b",
+          "block": 133399142,
+          "logIndex": 40,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0xb585639ff3d61de1187d960cc18924d033f2768f",
+          "raw": "149268345148373405698",
+          "blockUtc": "2026-11-13T18:23:47.000Z"
+        },
+        {
+          "tx": "0x5d1f14d4702ece69e2486064b0681e3fed6888b81058df4a3c00640bad10139b",
+          "block": 133399142,
+          "logIndex": 42,
+          "from": "0xb585639ff3d61de1187d960cc18924d033f2768f",
+          "to": "0x31f8aaec35510c4f89dac4d31b518e272cdac0b9",
+          "raw": "149268345148373405698",
+          "blockUtc": "2026-11-13T18:23:47.000Z"
+        },
+        {
+          "tx": "0xb194595d577f21ddb16886321d7d0beb92e9553ccc160e79e0f9f3e976f4bbf8",
+          "block": 133399147,
+          "logIndex": 7,
+          "from": "0x4e7ed91e702ef2ff0c58e251c6e20d1dc1e31a5f",
           "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "raw": "1868083443777959301758",
-          "blockUtc": "2026-11-13T18:23:26.000Z"
+          "raw": "372000000000000000000",
+          "blockUtc": "2026-11-13T18:23:49.000Z"
+        },
+        {
+          "tx": "0x604e00046dea4e215566de31a07433dddd55586f5c659ac041d25f3e510ad903",
+          "block": 133399153,
+          "logIndex": 390,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "raw": "296034878331257683968",
+          "blockUtc": "2026-11-13T18:23:52.000Z"
+        },
+        {
+          "tx": "0xf5d7501f2d0196abf6d1ebe0dd71295a851fd024ba3929381da815c249954b77",
+          "block": 133399154,
+          "logIndex": 61,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "1343649943986683589882",
+          "blockUtc": "2026-11-13T18:23:52.000Z"
+        },
+        {
+          "tx": "0x47efebd031e7e240e4986b56725dd3b533178568054f57738784caee6aba2422",
+          "block": 133399155,
+          "logIndex": 494,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "809231262177003039247",
+          "blockUtc": "2026-11-13T18:23:53.000Z"
+        },
+        {
+          "tx": "0x478648503800a32f205ae50e8a5f7c32c56cc3b72b5f27ffb16a7be0a01f8868",
+          "block": 133399224,
+          "logIndex": 94,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
+          "raw": "689000000000000000000",
+          "blockUtc": "2026-11-13T18:24:24.000Z"
+        },
+        {
+          "tx": "0x478648503800a32f205ae50e8a5f7c32c56cc3b72b5f27ffb16a7be0a01f8868",
+          "block": 133399224,
+          "logIndex": 99,
+          "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
+          "to": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
+          "raw": "689000000000000000000",
+          "blockUtc": "2026-11-13T18:24:24.000Z"
+        },
+        {
+          "tx": "0x28c68797f0fd53ff7895c026e7bd230515cfc61b89cd4075d0131781984f62c9",
+          "block": 133399244,
+          "logIndex": 4,
+          "from": "0x4e7ed91e702ef2ff0c58e251c6e20d1dc1e31a5f",
+          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "raw": "568000000000000000000",
+          "blockUtc": "2026-11-13T18:24:33.000Z"
+        },
+        {
+          "tx": "0x918602c1df6bca3680765029d1dcb214fc6ba94962b674f543cd2a0c43e228a4",
+          "block": 133399261,
+          "logIndex": 0,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
+          "raw": "1640265386390745791942",
+          "blockUtc": "2026-11-13T18:24:40.000Z"
+        },
+        {
+          "tx": "0x714a3a6f18bec94d6af3acf9164fdeef098240084f935fcf26beba851c5bfdd2",
+          "block": 133399262,
+          "logIndex": 4,
+          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "to": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "raw": "2667625432622825283663",
+          "blockUtc": "2026-11-13T18:24:41.000Z"
+        },
+        {
+          "tx": "0xc85acfa94e6a91bd12c34289dcb9896ecb319892f2ebf5b1751ae91fb19ac6da",
+          "block": 133399331,
+          "logIndex": 41,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "raw": "1806971944297013081600",
+          "blockUtc": "2026-11-13T18:25:12.000Z"
         }
       ],
-      "netRecipients": [],
+      "netRecipients": [
+        {
+          "address": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
+          "rawNetIn": "1640265386390745791942",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "rawNetIn": "1343649943986683589882",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "rawNetIn": "860653488325812202063",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x31f8aaec35510c4f89dac4d31b518e272cdac0b9",
+          "rawNetIn": "304594728604317406591",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+        }
+      ]
     },
     {
       "symbol": "DOS",
@@ -64,128 +194,143 @@
       "transferCount": 21,
       "observedTransfers": [
         {
-          "tx": "0x52af9208a92c6d23a2b17846b8ed28e485c2a2d47e18f379034184898f9a6858",
-          "block": 133398997,
-          "logIndex": 153,
-          "from": "0x13f4ea83d0bd40e75c8222255bc855a974568dd4",
-          "to": "0x1ee7a29642d780a7ded6769ad4bee82ef5fd8764",
-          "raw": "335200000000000065536",
-          "blockUtc": "2026-11-13T18:22:41.000Z"
-        },
-        {
-          "tx": "0xe9ed8cdd1f340abe41bc21e2b4734dc417544188bbe25e34879b0a97140d3caf",
-          "block": 133398999,
-          "logIndex": 1190,
-          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "713000000000000110562",
-          "blockUtc": "2026-11-13T18:22:42.000Z"
-        },
-        {
-          "tx": "0xfceb03a472643963b36b9a96db99e838b540673fcf90972956c7b3f0d22886cf",
-          "block": 133399029,
-          "logIndex": 41,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "647297196747038158327",
-          "blockUtc": "2026-11-13T18:22:56.000Z"
-        },
-        {
-          "tx": "0x8dc09fd229c6b6b240e31a8ef8501104b82cba6a146647bdc0b7e294b3d1cc17",
-          "block": 133399039,
-          "logIndex": 11,
-          "from": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "521374376902412127193",
-          "blockUtc": "2026-11-13T18:23:00.000Z"
-        },
-        {
-          "tx": "0xb5bd3716d9183104963b4b4eec20315ac46e4e2752c25211a238d73fb4ca3f68",
-          "block": 133399053,
-          "logIndex": 55,
-          "from": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "670137121091283998918",
-          "blockUtc": "2026-11-13T18:23:07.000Z"
-        },
-        {
-          "tx": "0x388a6f0c688f96517d48984e533ba9ee4e9f9e23fa40a12352b3d3cdad0e9c9b",
-          "block": 133399053,
-          "logIndex": 90,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "221627927771991897402",
-          "blockUtc": "2026-11-13T18:23:07.000Z"
-        },
-        {
-          "tx": "0x4570fb388f8ac8541695fb2aeff491bbe0b5619e3ce84399a2f17450bab70fef",
-          "block": 133399060,
-          "logIndex": 578,
-          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "675045437380598562816",
-          "blockUtc": "2026-11-13T18:23:10.000Z"
-        },
-        {
-          "tx": "0xb89d639b4720b808aeb4c46dad82ebc11c0315d9cd073255d486ddd606bd691c",
-          "block": 133399061,
-          "logIndex": 18,
-          "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "2329061354019906989470",
-          "blockUtc": "2026-11-13T18:23:10.000Z"
-        },
-        {
-          "tx": "0x6d6a240883c20914b0e4c3ec1b6ef5ad51242aae0f140099b7f5b98d0bedbad6",
-          "block": 133399079,
-          "logIndex": 15,
+          "tx": "0x9a055147791ace604b795ef3b842731a61840067fa91c0dc5b73eb92548ec709",
+          "block": 133399263,
+          "logIndex": 75,
           "from": "0x1ee7a29642d780a7ded6769ad4bee82ef5fd8764",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "436799999999000000000",
-          "blockUtc": "2026-11-13T18:23:18.000Z"
+          "raw": "368599999999000000000",
+          "blockUtc": "2026-11-13T18:24:41.000Z"
         },
         {
-          "tx": "0x7a0e8dc060fe922aa2707434bb3d15966531f4c41148e001e93096e60f7437bc",
-          "block": 133399087,
-          "logIndex": 107,
-          "from": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
+          "tx": "0xbbc356ebcbcd8cc2530d1eaec2c24ebca2b03cff1ca441fb7a466a410bd5e328",
+          "block": 133399270,
+          "logIndex": 4,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "456914901450028698195",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
+          "raw": "793263034533941499417",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
         },
         {
-          "tx": "0x486127899bd4154b0cc9536772d58b54f88a444fe2ccf0e8223eef4d0fd0472d",
-          "block": 133399087,
-          "logIndex": 716,
-          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "tx": "0x8d79dddda46fb81f0ef1311966057db13139735c71dce131a35a5c8ae3989372",
+          "block": 133399270,
+          "logIndex": 10,
+          "from": "0x1ee7a29642d780a7ded6769ad4bee82ef5fd8764",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "241382852690593189154",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
+          "raw": "1701349469579965465750",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
         },
         {
-          "tx": "0xcb08e9a774326ffb3b122f203f559f0cf74b731e40a13fa7d549b248fd42181e",
-          "block": 133399088,
-          "logIndex": 93,
-          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+          "tx": "0xa0376608edd51e9898c0c495a360d07c7a96fe08ac51ad8f603042c62cbfec8c",
+          "block": 133399270,
+          "logIndex": 142,
+          "from": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "377700315060579991552",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
+          "raw": "3245424363445646524416",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
+        },
+        {
+          "tx": "0x80d8cece67d63b523c153c1f3510bcd319bb1131ffb94350656049f31a57e10f",
+          "block": 133399271,
+          "logIndex": 6,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0x13f4ea83d0bd40e75c8222255bc855a974568dd4",
+          "raw": "974500000000000000000",
+          "blockUtc": "2026-11-13T18:24:45.000Z"
+        },
+        {
+          "tx": "0x80d8cece67d63b523c153c1f3510bcd319bb1131ffb94350656049f31a57e10f",
+          "block": 133399271,
+          "logIndex": 10,
+          "from": "0x13f4ea83d0bd40e75c8222255bc855a974568dd4",
+          "to": "0x1ee7a29642d780a7ded6769ad4bee82ef5fd8764",
+          "raw": "974500000000000000000",
+          "blockUtc": "2026-11-13T18:24:45.000Z"
+        },
+        {
+          "tx": "0x96d2610acb6ca27354fe54306cc2579d8347da60d714a22c4a1d54db1ff11e67",
+          "block": 133399323,
+          "logIndex": 45,
+          "from": "0x9e229b12cc9081d6a510b29ccbd6311743e277ed",
+          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "raw": "352260641020000000965",
+          "blockUtc": "2026-11-13T18:25:08.000Z"
+        },
+        {
+          "tx": "0xe5ee9e603cf86889a9fd7614bccbf074e0a58faa5b616048a7af043995e084d3",
+          "block": 133399323,
+          "logIndex": 88,
+          "from": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "raw": "2949252914473861120000",
+          "blockUtc": "2026-11-13T18:25:08.000Z"
+        },
+        {
+          "tx": "0xd2923359bedd097f334a5c2058fecdfe213287ebf6dfb305e056098c6d78af5f",
+          "block": 133399324,
+          "logIndex": 556,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "601017809447599635285",
+          "blockUtc": "2026-11-13T18:25:09.000Z"
+        },
+        {
+          "tx": "0x73fc5b65b8acf09f38e437cf300a1d828fee00c1bd70bcb97bfcf35fea7ee173",
+          "block": 133399326,
+          "logIndex": 496,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "615646976057486448229",
+          "blockUtc": "2026-11-13T18:25:10.000Z"
+        },
+        {
+          "tx": "0x91c519f92fdb494dce3834ac23382824e13f1c6ef24f1cc239adde9741fefe27",
+          "block": 133399329,
+          "logIndex": 36,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0x9e229b12cc9081d6a510b29ccbd6311743e277ed",
+          "raw": "805008090299378075546",
+          "blockUtc": "2026-11-13T18:25:11.000Z"
+        },
+        {
+          "tx": "0x57ba1f03b740ab63a86cb92a045b392935b0e2d2a82197bd1d260b6f00ee2d9c",
+          "block": 133399329,
+          "logIndex": 253,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "331117111045860503825",
+          "blockUtc": "2026-11-13T18:25:11.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
-          "rawNetIn": "1177427258170368801156",
+          "address": "0xce55e2e559bd6adae9ef1c900de95494b5d6d4c1",
+          "rawNetIn": "2672621317244313405803",
           "identity": "UNVERIFIED"
         },
         {
-          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "rawNetIn": "713000000000000110562",
+          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "rawNetIn": "1397038085819936246723",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "rawNetIn": "601017809447599635285",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x9e229b12cc9081d6a510b29ccbd6311743e277ed",
+          "rawNetIn": "452747449279378074581",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "rawNetIn": "331117111045860503825",
           "identity": "UNVERIFIED"
         },
         {
           "address": "0x1ee7a29642d780a7ded6769ad4bee82ef5fd8764",
-          "rawNetIn": "30000000002000065536",
+          "rawNetIn": "114350530421034599786",
           "identity": "UNVERIFIED"
         }
       ],
@@ -204,22 +349,157 @@
       "token": "0x6261963ebe9ff014aad10ecc3b0238d4d04e8353",
       "pool": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 1,
+      "transferCount": 50,
       "observedTransfers": [
         {
-          "tx": "0x8cab5cbd760cd9c7a65b11b487462b22820c2e000951c99c71cea51715897254",
-          "block": 133399039,
-          "logIndex": 18,
+          "tx": "0x052c5951ffc802deb4cc57d012787c74f8b27532f3810bc84372f47861f1c6e5",
+          "block": 133399277,
+          "logIndex": 28,
+          "from": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "raw": "26574366967241629499392",
+          "blockUtc": "2026-11-13T18:24:47.000Z"
+        },
+        {
+          "tx": "0xb20c214618ae8804f6764b82bcced74574fecd47b931d852bcc4328316614c5a",
+          "block": 133399277,
+          "logIndex": 31,
+          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
+          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "raw": "15468348122232170825953",
+          "blockUtc": "2026-11-13T18:24:47.000Z"
+        },
+        {
+          "tx": "0xa00d72dc1a9599b5035808fb31dcd177a436b20116bddcd3e355a994b3381138",
+          "block": 133399278,
+          "logIndex": 221,
+          "from": "0xf975e7e240c59146e67971e2aa5497f0f22441ff",
+          "to": "0x653dd7677aea3030eab68c97ed3594bacf560158",
+          "raw": "64036142270000000000000",
+          "blockUtc": "2026-11-13T18:24:48.000Z"
+        },
+        {
+          "tx": "0xabd6da8524f787248d61ee4e4476f68158c0dca6831934fe9d1f3cee9dcf6435",
+          "block": 133399279,
+          "logIndex": 544,
+          "from": "0xe308af831bfbdcc191a2a2b74b6a66aaf20f6466",
+          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+          "raw": "11213527939033917016468",
+          "blockUtc": "2026-11-13T18:24:48.000Z"
+        },
+        {
+          "tx": "0x2cff705290d0112cc772ef8cf1f1b966c0628690f8d90579bbdfd41a78c43bb7",
+          "block": 133399280,
+          "logIndex": 0,
+          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "to": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "raw": "44022019024791177947187",
+          "blockUtc": "2026-11-13T18:24:49.000Z"
+        },
+        {
+          "tx": "0x782524e970cafda653facdd4f76a69fe2683162eab5b810b1bc6c6c120c495e0",
+          "block": 133399283,
+          "logIndex": 585,
+          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "to": "0x2a70270fec0a724d9bccdf9f1d24d4319d21f728",
+          "raw": "1729914347635023152761",
+          "blockUtc": "2026-11-13T18:24:50.000Z"
+        },
+        {
+          "tx": "0x61498ae740301e337ae36ef6c51c2273ee1cd581515ea40c2765557a1b07aaa5",
+          "block": 133399291,
+          "logIndex": 35,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "raw": "17367770182251663545070",
+          "blockUtc": "2026-11-13T18:24:54.000Z"
+        },
+        {
+          "tx": "0xbeecbbd87be192e5bbc49b8f31369923b9a0f49a4d5c3139c6e7e1f99e927117",
+          "block": 133399291,
+          "logIndex": 318,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "raw": "2254954554211249622796",
+          "blockUtc": "2026-11-13T18:24:54.000Z"
+        },
+        {
+          "tx": "0x94336acedea6da35250c7650c0d2e7f58af303655c60bf720fb6460ec953e449",
+          "block": 133399297,
+          "logIndex": 32,
+          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "to": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "raw": "8309635128857571378734",
+          "blockUtc": "2026-11-13T18:24:56.000Z"
+        },
+        {
+          "tx": "0xa507b8db6c686c28d62be1a4db122d908832ec674bcd0cc68bd6f41ee62ecc94",
+          "block": 133399307,
+          "logIndex": 45,
           "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
           "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "19549351337211998302054",
-          "blockUtc": "2026-11-13T18:23:00.000Z"
+          "raw": "8593799877911361399934",
+          "blockUtc": "2026-11-13T18:25:01.000Z"
+        },
+        {
+          "tx": "0xa846375373127822d8ebf919fc0fd4a67095cc738e81b0ac015a229778b4d436",
+          "block": 133399307,
+          "logIndex": 48,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "raw": "8561292342580765717423",
+          "blockUtc": "2026-11-13T18:25:01.000Z"
+        },
+        {
+          "tx": "0x64b11b3813f16b5e1f3b8d4a5c1d4029e33dc11270e907fd26ee3b5caa44bb9e",
+          "block": 133399332,
+          "logIndex": 43,
+          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
+          "to": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
+          "raw": "31825357756838022006610",
+          "blockUtc": "2026-11-13T18:25:12.000Z"
         }
       ],
-      "netRecipients": [],
+      "netRecipients": [
+        {
+          "address": "0x653dd7677aea3030eab68c97ed3594bacf560158",
+          "rawNetIn": "126271388950000000000000",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "rawNetIn": "50379683728309520891722",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
+          "rawNetIn": "31825357756838022006610",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "rawNetIn": "26098767935832357168739",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+          "rawNetIn": "11213527939033917016468",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "rawNetIn": "8028662012553759201241",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+        }
+      ]
     },
     {
       "symbol": "COLLECT",
@@ -227,55 +507,147 @@
       "token": "0x4b3d30992f003c8167699735f5ab2831b2a087d3",
       "pool": "0xef470f9ae8512d2762e4f1cd91ae58caea17143afa61b8d56e9b20c8f87688c4",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
+      "transferCount": 15,
       "observedTransfers": [
         {
-          "tx": "0xbfd8efe1081bce65fa924065201c5d8a979c28cd6ab1ca46dff2feb5a21287ea",
-          "block": 133399043,
-          "logIndex": 288,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "3354406791447295438406",
-          "blockUtc": "2026-11-13T18:23:02.000Z"
-        },
-        {
-          "tx": "0xfb79a7f8f452488d2c94c48fad7af00a722ccc5d45a531aa744c6f1a4cdb16bc",
-          "block": 133399045,
-          "logIndex": 26,
-          "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "7247620084110948360641",
-          "blockUtc": "2026-11-13T18:23:03.000Z"
-        },
-        {
-          "tx": "0xd2cc5083e0625cd3aa6b78ed7872ea8d9ba0009cab1b08d41289caab06fa94e9",
-          "block": 133399073,
-          "logIndex": 43,
-          "from": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
-          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
-          "raw": "5976999999999999737856",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
-        },
-        {
-          "tx": "0xd2cc5083e0625cd3aa6b78ed7872ea8d9ba0009cab1b08d41289caab06fa94e9",
-          "block": 133399073,
-          "logIndex": 46,
+          "tx": "0x2b608c9cc02c6b7f8697ace159f0608a013e3bb91e06e76329c5523a3c05ce15",
+          "block": 133399184,
+          "logIndex": 62,
           "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "5976999999999999737856",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
+          "raw": "3314000000000000000000",
+          "blockUtc": "2026-11-13T18:24:06.000Z"
+        },
+        {
+          "tx": "0x10e8215daef67bb2a36923d3cbcbb0c7f65e53549e97da991a4720c2e064927d",
+          "block": 133399184,
+          "logIndex": 625,
+          "from": "0xce55e2e559bd6adae9ef1c900de95494b5d6d4c1",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "8924378086723157064167",
+          "blockUtc": "2026-11-13T18:24:06.000Z"
+        },
+        {
+          "tx": "0xb51a2ab90fced436a4fa9302ff6e5bad86ee795dee3ac3c0851ebd6afd88fe77",
+          "block": 133399187,
+          "logIndex": 108,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "raw": "17559619105881746669444",
+          "blockUtc": "2026-11-13T18:24:07.000Z"
+        },
+        {
+          "tx": "0x518aeac1173872fa1325d5a0ed1992bd19ce0f6afe67546eb76f9055863c470d",
+          "block": 133399188,
+          "logIndex": 57,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "5672682901802542806552",
+          "blockUtc": "2026-11-13T18:24:07.000Z"
+        },
+        {
+          "tx": "0x0aa57a54b0073c10a48f880c77b6d33881c3809cf1c0bed5c9af54c30f222a1d",
+          "block": 133399214,
+          "logIndex": 34,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "raw": "7275961497040998245190",
+          "blockUtc": "2026-11-13T18:24:19.000Z"
+        },
+        {
+          "tx": "0xe98e7a05e3619e41a43dfbc7886f283234eac44e4436be607c333e6cce2e922b",
+          "block": 133399214,
+          "logIndex": 457,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "7570344312476088119703",
+          "blockUtc": "2026-11-13T18:24:19.000Z"
+        },
+        {
+          "tx": "0xa21997bafe7054c0b1551c0e2facb6eb8972d1e765f978c0e282e803a0d1d465",
+          "block": 133399218,
+          "logIndex": 691,
+          "from": "0x8955a9dd4a496a775ea662bdb0a43266ce1231de",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "6427591803181674188236",
+          "blockUtc": "2026-11-13T18:24:21.000Z"
+        },
+        {
+          "tx": "0xe932e65e61b84c2c927489194c2a01d51c196e6a6337ac35a8a372a63ac05476",
+          "block": 133399222,
+          "logIndex": 78,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "1946504583288997591976",
+          "blockUtc": "2026-11-13T18:24:23.000Z"
+        },
+        {
+          "tx": "0x24716e7b091451c4dfb7b54b5861ae623b8f5019bf8a93c8297561b1b01b2a7c",
+          "block": 133399310,
+          "logIndex": 10,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "2297345811343982892733",
+          "blockUtc": "2026-11-13T18:25:02.000Z"
+        },
+        {
+          "tx": "0x91291721636206ea4a0799e4f707b162520a9050a472f005bdf3b7435487d6c0",
+          "block": 133399311,
+          "logIndex": 68,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "2476908823759782484806",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0xab8a913f27e4a50143165945337ce285ee3078e1211088d55c7116904f81e65b",
+          "block": 133399312,
+          "logIndex": 221,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "1655691843394572648448",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0x02fdaf30f87fce1a5a739761d4efcc538c3bd463eadf870e673c5e5abca3a643",
+          "block": 133399315,
+          "logIndex": 125,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "8708842676188873606906",
+          "blockUtc": "2026-11-13T18:25:05.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "16579026875558243536903",
+          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "rawNetIn": "16279186988664961726609",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "rawNetIn": "10838859887488983699929",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "rawNetIn": "5672682901802542806552",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "rawNetIn": "1321982250722087163090",
           "identity": "UNVERIFIED"
         }
       ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+        }
+      ]
     },
     {
       "symbol": "LIGHT",
@@ -283,49 +655,74 @@
       "token": "0x477c2c0459004e3354ba427fa285d7c053203c0e",
       "pool": "0xae02717e94c9b5bae817601a49b4584f58324015",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
+      "transferCount": 5,
       "observedTransfers": [
         {
-          "tx": "0xae106dc1d86e74be37f401fa935a274965c375b1485710787b8753abf9a542a3",
-          "block": 133398979,
-          "logIndex": 28,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "raw": "100566963",
-          "blockUtc": "2026-11-13T18:22:33.000Z"
-        },
-        {
-          "tx": "0xe27703459d49cf8b030c52fb7882718a658fdc3df9b8b3195be45e72c7a3fa70",
-          "block": 133398980,
-          "logIndex": 28,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "raw": "189922043",
-          "blockUtc": "2026-11-13T18:22:34.000Z"
-        },
-        {
-          "tx": "0x83dae7fcd570d8016d6600abde731c456cd0f5837045176185ef0c0b870beddc",
-          "block": 133398981,
+          "tx": "0xed78c33998ce4807e9ae0cc8a830751abacf46600d379183d66f6846f6e53bf2",
+          "block": 133399123,
           "logIndex": 30,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "raw": "189951331",
-          "blockUtc": "2026-11-13T18:22:34.000Z"
+          "from": "0xae02717e94c9b5bae817601a49b4584f58324015",
+          "to": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "raw": "2109800837",
+          "blockUtc": "2026-11-13T18:23:38.000Z"
         },
         {
-          "tx": "0x704cdcfaa2c8f831c4619dcf4462ce57b150d2ee179ae3e934a2a2ab262bb2ac",
-          "block": 133399105,
-          "logIndex": 76,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "tx": "0xd232cc9f561b5398cf4579e6bb2befa0570b17cf7b4829c3edfa5ea25dd932e2",
+          "block": 133399154,
+          "logIndex": 455,
+          "from": "0xae02717e94c9b5bae817601a49b4584f58324015",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "286536467",
+          "blockUtc": "2026-11-13T18:23:52.000Z"
+        },
+        {
+          "tx": "0x0ed439b09b12a4532bb2f9a773832366842565b801bdeefefe203e827c5b1915",
+          "block": 133399326,
+          "logIndex": 530,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
           "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "raw": "251976225",
-          "blockUtc": "2026-11-13T18:23:30.000Z"
+          "raw": "265449879",
+          "blockUtc": "2026-11-13T18:25:10.000Z"
+        },
+        {
+          "tx": "0x1cc985a1861520632186cfdabb0dc4fd810f22eec052d0bf6996d05cdbbdc451",
+          "block": 133399326,
+          "logIndex": 537,
+          "from": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
+          "raw": "557193899",
+          "blockUtc": "2026-11-13T18:25:10.000Z"
+        },
+        {
+          "tx": "0xd0f80eb8e033a3d1ba942ecf703e7b2bc1082527a8ef33683cd40c462cbabf93",
+          "block": 133399328,
+          "logIndex": 147,
+          "from": "0xae02717e94c9b5bae817601a49b4584f58324015",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "262656918",
+          "blockUtc": "2026-11-13T18:25:10.000Z"
         }
       ],
-      "netRecipients": [],
+      "netRecipients": [
+        {
+          "address": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "rawNetIn": "1552606938",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "rawNetIn": "549193385",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+        }
+      ]
     },
     {
       "symbol": "APR",
@@ -333,90 +730,141 @@
       "token": "0x299ad4299da5b2b93fba4c96967b040c7f611099",
       "pool": null,
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 8,
+      "transferCount": 13,
       "observedTransfers": [
         {
-          "tx": "0xdf3aac08710ddc4a5ea5c69675eaeed039ee50f1ae2ea1ba1f9ffddd1087e029",
-          "block": 133398980,
-          "logIndex": 26,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "704554623058884049808",
-          "blockUtc": "2026-11-13T18:22:34.000Z"
-        },
-        {
-          "tx": "0xb36eec9389ae6a9dbae52b2a09c1aa7f02917e3ca26581421216beee64d5fdb4",
-          "block": 133398983,
-          "logIndex": 47,
+          "tx": "0x115e7b2b9efde32e2ebc25fbae640eddb7cfb436f7fbc7560bef44d70d5595d2",
+          "block": 133399214,
+          "logIndex": 196,
           "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "raw": "122592301971651063523",
-          "blockUtc": "2026-11-13T18:22:35.000Z"
+          "to": "0xca337afaa4943969cb1903ee7cf4c333012e1199",
+          "raw": "562804431030914592477",
+          "blockUtc": "2026-11-13T18:24:19.000Z"
         },
         {
-          "tx": "0xb36eec9389ae6a9dbae52b2a09c1aa7f02917e3ca26581421216beee64d5fdb4",
-          "block": 133398983,
-          "logIndex": 50,
-          "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "to": "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-          "raw": "122592301971651063523",
-          "blockUtc": "2026-11-13T18:22:35.000Z"
+          "tx": "0x115e7b2b9efde32e2ebc25fbae640eddb7cfb436f7fbc7560bef44d70d5595d2",
+          "block": 133399214,
+          "logIndex": 197,
+          "from": "0xca337afaa4943969cb1903ee7cf4c333012e1199",
+          "to": "0x40473f74f0975cf58fe1a3c92c71a29a9f96fddd",
+          "raw": "562804431030914592477",
+          "blockUtc": "2026-11-13T18:24:19.000Z"
         },
         {
-          "tx": "0x2dc05b0c96c6e823c91b61070f93f25ad9659a0d7e79e973517cf82b001dc0ba",
-          "block": 133399014,
-          "logIndex": 32,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "783463154041336062474",
-          "blockUtc": "2026-11-13T18:22:49.000Z"
-        },
-        {
-          "tx": "0xece7334867df9660703b433b8990ee00c24c7537e4798c4c98085b5e4dd2de19",
-          "block": 133399074,
-          "logIndex": 527,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "818135849923530024532",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
-        },
-        {
-          "tx": "0xc4156fd8cad018a6ddbe93905bfb6f4c47ca8a2ebfe7510bb35600ee0dab08e7",
-          "block": 133399082,
-          "logIndex": 98,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "953044435487238299340",
-          "blockUtc": "2026-11-13T18:23:20.000Z"
-        },
-        {
-          "tx": "0x5b07b91f4a12fdafeb7f07c45d4ca6d17cd915a9ff33c0ec8b6e85c4ce19908b",
-          "block": 133399087,
-          "logIndex": 152,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1020816593396876999445",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
-        },
-        {
-          "tx": "0xb8f04e10e9d478b7aeec34e244002f5162f68ec7d8a119ddbd4e7c3f5c5c30d2",
-          "block": 133399088,
-          "logIndex": 87,
+          "tx": "0x1197cbbe890ad4121b25bd128be26bee6659cdadb35eefa93d8ae3b66dbd78f1",
+          "block": 133399231,
+          "logIndex": 187,
           "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-          "raw": "226825994888825392919",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
+          "to": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
+          "raw": "888235923578779684301",
+          "blockUtc": "2026-11-13T18:24:27.000Z"
+        },
+        {
+          "tx": "0x2a72d4c7af3ca8f690a1f7962f81eb9654498d564ba21b3b19f483dc11f22739",
+          "block": 133399242,
+          "logIndex": 3584,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "744073458129827048528",
+          "blockUtc": "2026-11-13T18:24:32.000Z"
+        },
+        {
+          "tx": "0x1f1dfdffb87315516b4f619726d4240e3c21ded7b885cde6a2ebdb8e5de93fd7",
+          "block": 133399243,
+          "logIndex": 591,
+          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "810005345429141178703",
+          "blockUtc": "2026-11-13T18:24:32.000Z"
+        },
+        {
+          "tx": "0x76a838a160c35997767e735061f6bb415dfc9a2a73b0b687e27e63d0a9dc829c",
+          "block": 133399269,
+          "logIndex": 140,
+          "from": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+          "to": "0x6aba0315493b7e6989041c91181337b662fb1b90",
+          "raw": "133381380020000000000",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
+        },
+        {
+          "tx": "0x76a838a160c35997767e735061f6bb415dfc9a2a73b0b687e27e63d0a9dc829c",
+          "block": 133399269,
+          "logIndex": 143,
+          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
+          "to": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
+          "raw": "133381380020000000000",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
+        },
+        {
+          "tx": "0x76a838a160c35997767e735061f6bb415dfc9a2a73b0b687e27e63d0a9dc829c",
+          "block": 133399269,
+          "logIndex": 145,
+          "from": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
+          "to": "0x04d59885f3a88458cc9cc4472af60132bd358c7b",
+          "raw": "133381380020000000000",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
+        },
+        {
+          "tx": "0x76a838a160c35997767e735061f6bb415dfc9a2a73b0b687e27e63d0a9dc829c",
+          "block": 133399269,
+          "logIndex": 146,
+          "from": "0x04d59885f3a88458cc9cc4472af60132bd358c7b",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "133381380020000000000",
+          "blockUtc": "2026-11-13T18:24:44.000Z"
+        },
+        {
+          "tx": "0x60e5a1922aacb31a262eee48a4f175a8bb23e6a74073b7391aea7040b2a92005",
+          "block": 133399282,
+          "logIndex": 97,
+          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "884723954914884781086",
+          "blockUtc": "2026-11-13T18:24:50.000Z"
+        },
+        {
+          "tx": "0xbb4b387ee5447c9e5327b378d89e98d486d4f6026a2330b8487cfde288cd650e",
+          "block": 133399284,
+          "logIndex": 4,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "raw": "2081329959991844884975",
+          "blockUtc": "2026-11-13T18:24:51.000Z"
+        },
+        {
+          "tx": "0xd21706ad68adbae8a4e701a2acacb19d14039a94260c7e8cfa2ddb6c6a57ee39",
+          "block": 133399284,
+          "logIndex": 40,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "raw": "362830747832453637658",
+          "blockUtc": "2026-11-13T18:24:51.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "3930596359047388979157",
+          "address": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "rawNetIn": "2081329959991844884975",
           "identity": "UNVERIFIED"
         },
         {
-          "address": "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-          "rawNetIn": "349418296860476456442",
+          "address": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
+          "rawNetIn": "888235923578779684301",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "rawNetIn": "744073458129827048528",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x40473f74f0975cf58fe1a3c92c71a29a9f96fddd",
+          "rawNetIn": "562804431030914592477",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "rawNetIn": "362830747832453637658",
           "identity": "UNVERIFIED"
         }
       ],
@@ -435,122 +883,118 @@
       "token": "0x61fac5f038515572d6f42d4bcb6b581642753d50",
       "pool": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 11,
+      "transferCount": 10,
       "observedTransfers": [
         {
-          "tx": "0x1dcc6538beb5653441ea6924ef03724d5b5e0bab92e56ee023a9084bfe609e90",
-          "block": 133399032,
-          "logIndex": 578,
-          "from": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "tx": "0x753810c9998fbd7a907c1b1c5a6cbd3c6a3a41352f8ccdec9a84a1209d5765cc",
+          "block": 133399152,
+          "logIndex": 21,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
           "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "2918880457423299419483",
-          "blockUtc": "2026-11-13T18:22:57.000Z"
+          "raw": "2361116553475197184394",
+          "blockUtc": "2026-11-13T18:23:51.000Z"
         },
         {
-          "tx": "0xaa6d277ee791121ca28290b3239310aca4f7eb191c198a8c680f673a7e460487",
-          "block": 133399034,
-          "logIndex": 56,
+          "tx": "0x0b14b2e0bfb3ce32cafc735ad51670d3bbae02180630e04a8d2190dc8db66cc3",
+          "block": 133399161,
+          "logIndex": 20,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "raw": "2792053686893742473020",
+          "blockUtc": "2026-11-13T18:23:55.000Z"
+        },
+        {
+          "tx": "0x1412f4e3662732c215fc775de5c1a6a32a4e7ec5adda69cfe77e3a77ddddf1c6",
+          "block": 133399172,
+          "logIndex": 47,
+          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "2110483753659416785785",
+          "blockUtc": "2026-11-13T18:24:00.000Z"
+        },
+        {
+          "tx": "0xbaef6d7dbb92447765aefed08f441ceb7de6c9594746c95b4b48d3654a259f7d",
+          "block": 133399176,
+          "logIndex": 175,
+          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "1929958830486952054614",
+          "blockUtc": "2026-11-13T18:24:02.000Z"
+        },
+        {
+          "tx": "0x7c84004a87706f4c2cfbed9778a1f949a267881775fd8e5f8c10da26fa64989d",
+          "block": 133399233,
+          "logIndex": 342,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "raw": "2443850356093832689177",
+          "blockUtc": "2026-11-13T18:24:28.000Z"
+        },
+        {
+          "tx": "0x19047e7725e8d86bfcb6abc42e4024c923907fcaf6b8e676880224d1658bd1b3",
+          "block": 133399244,
+          "logIndex": 44,
+          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "raw": "2109690532522916908327",
+          "blockUtc": "2026-11-13T18:24:33.000Z"
+        },
+        {
+          "tx": "0x65e3bcd087577754b88036d077f55f9f54c16cf2ee181ac1724db806ae26b903",
+          "block": 133399294,
+          "logIndex": 983,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
+          "raw": "4340780237696543439321",
+          "blockUtc": "2026-11-13T18:24:55.000Z"
+        },
+        {
+          "tx": "0x94672b54db94b21243434dba38af3c17c2be326de08204840c047076e6683ba8",
+          "block": 133399301,
+          "logIndex": 70,
           "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
           "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "raw": "179592883678011491853",
-          "blockUtc": "2026-11-13T18:22:58.000Z"
+          "raw": "157639125160657618615",
+          "blockUtc": "2026-11-13T18:24:58.000Z"
         },
         {
-          "tx": "0xaa6d277ee791121ca28290b3239310aca4f7eb191c198a8c680f673a7e460487",
-          "block": 133399034,
-          "logIndex": 60,
+          "tx": "0x94672b54db94b21243434dba38af3c17c2be326de08204840c047076e6683ba8",
+          "block": 133399301,
+          "logIndex": 74,
           "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
           "to": "0xc4dc171d499b3f5340bffed8433bddcec8d33b04",
-          "raw": "179592883678011491853",
-          "blockUtc": "2026-11-13T18:22:58.000Z"
+          "raw": "157639125160657618615",
+          "blockUtc": "2026-11-13T18:24:58.000Z"
         },
         {
-          "tx": "0x354c3b43a03610c483103cf8549cbc0c19ad31574dc78e5b6a0ff0b137252efe",
-          "block": 133399043,
-          "logIndex": 318,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "1952273889475225249575",
-          "blockUtc": "2026-11-13T18:23:02.000Z"
-        },
-        {
-          "tx": "0xa3663333e5ba9c0c0b6486e0b298f5ab60059f96b48d677b82343982a7bbe8f7",
-          "block": 133399060,
-          "logIndex": 568,
-          "from": "0xce55e2e559bd6adae9ef1c900de95494b5d6d4c1",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "2882616025505769343732",
-          "blockUtc": "2026-11-13T18:23:10.000Z"
-        },
-        {
-          "tx": "0xb59525987aa990f4c6a7d9a5c9d839448144ffe3cf950d88ea433647c3a09603",
-          "block": 133399065,
-          "logIndex": 827,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "2716201732505482422750",
-          "blockUtc": "2026-11-13T18:23:12.000Z"
-        },
-        {
-          "tx": "0x296365a0932422eac34f25e61f3978cc7885a198fa01061dcbcf6e52a7e62d0a",
-          "block": 133399073,
-          "logIndex": 59,
+          "tx": "0x947f9bc321ef736220b158f09969ab0e5d494855d9e0b320ee07b2e45f742bf9",
+          "block": 133399309,
+          "logIndex": 119,
           "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "raw": "157446432367264731888",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
-        },
-        {
-          "tx": "0x296365a0932422eac34f25e61f3978cc7885a198fa01061dcbcf6e52a7e62d0a",
-          "block": 133399073,
-          "logIndex": 63,
-          "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "to": "0xc4dc171d499b3f5340bffed8433bddcec8d33b04",
-          "raw": "157446432367264731888",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
-        },
-        {
-          "tx": "0x2813d7e5a1eaa8dd8979e25aaa80301504aba54201037b0cff536acdf3ae91eb",
-          "block": 133399088,
-          "logIndex": 484,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "2889770905128157701525",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
-        },
-        {
-          "tx": "0xe745ea94aed3c4487d646510d4f1ee48cd52c378f76335b29d089400e5c44198",
-          "block": 133399089,
-          "logIndex": 854,
-          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "1754571062982189213914",
-          "blockUtc": "2026-11-13T18:23:23.000Z"
-        },
-        {
-          "tx": "0xbd5e3c9d40166616e495bed9c03273a927bfc773420070bbcfc5073f6c3bffd0",
-          "block": 133399103,
-          "logIndex": 50,
-          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "raw": "5184100373040958876822",
-          "blockUtc": "2026-11-13T18:23:29.000Z"
+          "to": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "raw": "3866714385933801249891",
+          "blockUtc": "2026-11-13T18:25:02.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "rawNetIn": "5184100373040958876822",
+          "address": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "rawNetIn": "3866714385933801249891",
           "identity": "UNVERIFIED"
         },
         {
-          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "1754571062982189213914",
+          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "rawNetIn": "1929958830486952054614",
           "identity": "UNVERIFIED"
         },
         {
           "address": "0xc4dc171d499b3f5340bffed8433bddcec8d33b04",
-          "rawNetIn": "337039316045276223741",
+          "rawNetIn": "157639125160657618615",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "rawNetIn": "793221136499877458",
           "identity": "UNVERIFIED"
         }
       ],
@@ -569,142 +1013,12 @@
       "token": "0x6cd905df2ed214b22e0d48ff17cd4200c1c6d8a3",
       "pool": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
       "coverage": "TRANSFER_LOGS_QUERIED",
-      "transferCount": 32,
-      "observedTransfers": [
-        {
-          "tx": "0x2b8400748f32fdd84915bedb9b04b1ee13e0e2d6004e415c84a27c8f8fdad43b",
-          "block": 56782182,
-          "logIndex": 38,
-          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "raw": "7564508636053857532966",
-          "blockUtc": "2026-11-13T05:13:32.000Z"
-        },
-        {
-          "tx": "0xcbb50152146fd62e2e710a138f03bd414145d8145ba2f8a1793869297c24241e",
-          "block": 56782352,
-          "logIndex": 11,
-          "from": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-          "to": "0xe9a911b75ff5bb6e7b41a045b4d3ceedb6101381",
-          "raw": "146849373989000000000000",
-          "blockUtc": "2026-11-13T05:14:06.000Z"
-        },
-        {
-          "tx": "0x8b7266590865a349741909289d816435b224bf280a4376b4e54123d1c71885b4",
-          "block": 56782887,
-          "logIndex": 85,
-          "from": "0x4446adc0b8136ffc55ddb7a488ba5509ace2a5ef",
-          "to": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "raw": "4254883841416783345659",
-          "blockUtc": "2026-11-13T05:15:53.000Z"
-        },
-        {
-          "tx": "0x8b7266590865a349741909289d816435b224bf280a4376b4e54123d1c71885b4",
-          "block": 56782887,
-          "logIndex": 88,
-          "from": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "to": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "raw": "4254883841416783345659",
-          "blockUtc": "2026-11-13T05:15:53.000Z"
-        },
-        {
-          "tx": "0x8b7266590865a349741909289d816435b224bf280a4376b4e54123d1c71885b4",
-          "block": 56782887,
-          "logIndex": 90,
-          "from": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "to": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "raw": "4254883841416783345659",
-          "blockUtc": "2026-11-13T05:15:53.000Z"
-        },
-        {
-          "tx": "0x8b7266590865a349741909289d816435b224bf280a4376b4e54123d1c71885b4",
-          "block": 56782887,
-          "logIndex": 91,
-          "from": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "to": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "raw": "4254883841416783345659",
-          "blockUtc": "2026-11-13T05:15:53.000Z"
-        },
-        {
-          "tx": "0x8b7266590865a349741909289d816435b224bf280a4376b4e54123d1c71885b4",
-          "block": 56782887,
-          "logIndex": 95,
-          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "raw": "4254883841416783345659",
-          "blockUtc": "2026-11-13T05:15:53.000Z"
-        },
-        {
-          "tx": "0xa6a0b5bb75a834c518d915b9ddc569ce5c32ce9c2a45915c3324b8c416dfc498",
-          "block": 56782960,
-          "logIndex": 41,
-          "from": "0x4446adc0b8136ffc55ddb7a488ba5509ace2a5ef",
-          "to": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "raw": "4248759326663734498113",
-          "blockUtc": "2026-11-13T05:16:07.000Z"
-        },
-        {
-          "tx": "0xa6a0b5bb75a834c518d915b9ddc569ce5c32ce9c2a45915c3324b8c416dfc498",
-          "block": 56782960,
-          "logIndex": 44,
-          "from": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "to": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "raw": "4248759326663734498113",
-          "blockUtc": "2026-11-13T05:16:07.000Z"
-        },
-        {
-          "tx": "0xa6a0b5bb75a834c518d915b9ddc569ce5c32ce9c2a45915c3324b8c416dfc498",
-          "block": 56782960,
-          "logIndex": 46,
-          "from": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "to": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "raw": "4248759326663734498113",
-          "blockUtc": "2026-11-13T05:16:07.000Z"
-        },
-        {
-          "tx": "0xa6a0b5bb75a834c518d915b9ddc569ce5c32ce9c2a45915c3324b8c416dfc498",
-          "block": 56782960,
-          "logIndex": 47,
-          "from": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "to": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "raw": "4248759326663734498113",
-          "blockUtc": "2026-11-13T05:16:07.000Z"
-        },
-        {
-          "tx": "0xa6a0b5bb75a834c518d915b9ddc569ce5c32ce9c2a45915c3324b8c416dfc498",
-          "block": 56782960,
-          "logIndex": 51,
-          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "raw": "4248759326663734498113",
-          "blockUtc": "2026-11-13T05:16:07.000Z"
-        }
-      ],
-      "netRecipients": [
-        {
-          "address": "0xe9a911b75ff5bb6e7b41a045b4d3ceedb6101381",
-          "rawNetIn": "146849373989000000000000",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "rawNetIn": "28883749333276910151012",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x5d44654e55b9ac1c078addb3b54efe6a41b7d5f5",
-          "rawNetIn": "25396017000000000000000",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "transferCount": 0,
+      "observedTransfers": [],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": [
-        {
-          "level": "UNKNOWN_WALLET_NET_INFLOW",
-          "message": "At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"
-        }
-      ]
+      "alerts": []
     },
     {
       "symbol": "B2",
@@ -712,52 +1026,28 @@
       "token": "0x783c3f003f172c6ac5ac700218a357d2d66ee2a2",
       "pool": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
+      "transferCount": 2,
       "observedTransfers": [
         {
-          "tx": "0x82bc725a6c19d9c95b0fac087383b24de6c91276fce1bdb9d74708e1dbd260c7",
-          "block": 133398998,
-          "logIndex": 807,
+          "tx": "0xb34d900c46ab47f6d796b1b03daf052c39590ac8d9a48023dfda47587ca44ba7",
+          "block": 133399315,
+          "logIndex": 150,
           "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
           "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "204967349558789830445",
-          "blockUtc": "2026-11-13T18:22:42.000Z"
+          "raw": "214548012993833222789",
+          "blockUtc": "2026-11-13T18:25:05.000Z"
         },
         {
-          "tx": "0xa2dee9e6fe3db4b80fa213d8228b2554477b5cfe2989c1609a26c1262f9cdd84",
-          "block": 133399045,
-          "logIndex": 232,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "251941273537969750470",
-          "blockUtc": "2026-11-13T18:23:03.000Z"
-        },
-        {
-          "tx": "0x4ffef5a4cd93d755a699991c32e9f6e156f41dfc337006c4b12912ab3ab68161",
-          "block": 133399100,
-          "logIndex": 32,
-          "from": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "raw": "830594122336697924400",
-          "blockUtc": "2026-11-13T18:23:28.000Z"
-        },
-        {
-          "tx": "0xf96ec0f512dfed9eb6a87092bdb8201febc7fa6281616cedfd90e0df6ee0602a",
-          "block": 133399101,
-          "logIndex": 1,
+          "tx": "0x20535f4d83cae9c55980de90f8cc90322b83dbecbd88270836157c35a1c7f461",
+          "block": 133399320,
+          "logIndex": 101,
           "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
           "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "254170865959347015397",
-          "blockUtc": "2026-11-13T18:23:28.000Z"
+          "raw": "236175405190798051986",
+          "blockUtc": "2026-11-13T18:25:07.000Z"
         }
       ],
-      "netRecipients": [
-        {
-          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "rawNetIn": "576423256377350909003",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -768,28 +1058,92 @@
       "token": "0x0c69199c1562233640e0db5ce2c399a88eb507c7",
       "pool": "0x9cfea9ef82f26857c3426487774c088330555da6113c61ac7fb8b30d0ae434b3",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 1,
+      "transferCount": 7,
       "observedTransfers": [
         {
-          "tx": "0xf8e0dd4db8faf40606c0c6f2ff5a7a3d2b23bef780c6cf05d341f8334063fd39",
-          "block": 133399064,
-          "logIndex": 39,
+          "tx": "0x20abeb968a2df29edb0f1f434097d9136485adea2a220adaba3cb91977527c28",
+          "block": 133399119,
+          "logIndex": 44,
           "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1057848610830303483260",
-          "blockUtc": "2026-11-13T18:23:12.000Z"
+          "raw": "3125318378514617741582",
+          "blockUtc": "2026-11-13T18:23:36.000Z"
+        },
+        {
+          "tx": "0x77295cd894d4379722106010e6ec05c005994819c32ad577f180f6f4d8aa380b",
+          "block": 133399119,
+          "logIndex": 158,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "540611858759209826638",
+          "blockUtc": "2026-11-13T18:23:36.000Z"
+        },
+        {
+          "tx": "0xa6e7fb1dc28afe8487e97027314e4e6092da77bd29bd4cbdb8ea95f40ddd6ffe",
+          "block": 133399124,
+          "logIndex": 5,
+          "from": "0x6f99c5ed90083a19730fb3ba23e1e4a6e42410e1",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "4431599673487562258750",
+          "blockUtc": "2026-11-13T18:23:39.000Z"
+        },
+        {
+          "tx": "0x77c7742c865c63901ea78457db1c78114445dd7616254dc4e5e6c98d416f3572",
+          "block": 133399310,
+          "logIndex": 24,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "1691863971042222254827",
+          "blockUtc": "2026-11-13T18:25:02.000Z"
+        },
+        {
+          "tx": "0xdccb3a7860e9da6d5b7c1f79ca776f1cdac5dc28c671602dd03f37965479768d",
+          "block": 133399311,
+          "logIndex": 657,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "865339811851499167741",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0x8a4542c66d9d3b5fc66cf39c58a3aadbbfed2173755b7c51731df29489c00bce",
+          "block": 133399315,
+          "logIndex": 37,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "843104323518947244273",
+          "blockUtc": "2026-11-13T18:25:05.000Z"
+        },
+        {
+          "tx": "0x9a28049b68aa6ec8776e58cfa002fd34ab2db48ecc9c7557fe522bef3103cd9c",
+          "block": 133399337,
+          "logIndex": 525,
+          "from": "0x310269e220749a71018310e22d006ead1fc2c764",
+          "to": "0xf844e316f6043519e48a331fca4b40cc04f037e6",
+          "raw": "0",
+          "blockUtc": "2026-11-13T18:25:14.000Z"
         }
       ],
       "netRecipients": [
         {
           "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "1057848610830303483260",
+          "rawNetIn": "9767158393471060158329",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "rawNetIn": "324727953092289341103",
           "identity": "UNVERIFIED"
         }
       ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+        }
+      ]
     },
     {
       "symbol": "STBL",
@@ -797,28 +1151,97 @@
       "token": "0x8dedf84656fa932157e27c060d8613824e7979e3",
       "pool": "0x90166b5795250fe7f0831e844121cc91799787e9",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 2,
+      "transferCount": 9,
       "observedTransfers": [
         {
-          "tx": "0xbd6064f58c304692b52810a38534a84a796ba912566c6d7b24eaac22645503e7",
-          "block": 133398997,
-          "logIndex": 105,
+          "tx": "0x075b5be0ce5e35caeea01edbbade6f8eaaa66ee1a52e6e53a3c2e2cf78ad88ed",
+          "block": 133399147,
+          "logIndex": 17,
           "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
           "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
-          "raw": "9926158922163256620032",
-          "blockUtc": "2026-11-13T18:22:41.000Z"
+          "raw": "17743901311248499853849",
+          "blockUtc": "2026-11-13T18:23:49.000Z"
         },
         {
-          "tx": "0xa0c1a8ade7da7f361d1321152007e61b5368606366c525de69f9f771748a5fbd",
-          "block": 133399051,
-          "logIndex": 62,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
+          "tx": "0x753810c9998fbd7a907c1b1c5a6cbd3c6a3a41352f8ccdec9a84a1209d5765cc",
+          "block": 133399152,
+          "logIndex": 24,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
           "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
-          "raw": "8931865236097693427764",
-          "blockUtc": "2026-11-13T18:23:06.000Z"
+          "raw": "7829022502059254102063",
+          "blockUtc": "2026-11-13T18:23:51.000Z"
+        },
+        {
+          "tx": "0x47efebd031e7e240e4986b56725dd3b533178568054f57738784caee6aba2422",
+          "block": 133399155,
+          "logIndex": 491,
+          "from": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "3004994408704625150439",
+          "blockUtc": "2026-11-13T18:23:53.000Z"
+        },
+        {
+          "tx": "0x0b14b2e0bfb3ce32cafc735ad51670d3bbae02180630e04a8d2190dc8db66cc3",
+          "block": 133399161,
+          "logIndex": 16,
+          "from": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "raw": "11325456196377802760146",
+          "blockUtc": "2026-11-13T18:23:55.000Z"
+        },
+        {
+          "tx": "0xd76844c83ae454c96b7d8ca3c1db364bf3c2bc67476116e24fc1fe241aebfc77",
+          "block": 133399161,
+          "logIndex": 50,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "2337750376343283159521",
+          "blockUtc": "2026-11-13T18:23:55.000Z"
+        },
+        {
+          "tx": "0x172127775a99cc6d7961260eff2e6c0bae0d4c3539df9ff75b34e8b1f8e8e6a0",
+          "block": 133399162,
+          "logIndex": 33,
+          "from": "0x491c3e907cf37cf83bc6fcdfcd195f47ac05da52",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "4784871661690652780463",
+          "blockUtc": "2026-11-13T18:23:56.000Z"
+        },
+        {
+          "tx": "0x15937f3abb551e7fc8fe1e16046d41c1c9df5d19ff3f0dde38ef800ff21ad3db",
+          "block": 133399163,
+          "logIndex": 36,
+          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "2135482251740290647037",
+          "blockUtc": "2026-11-13T18:23:56.000Z"
+        },
+        {
+          "tx": "0x02cdeee58c74e24c80651f4238a32a4e2cb9366e8440e82509de991de65c393c",
+          "block": 133399164,
+          "logIndex": 36,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "5257805173838427089520",
+          "blockUtc": "2026-11-13T18:23:57.000Z"
+        },
+        {
+          "tx": "0xbac726b3982a9e6d2b16c8a237914cb5f378a79ca1e6ae4a5e8339e7bf99d99e",
+          "block": 133399248,
+          "logIndex": 10,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "14774153179385587381176",
+          "blockUtc": "2026-11-13T18:24:34.000Z"
         }
       ],
-      "netRecipients": [],
+      "netRecipients": [
+        {
+          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "rawNetIn": "3004994408704625150439",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -829,72 +1252,136 @@
       "token": "0x595deaad1eb5476ff1e649fdb7efc36f1e4679cc",
       "pool": "0x26a8e4591b7a0efcd45a577ad0d54aa64a99efaf2546ad4d5b0454c99eb70eab",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 6,
+      "transferCount": 16,
       "observedTransfers": [
         {
-          "tx": "0x34c28205defc0ef0036b110814f4bb5702aaf7ab0c7aa27dad4a2e8e3c30d099",
-          "block": 133398998,
-          "logIndex": 219,
+          "tx": "0x860d19771c2dbc48fe99e4ec880e3a4abafc4b604b07f1aec2921fff67793312",
+          "block": 133399129,
+          "logIndex": 140,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "383883149929598566898",
+          "blockUtc": "2026-11-13T18:23:41.000Z"
+        },
+        {
+          "tx": "0x30e9240bd0d36ec2fef8d748f69febfe26231c90ccb7681b74ce27af4f91fe59",
+          "block": 133399130,
+          "logIndex": 299,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "383899037095902190535",
+          "blockUtc": "2026-11-13T18:23:41.000Z"
+        },
+        {
+          "tx": "0xd6fbcddab67a3743596b49f0d236f48ef86196277621d0d61c0bfa4e1a89d588",
+          "block": 133399131,
+          "logIndex": 208,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "raw": "383914925248474541414",
+          "blockUtc": "2026-11-13T18:23:42.000Z"
+        },
+        {
+          "tx": "0x8f33c5aec96273607df785a38c90ce5c78e85a8561a919aa7c231debb5927a38",
+          "block": 133399157,
+          "logIndex": 79,
           "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
-          "raw": "1154000000000000000000",
-          "blockUtc": "2026-11-13T18:22:42.000Z"
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "3030189203209470234069",
+          "blockUtc": "2026-11-13T18:23:53.000Z"
         },
         {
-          "tx": "0x34c28205defc0ef0036b110814f4bb5702aaf7ab0c7aa27dad4a2e8e3c30d099",
-          "block": 133398998,
-          "logIndex": 220,
-          "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
-          "to": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
-          "raw": "1154000000000000000000",
-          "blockUtc": "2026-11-13T18:22:42.000Z"
+          "tx": "0x9dfded9ba3f3234985856aa6ad5a04ad7ef95fa445d4311b0d68ffe5e0e7eb37",
+          "block": 133399157,
+          "logIndex": 734,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "1593642905661139183865",
+          "blockUtc": "2026-11-13T18:23:53.000Z"
         },
         {
-          "tx": "0x3cce508f32662aa6e51c7fa73b98fb1c94b42efd06733cf100335b802219d217",
-          "block": 133399013,
-          "logIndex": 472,
-          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "tx": "0x1412f4e3662732c215fc775de5c1a6a32a4e7ec5adda69cfe77e3a77ddddf1c6",
+          "block": 133399172,
+          "logIndex": 55,
+          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "646225055458343559602",
-          "blockUtc": "2026-11-13T18:22:49.000Z"
+          "raw": "1317236799274814090491",
+          "blockUtc": "2026-11-13T18:24:00.000Z"
         },
         {
-          "tx": "0x7352d60558c159bf455a5ae9f947d6c357d4c15f026a1ed15f5e0e29e5a557ed",
-          "block": 133399074,
-          "logIndex": 4,
-          "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "452365388367025248570",
-          "blockUtc": "2026-11-13T18:23:16.000Z"
+          "tx": "0x57f8fee2074061b4a8d914cd91423ebd69d7827f0f53b8a28920bf12e0faf70a",
+          "block": 133399204,
+          "logIndex": 29,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "raw": "11966031819209790854861",
+          "blockUtc": "2026-11-13T18:24:15.000Z"
         },
         {
-          "tx": "0x6054ba7c2b67ffd7d86b3373b8950d71a624b122276242d23a948cf0c3b77279",
-          "block": 133399075,
-          "logIndex": 534,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "5167551358830261207265",
-          "blockUtc": "2026-11-13T18:23:17.000Z"
+          "tx": "0x7e6bdfeef2e1a9e3342cc5d189737fee3b1836a58161755b52b57a38963ba0c7",
+          "block": 133399205,
+          "logIndex": 67,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "1474353611152855235642",
+          "blockUtc": "2026-11-13T18:24:15.000Z"
         },
         {
-          "tx": "0xa9f71f82fb9cbb9aa9623f34b40b54337354962773789736a5a2b6927c0bdbd6",
-          "block": 133399078,
-          "logIndex": 88,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "835739535997420693462",
-          "blockUtc": "2026-11-13T18:23:18.000Z"
+          "tx": "0x723e5f676104aa79ed639b1778782103c5693d89b97d09d21dc770933db85b2e",
+          "block": 133399208,
+          "logIndex": 668,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "1406579475206631778062",
+          "blockUtc": "2026-11-13T18:24:16.000Z"
+        },
+        {
+          "tx": "0xab5abf5340fa4cc7edeed0842b39423a107dd2261e5a7540f0d67483452ac4c6",
+          "block": 133399282,
+          "logIndex": 150,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "888999999999997989537",
+          "blockUtc": "2026-11-13T18:24:50.000Z"
+        },
+        {
+          "tx": "0x094380dd540c9217c514da4a2d5980913933118d42d9c6324bedcf9570d2e4b1",
+          "block": 133399312,
+          "logIndex": 44,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "raw": "9937750715681993230518",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0xbfdb98923b51a8eab7c08a63cba7f993be4efaa25c301ea7428108cb352b0c30",
+          "block": 133399314,
+          "logIndex": 2274,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "1254000000000000612036",
+          "blockUtc": "2026-11-13T18:25:04.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "5947881338653050708899",
+          "address": "0x8cf1eb91e004583449b0fd864e5001d36e8bab96",
+          "rawNetIn": "11966031819209790854861",
           "identity": "UNVERIFIED"
         },
         {
-          "address": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
-          "rawNetIn": "1154000000000000000000",
+          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "rawNetIn": "9937750715681993230518",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "rawNetIn": "4474575992020626197569",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "rawNetIn": "1712952403934656143578",
           "identity": "UNVERIFIED"
         }
       ],
@@ -913,49 +1400,22 @@
       "token": "0x81a7da4074b8e0ed51bea40f9dcbdf4d9d4832b4",
       "pool": "0x97620e003c03381eacbde7135f28d94303bb5672",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0xf9590aad4110ff2e1bd2be4157b2f500db6d79c48a2e34eeea10e61bdc0ae4bc",
-          "block": 133398986,
-          "logIndex": 263,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "raw": "288276701525442140309",
-          "blockUtc": "2026-11-13T18:22:37.000Z"
-        },
-        {
-          "tx": "0x9017f7cb9b06a12d40ae7ed9781cc05284b2a23dd1a2b564478999fa70186f66",
-          "block": 133399055,
-          "logIndex": 213,
+          "tx": "0x058e62e2a0e0d247cc4abdd853eaaf530d0c7ac7312edba39f23a9f36e470329",
+          "block": 133399178,
+          "logIndex": 50,
           "from": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "to": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
-          "raw": "279913900474884313017",
-          "blockUtc": "2026-11-13T18:23:08.000Z"
-        },
-        {
-          "tx": "0x9017f7cb9b06a12d40ae7ed9781cc05284b2a23dd1a2b564478999fa70186f66",
-          "block": 133399055,
-          "logIndex": 216,
-          "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
-          "to": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
-          "raw": "279913900474884313017",
-          "blockUtc": "2026-11-13T18:23:08.000Z"
-        },
-        {
-          "tx": "0xe083418666b0c8aae9fde4db66dc8aec7ed7442dffb5faa2ffc960670c814c37",
-          "block": 133399056,
-          "logIndex": 750,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "raw": "278356161769669951362",
-          "blockUtc": "2026-11-13T18:23:08.000Z"
+          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "raw": "493763198637630165445",
+          "blockUtc": "2026-11-13T18:24:03.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
-          "rawNetIn": "279913900474884313017",
+          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "rawNetIn": "493763198637630165445",
           "identity": "UNVERIFIED"
         }
       ],
@@ -969,146 +1429,146 @@
       "token": "0x8fce7206e3043dd360f115afa956ee31b90b787c",
       "pool": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 88,
+      "transferCount": 49,
       "observedTransfers": [
         {
-          "tx": "0x8d91084cc05d355d216951134347d4dfb171c586232dae0b728e25caa5054efb",
-          "block": 133399083,
-          "logIndex": 75,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "4570742888780022153216",
-          "blockUtc": "2026-11-13T18:23:20.000Z"
-        },
-        {
-          "tx": "0x42481e9bc9b05e2b9ad492156bb3a192c3bea2f4d1d153fa1bff471380a871b5",
-          "block": 133399084,
-          "logIndex": 85,
+          "tx": "0x687c94a53b3d4433ae7367b6b18569a319fc8f20c1e82d381b00804312309721",
+          "block": 133399308,
+          "logIndex": 76,
           "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0x070f82aee1abb53860143968def1e054e407af93",
-          "raw": "184257281487037289627",
-          "blockUtc": "2026-11-13T18:23:21.000Z"
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "3236296209824921910936",
+          "blockUtc": "2026-11-13T18:25:01.000Z"
         },
         {
-          "tx": "0x42481e9bc9b05e2b9ad492156bb3a192c3bea2f4d1d153fa1bff471380a871b5",
-          "block": 133399084,
-          "logIndex": 87,
-          "from": "0x070f82aee1abb53860143968def1e054e407af93",
-          "to": "0x65c106196dd162d56b91d96c9ed31977af123343",
-          "raw": "184257281487037289626",
-          "blockUtc": "2026-11-13T18:23:21.000Z"
-        },
-        {
-          "tx": "0xa136bf45315a01403c8721a536eec424474a19b4ed915ad0a9e98e493281f29a",
-          "block": 133399086,
-          "logIndex": 6,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "4256482562880760184832",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
-        },
-        {
-          "tx": "0x737f9564c148386c16de7fe876500cdfcff4bdc11324cdb3f6aebca34caf0406",
-          "block": 133399087,
-          "logIndex": 51,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "5812393432996070293504",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
-        },
-        {
-          "tx": "0xa839c3e42a7811b04d11300e164456d7792367a838fbf763a11313628bda3781",
-          "block": 133399088,
-          "logIndex": 33,
+          "tx": "0x45abbd99108cfb6327be02859260416cb866806134a9cbd80251f8bf884cd489",
+          "block": 133399308,
+          "logIndex": 871,
           "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "raw": "8698410338056682810363",
-          "blockUtc": "2026-11-13T18:23:22.000Z"
+          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
+          "raw": "4871999999999854247936",
+          "blockUtc": "2026-11-13T18:25:01.000Z"
         },
         {
-          "tx": "0xbc9cc94d4bb61b9986a062b1ccdc33372b338e727df351f6d35b1bbf71b14db1",
-          "block": 133399090,
-          "logIndex": 67,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
+          "tx": "0x45abbd99108cfb6327be02859260416cb866806134a9cbd80251f8bf884cd489",
+          "block": 133399308,
+          "logIndex": 876,
+          "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
+          "to": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
+          "raw": "4871999999999854247936",
+          "blockUtc": "2026-11-13T18:25:01.000Z"
+        },
+        {
+          "tx": "0xf2729da04d49fc4bebab3dcd403a57418ea51a0f0641ee22fd81aa9eade770b0",
+          "block": 133399309,
+          "logIndex": 162,
+          "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+          "to": "0x2b214a662a7cd2bd5c8d4115eb54f0576b8dbd46",
+          "raw": "5742001623401351339096",
+          "blockUtc": "2026-11-13T18:25:02.000Z"
+        },
+        {
+          "tx": "0x24716e7b091451c4dfb7b54b5861ae623b8f5019bf8a93c8297561b1b01b2a7c",
+          "block": 133399310,
+          "logIndex": 7,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
           "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "3322114864080712892416",
-          "blockUtc": "2026-11-13T18:23:23.000Z"
+          "raw": "11305651012465866631201",
+          "blockUtc": "2026-11-13T18:25:02.000Z"
         },
         {
-          "tx": "0xa731e2f024703fa56c8fc361b3c725dd697b0a8571ab0b9c1539934b80686d46",
-          "block": 133399091,
-          "logIndex": 264,
+          "tx": "0x094380dd540c9217c514da4a2d5980913933118d42d9c6324bedcf9570d2e4b1",
+          "block": 133399312,
+          "logIndex": 34,
+          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+          "raw": "8351151785602860954903",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0xa9d9bea7d5686bdd7718cf915d14f5db235a8c7f390507822ed772014d798202",
+          "block": 133399312,
+          "logIndex": 720,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+          "raw": "895887725486870135901",
+          "blockUtc": "2026-11-13T18:25:03.000Z"
+        },
+        {
+          "tx": "0x58c0d11fd978e5d7ebae2424a16262006bd7aaeed9834727250d799a22fb31a8",
+          "block": 133399313,
+          "logIndex": 77,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+          "raw": "3874171075049551890467",
+          "blockUtc": "2026-11-13T18:25:04.000Z"
+        },
+        {
+          "tx": "0x3bbb69a4890af89cadc5efe8a0e32fdad77ef022b4bb47953a12c328f9127199",
+          "block": 133399322,
+          "logIndex": 544,
           "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
           "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "2614856999208996903916",
-          "blockUtc": "2026-11-13T18:23:24.000Z"
+          "raw": "2220125778628939955470",
+          "blockUtc": "2026-11-13T18:25:08.000Z"
         },
         {
-          "tx": "0xfa13b3e3c919d5cbad91374490fc231b280d69330c808e75272d7d54005890b4",
-          "block": 133399093,
-          "logIndex": 121,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "4868176898703350562816",
-          "blockUtc": "2026-11-13T18:23:25.000Z"
-        },
-        {
-          "tx": "0xb4f6f8e40c295ff3adf595416d21f77412ec418d2265b1dff81b29aa9bc502ec",
-          "block": 133399103,
-          "logIndex": 268,
+          "tx": "0xa4735a12164d36d11dd9765d6d109e68e9fab4a91ca419a9b2f783eee8149a7e",
+          "block": 133399332,
+          "logIndex": 568,
           "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
-          "raw": "2639480195393311806702",
-          "blockUtc": "2026-11-13T18:23:29.000Z"
+          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "raw": "3310131191253042608937",
+          "blockUtc": "2026-11-13T18:25:12.000Z"
         },
         {
-          "tx": "0xb4f6f8e40c295ff3adf595416d21f77412ec418d2265b1dff81b29aa9bc502ec",
-          "block": 133399103,
-          "logIndex": 273,
-          "from": "0xb300000b72deaeb607a12d5f54773d1c19c7028d",
-          "to": "0x3a3951c7cc3d20f93fd12a229db315969cb3ba4a",
-          "raw": "2639480195393311806702",
-          "blockUtc": "2026-11-13T18:23:29.000Z"
-        },
-        {
-          "tx": "0xf31717546df2505393eb02e4a7b65eca42b18ccafeff0cb170a9907ede69171a",
-          "block": 133399104,
-          "logIndex": 39,
-          "from": "0x25969b07deae51968ec46de173a51eedf1225032",
+          "tx": "0x8c6e01ad1fb4a17684bd796be83ef766f0156416e0b5d840bd0ded58566c8fb7",
+          "block": 133399335,
+          "logIndex": 848,
+          "from": "0x6f99c5ed90083a19730fb3ba23e1e4a6e42410e1",
           "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "2998129983711738357932",
-          "blockUtc": "2026-11-13T18:23:30.000Z"
+          "raw": "3282969243616093733539",
+          "blockUtc": "2026-11-13T18:25:14.000Z"
+        },
+        {
+          "tx": "0x9344942f95d8df594bb7390673e03af563c8558282a0ed3550064ba37b0582ba",
+          "block": 133399337,
+          "logIndex": 644,
+          "from": "0x6f99c5ed90083a19730fb3ba23e1e4a6e42410e1",
+          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+          "raw": "1596072533369404020539",
+          "blockUtc": "2026-11-13T18:25:14.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "rawNetIn": "36696100464151007300595",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x6f99c5ed90083a19730fb3ba23e1e4a6e42410e1",
-          "rawNetIn": "35427157458586971058697",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x2a70270fec0a724d9bccdf9f1d24d4319d21f728",
-          "rawNetIn": "27694412449363677504226",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "rawNetIn": "19633513038177813924075",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x0fec44b45f1a67a4e8c30a88bb0b6bb61443868e",
-          "rawNetIn": "10000000000000000000000",
+          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
+          "rawNetIn": "20819449836026978048044",
           "identity": "UNVERIFIED"
         },
         {
           "address": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "rawNetIn": "8698410338056682810363",
+          "rawNetIn": "10786119070996983014162",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x2b214a662a7cd2bd5c8d4115eb54f0576b8dbd46",
+          "rawNetIn": "5742001623401351339096",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
+          "rawNetIn": "4871999999999854247936",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+          "rawNetIn": "4456852582160789625482",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "rawNetIn": "2382569181134551309604",
           "identity": "UNVERIFIED"
         }
       ],
@@ -1127,43 +1587,28 @@
       "token": "0x302dfaf2cdbe51a18d97186a7384e87cf599877d",
       "pool": "0x302642976506d247c7017b85ddc89e3956f96ba1",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 3,
+      "transferCount": 2,
       "observedTransfers": [
         {
-          "tx": "0x76ec04bd044a4260a8b1d63d04b4602df83cd333492566d1afba898b90520590",
-          "block": 133399027,
-          "logIndex": 392,
-          "from": "0x302642976506d247c7017b85ddc89e3956f96ba1",
-          "to": "0xacf8318d85a3532deee54358726fbd62440e30c1",
-          "raw": "2710284781818087498159",
-          "blockUtc": "2026-11-13T18:22:55.000Z"
-        },
-        {
-          "tx": "0xe106af208327bd11c7eb4d3905cca59cc0c7deaf63d538f02be0655f9a8bddd8",
-          "block": 133399090,
-          "logIndex": 75,
+          "tx": "0x42f62aef640672fffa30621e05444768e4974f4ded8c176da1d3cd51575b60b2",
+          "block": 133399115,
+          "logIndex": 31,
           "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
           "to": "0x302642976506d247c7017b85ddc89e3956f96ba1",
-          "raw": "2546902609987027701255",
-          "blockUtc": "2026-11-13T18:23:23.000Z"
+          "raw": "1586318958433817795217",
+          "blockUtc": "2026-11-13T18:23:35.000Z"
         },
         {
-          "tx": "0xf60bfd47488a466adb64b53f5e98991b372fd8a431f3e8b01b6642146cb29952",
-          "block": 133399091,
+          "tx": "0x3c4eaef1a5c1e58f03015080b1a1694e6cd7ebfdb4b3a02240fd629a930634cd",
+          "block": 133399207,
           "logIndex": 280,
           "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
           "to": "0x302642976506d247c7017b85ddc89e3956f96ba1",
-          "raw": "1345523748362409176314",
-          "blockUtc": "2026-11-13T18:23:24.000Z"
+          "raw": "1434030955884128687206",
+          "blockUtc": "2026-11-13T18:24:16.000Z"
         }
       ],
-      "netRecipients": [
-        {
-          "address": "0xacf8318d85a3532deee54358726fbd62440e30c1",
-          "rawNetIn": "2710284781818087498159",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -1171,7 +1616,31 @@
   ],
   "alerts": [
     {
+      "symbol": "ON",
+      "chain": "bsc",
+      "level": "UNKNOWN_WALLET_NET_INFLOW",
+      "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+    },
+    {
       "symbol": "DOS",
+      "chain": "bsc",
+      "level": "UNKNOWN_WALLET_NET_INFLOW",
+      "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+    },
+    {
+      "symbol": "HANA",
+      "chain": "bsc",
+      "level": "UNKNOWN_WALLET_NET_INFLOW",
+      "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+    },
+    {
+      "symbol": "COLLECT",
+      "chain": "bsc",
+      "level": "UNKNOWN_WALLET_NET_INFLOW",
+      "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
+    },
+    {
+      "symbol": "LIGHT",
       "chain": "bsc",
       "level": "UNKNOWN_WALLET_NET_INFLOW",
       "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
@@ -1189,10 +1658,10 @@
       "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
     },
     {
-      "symbol": "TRUST",
-      "chain": "base",
+      "symbol": "CYS",
+      "chain": "bsc",
       "level": "UNKNOWN_WALLET_NET_INFLOW",
-      "message": "At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"
+      "message": "Unknown-address net inflow, NOT verified CEX/independent accumulation"
     },
     {
       "symbol": "BSB",
