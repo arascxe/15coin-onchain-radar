@@ -6,6 +6,8 @@ on:
       - "pool_state.cjs"
       - "spot.cjs"
       - "prep_engine.cjs"
+      - "wallet_persistence.cjs"
+      - "research/test_wallet_persistence.cjs"
       - "research/test_prep_engine.cjs"
       - "probe_receipts.cjs"
       - ".github/workflows/onchain.yml"
@@ -20,7 +22,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 6
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -56,6 +58,12 @@ jobs:
       - name: Scan public chain transfer and liquidity events
         run: node scan.cjs
         continue-on-error: true
+      - name: Validate dynamic wallet persistence against continuity controls
+        run: |
+          node --check wallet_persistence.cjs
+          node research/test_wallet_persistence.cjs
+      - name: Read dynamic EOA balances on BSC official RPC
+        run: node wallet_persistence.cjs
       - name: Validate preparation decision rules against positive and negative controls
         run: |
           node --check prep_engine.cjs
@@ -72,6 +80,8 @@ jobs:
             radar_data/research_backtest_latest.json \
             radar_data/prep_latest.json \
             radar_data/prep_history.json \
+            radar_data/wallet_latest.json \
+            radar_data/wallet_track.json \
             radar_data/pool_state_latest.json \
             radar_data/pool_state.json \
             radar_data/receipt_probe.json \
@@ -100,6 +110,7 @@ jobs:
           const pool=JSON.parse(fs.readFileSync('radar_data/pool_state_latest.json','utf8'));
           const history=JSON.parse(fs.readFileSync('radar_data/spot_history.json','utf8'));
           const prep=JSON.parse(fs.readFileSync('radar_data/prep_latest.json','utf8'));
+          const wallet=JSON.parse(fs.readFileSync('radar_data/wallet_latest.json','utf8'));
           const fresh=x=>{const dt=Date.now()-Date.parse(x||'');return dt>=0&&dt<600000};
           const spotOk=fresh(spot.asOfUtc)&&spot.counts?.ohlcvReceived===15;
           const v3Ok=fresh(pool.asOfUtc)&&pool.coins?.filter(c=>c.status==='READ_OK').length===10;
@@ -107,12 +118,14 @@ jobs:
           const holdersOk=pool.holderObservations?.filter(c=>c.status==='READ_OK').length===42;
           const historyOk=fresh(history.runs?.at(-1)?.asOfUtc);
           const prepOk=fresh(prep.asOfUtc)&&prep.coins?.length===15&&prep.counts?.coins===15;
+          const walletOk=fresh(wallet.asOfUtc)&&wallet.snapshotBlock>0&&wallet.status==='SNAPSHOT_ATTEMPTED';
           const bscTokensOk=data.coins?.filter(c=>c.chain==='bsc'&&c.coverage==='RECEIPTS_SCANNED').length===14;
           console.log('SPOT:',spotOk,'V3:',v3Ok,'Infinity:',infinityOk,'holders:',holdersOk,'history:',historyOk,'BSC tokens:',bscTokensOk);
           console.log('PREP CLASSIFIER:',prepOk,'P1:',prep.counts?.p1,'P2:',prep.counts?.p2,'P3:',prep.counts?.p3,'newAlerts:',prep.newAlerts?.length);
+          console.log('DYNAMIC EOA:',walletOk,'tracked:',wallet.counts?.trackedEOAs,'signals:',wallet.counts?.qualifiedPersistence,'errors:',wallet.counts?.failedRPC);
           console.log('BSC:',bsc?.coverage,bsc?.method,'blocks:',bsc?.blocksScanned,'backlog:',bsc?.backlog);
           console.log('BASE:',base?.coverage,'from:',base?.from,'to:',base?.to,'historical gap:',base?.historicalUnscannedFrom,base?.historicalUnscannedTo);
-          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS' || !spotOk || !v3Ok || !infinityOk || !holdersOk || !historyOk || !prepOk || !bscTokensOk){
+          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS' || !spotOk || !v3Ok || !infinityOk || !holdersOk || !historyOk || !prepOk || !walletOk || !bscTokensOk){
             console.error('DATA HEALTH FAILED: green Actions status must not mask missing or partial live onchain coverage');
             process.exit(1)
           }
