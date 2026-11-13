@@ -173,10 +173,36 @@ return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.ma
 }catch(e){errs.push(url+": "+String(e.message).slice(0,260));console.warn(chain+" RPC failed",url,String(e.message).slice(0,130))}}
 if(chain==="bsc"){try{const qs=new URLSearchParams({module:"logs",action:"getLogs",address:MANAGER,fromBlock:"1",toBlock:"1",page:"1",offset:"1"});const u="https://api.routescan.io/v2/network/mainnet/evm/56/etherscan/api?"+qs;const ctrl=new AbortController();const ti=setTimeout(()=>ctrl.abort(),9000);try{const response=await fetch(u,{signal:ctrl.signal});const str=(await response.text()).slice(0,500);errs.push("ROUTESCAN_KEYLESS_PROBE "+response.status+" "+str)}finally{clearTimeout(ti)}}catch(e){errs.push("ROUTESCAN_KEYLESS_PROBE "+String(e.message))}}
 return {chain,coverage:"FAILED",errors:errs,coins:[]}}
-async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if((r.coverage==="SUCCESS"||r.coverage==="PARTIAL")&&r.to>=r.from){if(chain==="base"&&!state.cursors.baseLiveStart)state.cursors.baseLiveStart=r.from;state.cursors[chain==="base"?"baseLive":chain]=r.to}}
+async function main(){const state=readState(),results=[],liveTips=[];
+for(const chain of ["bsc","base"]){
+ const r=await collect(chain,state);results.push(r);
+ if((r.coverage==="SUCCESS"||r.coverage==="PARTIAL")&&r.to>=r.from){
+  if(chain==="base"&&!state.cursors.baseLiveStart)state.cursors.baseLiveStart=r.from;
+  state.cursors[chain==="base"?"baseLive":chain]=r.to;
+ }
+ // Priority live lane: keep scanning the oldest missing blocks with the cursor,
+ // but ALSO capture the last ~15m (BSC) / ~20m (Base) when an outage created backlog.
+ // The live lane does not advance the historical cursor and MUST NOT hide gaps.
+ const gap=Number(r.backlog||0),threshold=chain==="bsc"?300:150,window=chain==="bsc"?1200:600;
+ if(gap>threshold&&Number.isFinite(r.head)&&Number.isFinite(r.to)){
+  const tipCursor=Math.max(1,r.head-5-window);
+  const replica={...state,cursors:{...state.cursors,[chain==="base"?"baseLive":"bsc"]:tipCursor}};
+  const tip=await collect(chain,replica);
+  const successful=tip.coverage==="SUCCESS"||tip.coverage==="PARTIAL";
+  liveTips.push({
+   chain,priority:"RECENT_EVENTS_NOT_HISTORICAL_BACKFILL",coverage:tip.coverage,
+   method:tip.method,from:tip.from??null,to:tip.to??null,
+   head:tip.head??null,blocksScanned:tip.blocksScanned??null,
+   recentWindowBlocks:window,
+   missingMiddleRange:successful&&tip.from>r.to+1?{from:r.to+1,to:tip.from-1}:null,
+   historicalCursorNotAdvanced:true,errors:tip.errors||[],
+   coins:successful?tip.coins:[]
+  });
+ }
+}
 const by=new Map(results.flatMap(r=>r.coins.map(c=>[c.symbol,c])));const coins=MONITORS.map(t=>by.get(t.symbol)||{symbol:t.symbol,chain:t.chain,coverage:results.find(r=>r.chain===t.chain)?.coverage||"FAILED",transferCount:null,lpEvents:[],alerts:[]});
-const status=results.every(r=>r.coverage==="SUCCESS"||r.coverage==="NO_NEW_BLOCKS")?"COMPLETE":results.some(r=>r.coverage==="SUCCESS")?"PARTIAL":"FAILED";
-const report={schema:"15coin-chain-evidence-v2",asOfUtc:new Date().toISOString(),status,explicitLimits:"BSC: contiguous receipts. Base live cursor is separate from unresolved historic base cursor; historical gap NOT COVERED. Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP actions are NOT necessarily bullish. Unscanned blocks and failed RPC are NOT zero events.",chains:results.map(({coins,...rest})=>rest),coins,alerts:coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:c.chain,...a})))};
+const status=results.every(r=>(r.coverage==="SUCCESS"||r.coverage==="NO_NEW_BLOCKS")&&Number(r.backlog||0)===0)?"COMPLETE":results.some(r=>r.coverage==="SUCCESS"||r.coverage==="PARTIAL")?"PARTIAL_COVERAGE":"FAILED";
+const report={schema:"15coin-chain-evidence-v2",asOfUtc:new Date().toISOString(),status,explicitLimits:"BSC: contiguous receipts. Base live cursor is separate from unresolved historic base cursor; historical gap NOT COVERED. Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP actions are NOT necessarily bullish. Unscanned blocks and failed RPC are NOT zero events. Priority liveTip only observes its own window; missingMiddleRange is never coverage.",chains:results.map(({coins,...rest})=>rest),coins,liveTips,liveTipAlerts:liveTips.flatMap(t=>t.coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:t.chain,from:t.from,to:t.to,...a})))),alerts:coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:c.chain,...a})))};
 saveJSON(OUT_FILE,report);
 state.lastRunUtc=report.asOfUtc;state.lastStatus=status;saveJSON(STATE_FILE,state);
 console.log(JSON.stringify({status,asOfUtc:report.asOfUtc,measured:coins.filter(c=>c.transferCount!==null).length,lpEvents:coins.reduce((n,c)=>n+c.lpEvents.length,0),alerts:report.alerts.length,chains:report.chains.map(x=>({chain:x.chain,coverage:x.coverage,provider:x.provider,from:x.from,to:x.to,backlog:x.backlog,errors:x.errors}))},null,2));
