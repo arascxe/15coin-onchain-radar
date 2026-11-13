@@ -3,6 +3,8 @@ on:
   push:
     paths:
       - "scan.cjs"
+      - "health_check.cjs"
+      - "research/test_health_check.cjs"
       - "pool_state.cjs"
       - "spot.cjs"
       - "prep_engine.cjs"
@@ -13,7 +15,7 @@ on:
       - ".github/workflows/onchain.yml"
   workflow_dispatch:
   schedule:
-    - cron: "8,23,38,53 * * * *"
+    - cron: "11,26,41,56 * * * *"
 permissions:
   contents: write
 concurrency:
@@ -70,12 +72,20 @@ jobs:
           node research/test_prep_engine.cjs
       - name: Classify timestamped fifteen-coin preparation evidence
         run: node prep_engine.cjs
+      - name: Verify integrity tests including missed live windows
+        run: |
+          node --check health_check.cjs
+          node research/test_health_check.cjs
+      - name: Create auditable health snapshot before persistence
+        run: node health_check.cjs
+        continue-on-error: true
       - name: Persist all radar data in one commit
         run: |
           git config user.name "onchain-radar-bot"
           git config user.email "onchain-radar-bot@users.noreply.github.com"
           for file in \
             radar_data/spot_latest.json \
+            radar_data/health_latest.json \
             radar_data/spot_history.json \
             radar_data/research_backtest_latest.json \
             radar_data/prep_latest.json \
@@ -95,38 +105,4 @@ jobs:
           fi
 
       - name: Verify onchain health after data is persisted
-        shell: bash
-        run: |
-          node <<'JS'
-          const fs=require('fs');
-          const file='radar_data/latest.json';
-          if(!fs.existsSync(file)){console.error('Missing fresh onchain evidence');process.exit(1)}
-          const data=JSON.parse(fs.readFileSync(file,'utf8'));
-          const age=Date.now()-Date.parse(data.asOfUtc||'');
-          const bsc=data.chains?.find(c=>c.chain==='bsc');
-          const base=data.chains?.find(c=>c.chain==='base');
-
-          const spot=JSON.parse(fs.readFileSync('radar_data/spot_latest.json','utf8'));
-          const pool=JSON.parse(fs.readFileSync('radar_data/pool_state_latest.json','utf8'));
-          const history=JSON.parse(fs.readFileSync('radar_data/spot_history.json','utf8'));
-          const prep=JSON.parse(fs.readFileSync('radar_data/prep_latest.json','utf8'));
-          const wallet=JSON.parse(fs.readFileSync('radar_data/wallet_latest.json','utf8'));
-          const fresh=x=>{const dt=Date.now()-Date.parse(x||'');return dt>=0&&dt<600000};
-          const spotOk=fresh(spot.asOfUtc)&&spot.counts?.ohlcvReceived===15;
-          const v3Ok=fresh(pool.asOfUtc)&&pool.coins?.filter(c=>c.status==='READ_OK').length===10;
-          const infinityOk=pool.infinityOnchain?.filter(c=>c.status==='READ_OK').length===3;
-          const holdersOk=pool.holderObservations?.filter(c=>c.status==='READ_OK').length===42;
-          const historyOk=fresh(history.runs?.at(-1)?.asOfUtc);
-          const prepOk=fresh(prep.asOfUtc)&&prep.coins?.length===15&&prep.counts?.coins===15;
-          const walletOk=fresh(wallet.asOfUtc)&&wallet.snapshotBlock>0&&wallet.status==='SNAPSHOT_ATTEMPTED';
-          const bscTokensOk=data.coins?.filter(c=>c.chain==='bsc'&&c.coverage==='RECEIPTS_SCANNED').length===14;
-          console.log('SPOT:',spotOk,'V3:',v3Ok,'Infinity:',infinityOk,'holders:',holdersOk,'history:',historyOk,'BSC tokens:',bscTokensOk);
-          console.log('PREP CLASSIFIER:',prepOk,'P1:',prep.counts?.p1,'P2:',prep.counts?.p2,'P3:',prep.counts?.p3,'newAlerts:',prep.newAlerts?.length);
-          console.log('DYNAMIC EOA:',walletOk,'tracked:',wallet.counts?.trackedEOAs,'signals:',wallet.counts?.qualifiedPersistence,'errors:',wallet.counts?.failedRPC);
-          console.log('BSC:',bsc?.coverage,bsc?.method,'blocks:',bsc?.blocksScanned,'backlog:',bsc?.backlog);
-          console.log('BASE:',base?.coverage,'from:',base?.from,'to:',base?.to,'historical gap:',base?.historicalUnscannedFrom,base?.historicalUnscannedTo);
-          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS' || !spotOk || !v3Ok || !infinityOk || !holdersOk || !historyOk || !prepOk || !walletOk || !bscTokensOk){
-            console.error('DATA HEALTH FAILED: green Actions status must not mask missing or partial live onchain coverage');
-            process.exit(1)
-          }
-          JS
+        run: node health_check.cjs --verify-only
