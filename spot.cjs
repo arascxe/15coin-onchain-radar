@@ -128,8 +128,9 @@ save("spot_latest.json",out);
  if(!c.venue||!c.priceUSDT||!/SPOT_EARLY/.test(c.verdict))continue;
  const last=history.alerts.filter(x=>x.symbol===c.symbol&&x.venue===c.venue&&x.level===c.verdict).at(-1);
  const hours=last?(Date.parse(out.asOfUtc)-Date.parse(last.firstSeenUtc))/3600000:Infinity;
- if(hours>=12){history.alerts.push({id:c.symbol+"_"+Date.parse(out.asOfUtc),symbol:c.symbol,venue:c.venue,level:c.verdict,firstSeenUtc:out.asOfUtc,priceAtFirstSeen:c.priceUSDT,firstSeenRvol15m:c.rvol15m,firstSeenRvol1h:c.rvol1h,followup:{},observationOnly:true});}
+ if(hours>=12){history.alerts.push({id:c.symbol+"_"+Date.parse(out.asOfUtc),symbol:c.symbol,venue:c.venue,level:c.verdict,ruleVersion:"v2-notional-and-continuation",firstSeenUtc:out.asOfUtc,priceAtFirstSeen:c.priceUSDT,firstSeenRvol15m:c.rvol15m,firstSeenRvol1h:c.rvol1h,followup:{},observationOnly:true});}
  }
+ for(const alert of history.alerts){if(!alert.ruleVersion){alert.ruleVersion="v1-preliminary-weak-filter";alert.validForLiveSignal=false;alert.note="Excluded from v2 alert counts: no nominal USD turnover and short-window continuation filter";}}
  for(const x of history.alerts){for(const [field,hours] of [["after1h",1],["after6h",6],["after24h",24]]){if(x.followup?.[field])continue;
  const elapsed=(Date.parse(out.asOfUtc)-Date.parse(x.firstSeenUtc))/3600000;
  if(elapsed<hours)continue;
