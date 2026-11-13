@@ -67,6 +67,20 @@ const delta=before?.balanceRaw!=null&&prev.blockNumber<head?(BigInt(now)-BigInt(
 return {...j,status:"READ_OK",balanceRaw:now,deltaRaw:delta,fromBlock:delta==null?null:prev.blockNumber,toBlock:head}
 }catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part)}
 report.caveat="Wallet labels are unverified third-party attribution, not verified full exchange entity net reserves. Do not infer actual buyers or bullish accumulation from balance deltas alone.";
+const infinityPools=[
+{symbol:"BSB",poolId:"0x26a8e4591b7a0efcd45a577ad0d54aa64a99efaf2546ad4d5b0454c99eb70eab"},
+{symbol:"COLLECT",poolId:"0xef470f9ae8512d2762e4f1cd91ae58caea17143afa61b8d56e9b20c8f87688c4"},
+{symbol:"CYS",poolId:"0x9cfea9ef82f26857c3426487774c088330555da6113c61ac7fb8b30d0ae434b3"}];
+report.infinitySnapshots=[];
+for(const inf of infinityPools){try{
+const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
+let res;try{res=await fetch("https://api.geckoterminal.com/api/v2/networks/bsc/pools/"+inf.poolId,{headers:{accept:"application/json"},signal:ctrl.signal})}finally{clearTimeout(timer)}
+if(!res.ok)throw Error("HTTP "+res.status);
+const j=await res.json(),d=j?.data?.attributes;
+if(!d)throw Error("missing pool data");
+const tvl=Number(d.reserve_in_usd),before=prev.infinitySnapshots?.find(x=>x.symbol===inf.symbol&&x.status==="READ_OK");
+report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"READ_OK",source:"GeckoTerminal not onchain LP event",sourceTimeUtc:at,network:"bsc",tvlUsd:Number.isFinite(tvl)?tvl:null,tvlChangePct:before?.tvlUsd>0&&Number.isFinite(tvl)?100*(tvl/before.tvlUsd-1):null,volume24hUsd:d.volume_usd?.h24??null,transactions24h:d.transactions?.h24??null,limitations:"TVL changes can be price/swap effect, NOT proof of LP mint/burn"})
+}catch(e){report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"FETCH_FAILED",error:String(e.message).slice(0,130)})}}
 save("pool_state_latest.json",report);if(report.coins.some(x=>x.status==="READ_OK"))save("pool_state.json",report);
 console.log(JSON.stringify({status:report.status,provider:url,head,readOk:report.coins.filter(x=>x.status==="READ_OK").length,deltas:report.coins.filter(x=>x.deltas).length,failed:report.coins.filter(x=>x.status==="RPC_CALL_FAILED").length}));}
 main().catch(e=>{console.error(e);process.exitCode=1});
