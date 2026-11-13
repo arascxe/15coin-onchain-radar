@@ -76,6 +76,7 @@ coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:"TRANSFER_L
 }
 return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.max(0,head-5-to),coverage:"SUCCESS",coins};
 }catch(e){errs.push(url+": "+String(e.message).slice(0,260));console.warn(chain+" RPC failed",url,String(e.message).slice(0,130))}}
+if(chain==="bsc"){try{const qs=new URLSearchParams({module:"logs",action:"getLogs",address:MANAGER,fromBlock:"1",toBlock:"1",page:"1",offset:"1"});const u="https://api.routescan.io/v2/network/mainnet/evm/56/etherscan/api?"+qs;const ctrl=new AbortController();const ti=setTimeout(()=>ctrl.abort(),9000);try{const response=await fetch(u,{signal:ctrl.signal});const str=(await response.text()).slice(0,500);errs.push("ROUTESCAN_KEYLESS_PROBE "+response.status+" "+str)}finally{clearTimeout(ti)}}catch(e){errs.push("ROUTESCAN_KEYLESS_PROBE "+String(e.message))}}
 return {chain,coverage:"FAILED",errors:errs,coins:[]}}
 async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if(r.coverage==="SUCCESS")state.cursors[chain]=r.to}
 const by=new Map(results.flatMap(r=>r.coins.map(c=>[c.symbol,c])));const coins=MONITORS.map(t=>by.get(t.symbol)||{symbol:t.symbol,chain:t.chain,coverage:results.find(r=>r.chain===t.chain)?.coverage||"FAILED",transferCount:null,lpEvents:[],alerts:[]});
