@@ -54,12 +54,25 @@ if(last.length<2||!a)return {status:"NO_CONFIRMED_PIVOTS",pivotN:pts.length};
 const delta=last[1].low-last[0].low,eligible=delta>=a*0.25;
 return {status:"OK",confirmedHigherLow:eligible,deltaPct:round(100*delta/last[0].low,3),atr14:round(a,9),lastTwoPivots:last.map(x=>({timestampUtc:new Date(x.ts*1000).toISOString(),low:x.low}))}
 }
-function verdict(r15,r1,hl){const rv15=r15?.status==="OK"?r15.rvol:0,rv1=r1?.status==="OK"?r1.rvol:0,vs=Math.max(rv15,rv1),structure=hl?.confirmedHigherLow===true;
-const twoBars=(rv15>=5&&r15?.previousBarRvol>=3)||(rv1>=5&&r1?.previousBarRvol>=3);
-if(vs>=5&&structure&&twoBars)return "SPOT_EARLY_STRONG_REVIEW_ONLY";
-if(vs>=3&&structure)return "SPOT_EARLY_WATCH";
-if(vs>=3)return "VOLUME_ONLY_NOT_EDGE";
-return "NO_VERIFIED_EARLY_SPOT_SIGNAL"}
+function verdict(r15,r1,hl,micro){
+ const rv15=r15?.status==="OK"?r15.rvol:0,rv1=r1?.status==="OK"?r1.rvol:0,vs=Math.max(rv15,rv1);
+ const vol15=r15?.status==="OK"?r15.volumeUSD:0,vol1=r1?.status==="OK"?r1.volumeUSD:0;
+ const structure=hl?.status==="OK"&&hl.confirmedHigherLow===true;
+ if(vs<3)return "NO_VERIFIED_EARLY_SPOT_SIGNAL";
+ if(!structure)return "VOLUME_ONLY_NOT_EDGE";
+ // Micro volume is not economic opportunity; absolute trade notional and ongoing activity matter.
+ const live=(rv15>=3&&vol15>=3000)||(rv1>=3&&rv15>=1.5&&vol15>=3000&&vol1>=15000);
+ if(!live)return vol15<3000?"LOW_NOTIONAL_SPIKE_NOT_EDGE":"SPIKE_COOLING_OFF";
+ const book=micro?.orderbook;
+ if(book?.spreadPct!=null && book.spreadPct>1)return "ILLIQUID_SPREAD_RISK";
+ const confirmedTrade=Boolean(micro?.takerTradeSample?.last15mSampleComplete &&
+ micro.takerTradeSample.last15mBuysUSD>=10000 &&
+ micro.takerTradeSample.last15mBuysUSD>=micro.takerTradeSample.last15mSellsUSD*1.3);
+ const twoBars=(rv15>=5&&r15.previousBarRvol>=3&&vol15>=10000)||
+ (rv1>=5&&r1.previousBarRvol>=3&&vol1>=25000&&rv15>=2&&vol15>=5000);
+ if(twoBars||confirmedTrade)return "SPOT_EARLY_STRONG_REVIEW_ONLY";
+ return "SPOT_EARLY_WATCH";
+}
 async function gate(c){const pair=c.symbol+"_USDT",base="https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair="+encodeURIComponent(pair);
 const [a,b]=await Promise.all([getJSON(base+"&interval=15m&limit=690"),getJSON(base+"&interval=1h&limit=240")]);
 return {venue:"Gate Spot "+pair,source:"Gate V4 /spot/candlesticks",minute15:candlesGate(a,900),hour1:candlesGate(b,3600),url:"https://www.gate.com/trade/"+pair}}
@@ -96,8 +109,8 @@ if(!series){try{await sleep(1800);series=await gecko(c)}catch(e){failures.push("
 if(!series)return {symbol:c.symbol,status:"OHLCV_UNAVAILABLE",failures};
 const p15=computeRVOL(series.minute15,900),p1=computeRVOL(series.hour1,3600),hl=higherLows(series.hour1);
 const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.minute15.length)),x=(last&&first&&first.c>0)?round(100*(last.c/first.c-1),3):null;
-const verdictResult=verdict(p15,p1,hl);
 let micro=null;if(series.venue.startsWith("Gate Spot")){try{micro=await gateMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
+const verdictResult=verdict(p15,p1,hl,micro);
 return {symbol:c.symbol,status:"OHLCV_RECEIVED",venue:series.venue,source:series.source,sourceUrl:series.url,
  measuredAtUtc:new Date().toISOString(),lastCandleUtc:last?new Date(last.ts*1000).toISOString():null,
  priceUSDT:last?.c||null,close1hChangePct:x,bar15mCount:series.minute15.length,bar1hCount:series.hour1.length,
