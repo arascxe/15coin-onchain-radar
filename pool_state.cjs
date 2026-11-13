@@ -52,6 +52,21 @@ for(const [symbol,token,pool] of targets){if(!pool){report.coins.push({symbol,st
  report.coins.push({symbol,tokenContract:token,poolAddress:pool,...obs,deltas})}
  catch(e){report.coins.push({symbol,status:"RPC_CALL_FAILED",error:String(e.message).slice(0,150)})}
 }
+const walletSeeds=[
+{address:"0xc882b111a75c0c657fc507c04fbfcd2cc984f071",thirdPartyLabel:"Gate.io 5 candidate",identityVerified:false},
+{address:"0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",thirdPartyLabel:"Binance proxy candidate",identityVerified:false},
+{address:"0x0d0707963952f2fba59dd06f2b425ace40b492fe",thirdPartyLabel:"Gate hot wallet candidate",identityVerified:false}
+];
+report.holderObservations=[];
+const holderJobs=targets.flatMap(([symbol,token])=>walletSeeds.map(w=>({symbol,token,address:w.address,thirdPartyLabel:w.thirdPartyLabel,identityVerified:false})));
+for(let i=0;i<holderJobs.length;i+=7){const part=await Promise.all(holderJobs.slice(i,i+7).map(async j=>{try{
+const raw=await call(url,"eth_call",[{to:j.token,data:"0x70a08231"+addrWord(j.address)},"0x"+head.toString(16)]);
+const now=BigInt(raw).toString();
+const before=prev.holderObservations?.find(x=>x.symbol===j.symbol&&x.address===j.address&&x.status==="READ_OK");
+const delta=before?.balanceRaw!=null&&prev.blockNumber<head?(BigInt(now)-BigInt(before.balanceRaw)).toString():null;
+return {...j,status:"READ_OK",balanceRaw:now,deltaRaw:delta,fromBlock:delta==null?null:prev.blockNumber,toBlock:head}
+}catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part)}
+report.caveat="Wallet labels are unverified third-party attribution, not verified full exchange entity net reserves. Do not infer actual buyers or bullish accumulation from balance deltas alone.";
 save("pool_state_latest.json",report);if(report.coins.some(x=>x.status==="READ_OK"))save("pool_state.json",report);
 console.log(JSON.stringify({status:report.status,provider:url,head,readOk:report.coins.filter(x=>x.status==="READ_OK").length,deltas:report.coins.filter(x=>x.deltas).length,failed:report.coins.filter(x=>x.status==="RPC_CALL_FAILED").length}));}
 main().catch(e=>{console.error(e);process.exitCode=1});
