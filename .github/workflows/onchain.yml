@@ -4,6 +4,7 @@ on:
     paths:
       - "scan.cjs"
       - "pool_state.cjs"
+      - "spot.cjs"
       - ".github/workflows/onchain.yml"
   workflow_dispatch:
   schedule:
@@ -30,6 +31,11 @@ jobs:
         run: node --check scan.cjs
       - name: Syntax validate pool state module
         run: node --check pool_state.cjs
+      - name: Syntax validate spot module
+        run: node --check spot.cjs
+      - name: Read genuine spot OHLCV and compute RVOL
+        run: node spot.cjs
+        continue-on-error: true
       - name: Read public BSC pool state via official RPC
         run: node pool_state.cjs
         continue-on-error: true
@@ -37,7 +43,7 @@ jobs:
         run: |
           git config user.name "onchain-radar-bot"
           git config user.email "onchain-radar-bot@users.noreply.github.com"
-          git add -f radar_data/pool_state_latest.json
+          git add -f radar_data/pool_state_latest.json radar_data/spot_latest.json
           if test -f radar_data/pool_state.json; then git add -f radar_data/pool_state.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "Pool state $(date -u +%Y-%m-%dT%H:%MZ)"
