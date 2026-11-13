@@ -7,10 +7,10 @@ function fixture(){
  const chainCoin=syms.map(symbol=>({symbol,chain:symbol==="TRUST"?"base":"bsc",
  coverage:symbol==="TRUST"?"TRANSFER_LOGS_QUERIED":"RECEIPTS_SCANNED"}));
  return {
-  chain:{asOfUtc:at,chains:[{chain:"bsc",method:"eth_getBlockReceipts",coverage:"SUCCESS",backlog:2000,head:3100,from:1,to:1000},
-   {chain:"base",method:"eth_getLogs",coverage:"SUCCESS",backlog:1100,head:2105,from:1,to:1000}],coins:chainCoin,
-   liveTips:[{chain:"bsc",coverage:"SUCCESS",from:1500,to:3095,head:3100,coins:Array(14).fill({symbol:"ON"}),missingMiddleRange:{from:1001,to:1499}},
-   {chain:"base",coverage:"SUCCESS",from:1500,to:2100,head:2105,coins:[{symbol:"TRUST"}],missingMiddleRange:{from:1001,to:1499}}]},
+  chain:{asOfUtc:at,chains:[{chain:"bsc",method:"eth_getBlockReceipts",coverage:"SUCCESS",backlog:4095,head:5100,from:1,to:1000},
+   {chain:"base",method:"eth_getLogs",coverage:"SUCCESS",backlog:7100,head:8105,from:1,to:1000}],coins:chainCoin,
+   liveTips:[{chain:"bsc",coverage:"SUCCESS",from:1500,to:5095,head:5100,coins:Array(14).fill({symbol:"ON"}),missingMiddleRange:{from:1001,to:1499}},
+   {chain:"base",coverage:"SUCCESS",from:1500,to:8100,head:8105,coins:[{symbol:"TRUST"}],missingMiddleRange:{from:1001,to:1499}}]},
   spot:{asOfUtc:at,counts:{ohlcvReceived:15},coins:syms.map(symbol=>({symbol,status:"OHLCV_RECEIVED"}))},
   pool:{asOfUtc:at,coins:Array(10).fill({status:"READ_OK"}),infinityOnchain:Array(3).fill({status:"READ_OK"}),holderObservations:Array(42).fill({status:"READ_OK"})},
   history:{runs:[{asOfUtc:at}]},
@@ -30,4 +30,6 @@ const non15=fixture();non15.spot.coins[0].symbol="DOS";assert(review(non15,now).
 const clean=fixture();clean.chain.liveTips=[];for(const c of clean.chain.chains){c.backlog=0;c.to=c.head-5;c.from=c.to-200}
 assert.equal(review(clean,now).errors.length,0,"Contiguous recent scan should also be healthy without redundant tip");
 const deadBase=fixture();deadBase.chain.liveTips[1].to=1500;assert(review(deadBase,now).errors.includes("BASE_LIVE_TIP_NOT_CONFIRMED"));
-console.log(JSON.stringify({testsPassed:9,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
+const shortBsc=fixture();shortBsc.chain.liveTips[0].from=3300;assert(review(shortBsc,now).errors.includes("BSC_LIVE_TIP_NOT_CONFIRMED"),"Short BSC window cannot be 15m complete");
+const shortBase=fixture();shortBase.chain.liveTips[1].from=4500;assert(review(shortBase,now).errors.includes("BASE_LIVE_TIP_NOT_CONFIRMED"),"Short Base window cannot be 15m complete");
+console.log(JSON.stringify({testsPassed:11,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
