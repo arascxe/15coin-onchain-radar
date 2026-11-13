@@ -41,6 +41,16 @@ function run(){
  r=evaluate(a);assert.equal(r.coins[0].stage,"P1_ONCHAIN_PREPARATION_WATCH","Pool-only is a weak watch not P2");
  a=fixture();a.chain.liveTips[0].missingMiddleRange={from:1,to:99};
  r=evaluate(a);assert(r.coins[0].negativeControls.includes("UNSCANNED_MIDDLE_BLOCK_GAP"),"Middle gap must be visible");
- console.log(JSON.stringify({testsPassed:8,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
+ a=fixture();
+ a.wallet={asOfUtc:AT,dataFresh:true,recentLargeEoaReceipts:[{
+  symbol:"B2",address:"0x"+"3".repeat(40),ownerVerified:false,receiptNetUSDApprox:20000,
+  balanceSnapshotUSDApprox:25000,txProof:[{tx:"0xfeed",block:200}],firstDetectedUtc:AT}]};
+ r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"P1_ONCHAIN_PREPARATION_WATCH","One-shot verified EOA receipt must be visible before persistence");
+ a.spot.coins.find(x=>x.symbol==="B2").change24hPct=50;
+ r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"LATE_ACTIVITY_NOT_EARLY","Late receipt must not be early");
+ a.spot.coins.find(x=>x.symbol==="B2").change24hPct=4;
+ a.wallet.asOfUtc="2026-11-13T19:00:00.000Z";
+ r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"P0_NO_PREPARATION_EVIDENCE","Stale receipt must not alert");
+ console.log(JSON.stringify({testsPassed:11,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
 }
 run();
