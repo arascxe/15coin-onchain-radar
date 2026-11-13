@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - "scan.cjs"
+      - "pool_state.cjs"
       - ".github/workflows/onchain.yml"
   workflow_dispatch:
   schedule:
@@ -27,6 +28,8 @@ jobs:
           node-version: "22"
       - name: Syntax validation
         run: node --check scan.cjs
+      - name: Syntax validate pool state module
+        run: node --check pool_state.cjs
       - name: Read public BSC pool state via official RPC
         run: node pool_state.cjs
         continue-on-error: true
