@@ -31,7 +31,7 @@ function highestRecentChain(chain,symbol){
  if(c&&(c.coverage==="SUCCESS"||c.coverage==="NO_NEW_BLOCKS")&&headDistance<=maxBlocks)return{source:"NEAR_HEAD_BACKFILL",coverage:c.coverage,from:c.from,to:c.to,head:c.head,gap:null,coin:p,windowStatus:c.coverage};
  return{source:"NO_CURRENT_CHAIN_WINDOW",coverage:c?.coverage||"FAILED",from:c?.from,to:c?.to,head:c?.head,gap:null,coin:null,windowStatus:"NO_RECENT_CHAIN_COVERAGE"};
 }
-function classify({symbol,spot,chain,pool,now}){
+function classify({symbol,spot,chain,pool,wallet,now}){
  const p=spot.coins?.find(x=>x.symbol===symbol),v=pool.coins?.find(x=>x.symbol===symbol);
  const holder=pool.holderObservations?.filter(x=>x.symbol===symbol)||[];
  const live=highestRecentChain(chain,symbol),onchain=live.coin;
@@ -69,6 +69,16 @@ function classify({symbol,spot,chain,pool,now}){
  })).filter(w=>w.netOutUSD!=null&&w.netOutUSD>=25000&&w.recipientCount>=1&&w.txProof.length>0);
  if(watchMovements.length)code.push("WATCHED_ADDRESS_OUTFLOW_TX");
  evidences.watchedAddressOutflows=watchMovements;
+ const dynamicEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
+ (wallet.candidates||[]).filter(x=>x.symbol===symbol&&x.eoaUnverified===true&&x.netRetainedIncreaseUSD>=10000):[];
+ if(dynamicEoa.length)code.push("DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE");
+ evidences.dynamicEoaAccumulation=dynamicEoa.map(x=>({
+  address:x.address,ownerVerified:false,firstSeenUtc:x.firstSeenUtc,observations:x.observations,
+  consecutive:x.consecutive,retainedIncreaseUSD:x.netRetainedIncreaseUSD,
+  initialReceiptEvidence:x.firstProof,
+  caveat:"Real EOA balance growth, but ownership, buying intent, independent holder count and CEX attribution all UNVERIFIED"
+ }));
+ if(!wallet||!fresh(wallet.asOfUtc,now))counter.push("DYNAMIC_EOA_TRACKING_UNAVAILABLE");
  const significantHolder=poolFresh?holder.filter(h=>h.status==="READ_OK"&&h.deltaRaw!=null).map(h=>({
   address:h.address,label:h.thirdPartyLabel,verifiedOwner:h.identityVerified===true,
   balanceDeltaUSD:money(h.deltaRaw,dec,price),rawDelta:h.deltaRaw,fromBlock:h.fromBlock,toBlock:h.toBlock
@@ -102,7 +112,7 @@ function classify({symbol,spot,chain,pool,now}){
    takerSnapshotFresh:tradeFresh,spotVerdict:p?.verdict??null};
  // Stage P2 needs meaningful movement involving two non-identical economic locations,
  // and the onchain address ownership and causal interpretation remain UNVERIFIED.
- const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000);
+ const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000)||dynamicEoa.length>0;
  const poolEvidence=poolDepletion||lpRemoval.length>0;
  const multi=walletEvidence&&poolEvidence;
  const preliminary=walletEvidence||poolEvidence||lpAdds.length>0;
@@ -164,7 +174,8 @@ function updateHistory(report,history){
  return h;
 }
 function main(){
- const input={chain:read("latest.json"),spot:read("spot_latest.json"),pool:read("pool_state_latest.json"),nowUtc:new Date().toISOString()};
+ let wallet=null;try{wallet=read("wallet_latest.json")}catch{}
+ const input={chain:read("latest.json"),spot:read("spot_latest.json"),pool:read("pool_state_latest.json"),wallet,nowUtc:new Date().toISOString()};
  const report=evaluate(input);
  let old=null;try{old=read("prep_history.json")}catch{}
  const history=updateHistory(report,old);
