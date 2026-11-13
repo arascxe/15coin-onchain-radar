@@ -1,6 +1,6 @@
 {
   "schema": "15coin-chain-evidence-v2",
-  "asOfUtc": "2026-11-13T04:18:28.830Z",
+  "asOfUtc": "2026-11-13T04:22:29.120Z",
   "status": "PARTIAL",
   "explicitLimits": "Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",
   "chains": [
@@ -8,15 +8,15 @@
       "chain": "bsc",
       "coverage": "FAILED",
       "errors": [
-        "https://1rpc.io/bnb: known LP tx receipt unavailable",
+        "https://1rpc.io/bnb: HTTP 403",
         "https://bsc.meowrpc.com: HTTP 429",
         "https://rpc.nodeflare.app/bnb/public: HTTP 403",
         "https://bnb.rpc.subquery.network/public: fetch failed",
         "https://56.rpc.thirdweb.com: HTTP 429",
         "https://bsc.blockpi.network/v1/rpc/public: HTTP 503",
-        "https://bsc-rpc.publicnode.com: HTTP 403",
-        "https://bsc.drpc.org: HTTP 429",
-        "https://bsc-mainnet.public.blastapi.io: log coverage failed 103507502-103507502: HTTP 429",
+        "https://bsc-rpc.publicnode.com: Provider unavailable at 133286996-133287128: HTTP 403",
+        "https://bsc.drpc.org: Provider unavailable at 133287004-133287070: HTTP 429",
+        "https://bsc-mainnet.public.blastapi.io: Provider unavailable at 133287005-133287137: HTTP 429",
         "ROUTESCAN_KEYLESS_PROBE 200 {\"status\":\"0\",\"message\":\"chain not supported\",\"result\":null}"
       ]
     },
@@ -24,9 +24,9 @@
       "chain": "base",
       "provider": "https://base-rpc.publicnode.com",
       "positive": "NO_KNOWN_POSITIVE",
-      "head": 56765665,
-      "from": 56765322,
-      "to": 56765660,
+      "head": 56766866,
+      "from": 56765661,
+      "to": 56766861,
       "backlog": 0,
       "coverage": "SUCCESS"
     }
@@ -94,58 +94,22 @@
       "token": "0x6cd905df2ed214b22e0d48ff17cd4200c1c6d8a3",
       "pool": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
       "coverage": "TRANSFER_LOGS_QUERIED",
-      "transferCount": 5,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0xac68a439ca0af9cfe7d44bc1e7e325fa0321f396c3beb6fa0ac7f93074975d1b",
-          "block": 56765500,
-          "logIndex": 15,
-          "from": "0x4446adc0b8136ffc55ddb7a488ba5509ace2a5ef",
-          "to": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "raw": "106440597555836883421",
-          "blockUtc": "2026-11-13T04:17:55.000Z"
-        },
-        {
-          "tx": "0xac68a439ca0af9cfe7d44bc1e7e325fa0321f396c3beb6fa0ac7f93074975d1b",
-          "block": 56765500,
-          "logIndex": 18,
-          "from": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
-          "to": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "raw": "106440597555836883421",
-          "blockUtc": "2026-11-13T04:17:55.000Z"
-        },
-        {
-          "tx": "0xac68a439ca0af9cfe7d44bc1e7e325fa0321f396c3beb6fa0ac7f93074975d1b",
-          "block": 56765500,
-          "logIndex": 20,
-          "from": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
-          "to": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "raw": "106440597555836883421",
-          "blockUtc": "2026-11-13T04:17:55.000Z"
-        },
-        {
-          "tx": "0xac68a439ca0af9cfe7d44bc1e7e325fa0321f396c3beb6fa0ac7f93074975d1b",
-          "block": 56765500,
-          "logIndex": 21,
-          "from": "0x111111125421ca6dc452d289314280a0f8842a65",
-          "to": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "raw": "106440597555836883421",
-          "blockUtc": "2026-11-13T04:17:55.000Z"
-        },
-        {
-          "tx": "0xac68a439ca0af9cfe7d44bc1e7e325fa0321f396c3beb6fa0ac7f93074975d1b",
-          "block": 56765500,
-          "logIndex": 25,
-          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
-          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "raw": "106440597555836883421",
-          "blockUtc": "2026-11-13T04:17:55.000Z"
+          "tx": "0xa0551b224cb3d285e4d2cb709ce8c4a5798353cef0125fe530f09b046f04b66f",
+          "block": 56765836,
+          "logIndex": 1,
+          "from": "0x15f46551f5d736c9b8861c1d1358e29183f7a6c7",
+          "to": "0x2b0e29f2dad15aa5b7613f1f4457b0435630cb8d",
+          "raw": "20161672947000000000000",
+          "blockUtc": "2026-11-13T04:19:02.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "rawNetIn": "106440597555836883421",
+          "address": "0x2b0e29f2dad15aa5b7613f1f4457b0435630cb8d",
+          "rawNetIn": "20161672947000000000000",
           "identity": "UNVERIFIED"
         }
       ],
