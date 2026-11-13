@@ -1,32 +1,34 @@
 {
   "schema": "15coin-chain-evidence-v2",
-  "asOfUtc": "2026-11-13T04:41:31.919Z",
-  "status": "FAILED",
+  "asOfUtc": "2026-11-13T04:44:10.935Z",
+  "status": "PARTIAL",
   "explicitLimits": "Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",
   "chains": [
     {
       "chain": "bsc",
       "coverage": "FAILED",
       "errors": [
-        "https://1rpc.io/bnb: Provider unavailable at 133288734-133288737: HTTP 403",
-        "https://bsc.meowrpc.com: Provider unavailable at 133289528-133289660: HTTP 429",
+        "https://1rpc.io/bnb: Provider unavailable at 133288852-133288858: HTTP 403",
+        "https://bsc.meowrpc.com: HTTP 429",
         "https://rpc.nodeflare.app/bnb/public: HTTP 403",
         "https://bnb.rpc.subquery.network/public: fetch failed",
         "https://56.rpc.thirdweb.com: HTTP 429",
         "https://bsc.blockpi.network/v1/rpc/public: HTTP 503",
-        "https://bsc-rpc.publicnode.com: Provider unavailable at 133289537-133289669: HTTP 403",
+        "https://bsc-rpc.publicnode.com: Provider unavailable at 133289890-133290022: HTTP 403",
         "https://bsc.drpc.org: HTTP 429",
-        "https://bsc-mainnet.public.blastapi.io: Provider unavailable at 133289545-133289677: HTTP 429",
+        "https://bsc-mainnet.public.blastapi.io: Provider unavailable at 133289898-133290030: HTTP 429",
         "ROUTESCAN_KEYLESS_PROBE 200 {\"status\":\"0\",\"message\":\"chain not supported\",\"result\":null}"
       ]
     },
     {
       "chain": "base",
-      "coverage": "FAILED",
-      "errors": [
-        "https://base-rpc.publicnode.com: log coverage failed 56772576-56772576: RPC {\"code\":-32602,\"message\":\"block range extends beyond current head block: requested 56772576, head 56772575\"}",
-        "https://mainnet.base.org: Provider unavailable at 56772578-56772578: HTTP 429"
-      ]
+      "provider": "https://base-rpc.publicnode.com",
+      "positive": "NO_KNOWN_POSITIVE",
+      "head": 56773374,
+      "from": 56772234,
+      "to": 56773369,
+      "backlog": 0,
+      "coverage": "SUCCESS"
     }
   ],
   "coins": [
@@ -89,8 +91,23 @@
     {
       "symbol": "TRUST",
       "chain": "base",
-      "coverage": "FAILED",
-      "transferCount": null,
+      "token": "0x6cd905df2ed214b22e0d48ff17cd4200c1c6d8a3",
+      "pool": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
+      "coverage": "TRANSFER_LOGS_QUERIED",
+      "transferCount": 1,
+      "observedTransfers": [
+        {
+          "tx": "0x44bf263632f27bec8717b6599e37d8578c072b214ddc44b8a372915f55f71f49",
+          "block": 56773143,
+          "logIndex": 8,
+          "from": "0x0f0067cd819cb8f20bda62046daff7a2b5c88280",
+          "to": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
+          "raw": "812759310110734499833",
+          "blockUtc": "2026-11-13T04:43:24.000Z"
+        }
+      ],
+      "netRecipients": [],
+      "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
     },
