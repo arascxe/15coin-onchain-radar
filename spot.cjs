@@ -106,5 +106,23 @@ return {symbol:c.symbol,status:"OHLCV_RECEIVED",venue:series.venue,source:series
 async function main(){const out={schema:"15coin-spot-ohlcv-v1",asOfUtc:new Date().toISOString(),meaning:"Public real venue/pool OHLCV RVOL; not futures, not direct evidence of CEX inventory or LP event",coins:[]};for(let i=0;i<DATA.length;i+=4){const part=await Promise.all(DATA.slice(i,i+4).map(inspect));out.coins.push(...part);}
 out.status=out.coins.some(x=>x.status==="OHLCV_RECEIVED")?"PARTIAL_OR_COMPLETE":"FAILED_ALL";
 out.counts={requested:DATA.length,ohlcvReceived:out.coins.filter(x=>x.status==="OHLCV_RECEIVED").length,validRvol15m:out.coins.filter(x=>x.rvol15m?.status==="OK").length,validRvol1h:out.coins.filter(x=>x.rvol1h?.status==="OK").length,validHigherLows:out.coins.filter(x=>x.confirmedHigherLows1h?.status==="OK").length,earlyWatch:out.coins.filter(x=>/SPOT_EARLY/.test(x.verdict||"")).length};
-save("spot_latest.json",out);console.log(JSON.stringify({status:out.status,counts:out.counts,details:out.coins.map(x=>({s:x.symbol,venue:x.venue,status:x.status,r15:x.rvol15m?.rvol,r1:x.rvol1h?.rvol,hl:x.confirmedHigherLows1h?.confirmedHigherLow,verdict:x.verdict,failures:x.failures}))},null,2))}
+save("spot_latest.json",out);
+ const historyFile=path.join(DIR,"spot_history.json");let history={schema:"15coin-spot-forward-observation-v1",runs:[],alerts:[]};
+ try{const old=JSON.parse(fs.readFileSync(historyFile,"utf8"));if(old?.schema===history.schema)history=old}catch{}
+ const current=out.coins.map(c=>({symbol:c.symbol,venue:c.venue||null,priceUSDT:c.priceUSDT||null,verdict:c.verdict||"NO_DATA",rvol15m:c.rvol15m?.status==="OK"?c.rvol15m.rvol:null,rvol1h:c.rvol1h?.status==="OK"?c.rvol1h.rvol:null,higherLows:c.confirmedHigherLows1h?.confirmedHigherLow===true,spotAvailable:c.status==="OHLCV_RECEIVED"}));
+ history.runs.push({asOfUtc:out.asOfUtc,coins:current});history.runs=history.runs.slice(-24*14);
+ for(const c of current){
+ if(!c.venue||!c.priceUSDT||!/SPOT_EARLY/.test(c.verdict))continue;
+ const last=history.alerts.filter(x=>x.symbol===c.symbol&&x.venue===c.venue&&x.level===c.verdict).at(-1);
+ const hours=last?(Date.parse(out.asOfUtc)-Date.parse(last.firstSeenUtc))/3600000:Infinity;
+ if(hours>=12){history.alerts.push({id:c.symbol+"_"+Date.parse(out.asOfUtc),symbol:c.symbol,venue:c.venue,level:c.verdict,firstSeenUtc:out.asOfUtc,priceAtFirstSeen:c.priceUSDT,firstSeenRvol15m:c.rvol15m,firstSeenRvol1h:c.rvol1h,followup:{},observationOnly:true});}
+ }
+ for(const x of history.alerts){for(const [field,hours] of [["after1h",1],["after6h",6],["after24h",24]]){if(x.followup?.[field])continue;
+ const elapsed=(Date.parse(out.asOfUtc)-Date.parse(x.firstSeenUtc))/3600000;
+ if(elapsed<hours)continue;
+ const c=current.find(z=>z.symbol===x.symbol&&z.venue===x.venue&&z.priceUSDT>0);
+ if(!c)continue;x.followup[field]={observedAtUtc:out.asOfUtc,actualHoursAfterFirstSeen:Number(elapsed.toFixed(2)),price:c.priceUSDT,returnPct:Number(((c.priceUSDT/x.priceAtFirstSeen-1)*100).toFixed(3))};
+ }}
+ history.alerts=history.alerts.slice(-1000);save("spot_history.json",history);
+ console.log(JSON.stringify({status:out.status,counts:out.counts,details:out.coins.map(x=>({s:x.symbol,venue:x.venue,status:x.status,r15:x.rvol15m?.rvol,r1:x.rvol1h?.rvol,hl:x.confirmedHigherLows1h?.confirmedHigherLow,verdict:x.verdict,failures:x.failures}))},null,2))}
 main().catch(e=>{console.error(e);process.exitCode=1});
