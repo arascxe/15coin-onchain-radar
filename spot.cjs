@@ -111,11 +111,13 @@ if(!series)return {symbol:c.symbol,status:"OHLCV_UNAVAILABLE",failures};
  candleEvidenceByVenue.set(series.venue,series.minute15.map(b=>({closeUtc:new Date((b.ts+900)*1000).toISOString(),price:b.c,volumeUSD:b.v})));
 const p15=computeRVOL(series.minute15,900),p1=computeRVOL(series.hour1,3600),hl=higherLows(series.hour1);
 const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.minute15.length)),x=(last&&first&&first.c>0)?round(100*(last.c/first.c-1),3):null;
+const candleChange=(barsBack)=>{const previous=series.minute15.at(-(barsBack+1));return last&&previous&&last.ts-previous.ts===barsBack*900&&previous.c>0?round(100*(last.c/previous.c-1),3):null};
+const ret24=candleChange(96),ret6=candleChange(24),ret15=candleChange(1);
 let micro=null;if(series.venue.startsWith("Gate Spot")){try{micro=await gateMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
 const verdictResult=verdict(p15,p1,hl,micro);
 return {symbol:c.symbol,status:"OHLCV_RECEIVED",venue:series.venue,source:series.source,sourceUrl:series.url,
  measuredAtUtc:new Date().toISOString(),lastCandleUtc:last?new Date(last.ts*1000).toISOString():null,
- priceUSDT:last?.c||null,close1hChangePct:x,bar15mCount:series.minute15.length,bar1hCount:series.hour1.length,
+ priceUSDT:last?.c||null,close1hChangePct:x,change15mPct:ret15,change6hPct:ret6,change24hPct:ret24,bar15mCount:series.minute15.length,bar1hCount:series.hour1.length,
  rvol15m:p15,rvol1h:p1,confirmedHigherLows1h:hl,verdict:verdictResult,microstructure:micro,failures};
 }
 async function main(){const out={schema:"15coin-spot-ohlcv-v1",asOfUtc:new Date().toISOString(),meaning:"Public real venue/pool OHLCV RVOL; not futures, not direct evidence of CEX inventory or LP event",coins:[]};for(let i=0;i<DATA.length;i+=4){const part=await Promise.all(DATA.slice(i,i+4).map(inspect));out.coins.push(...part);}
