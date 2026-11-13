@@ -71,6 +71,22 @@ const infinityPools=[
 {symbol:"BSB",poolId:"0x26a8e4591b7a0efcd45a577ad0d54aa64a99efaf2546ad4d5b0454c99eb70eab"},
 {symbol:"COLLECT",poolId:"0xef470f9ae8512d2762e4f1cd91ae58caea17143afa61b8d56e9b20c8f87688c4"},
 {symbol:"CYS",poolId:"0x9cfea9ef82f26857c3426487774c088330555da6113c61ac7fb8b30d0ae434b3"}];
+const INF_MANAGER="0xa0ffb9c1ce1fe56963b0321b32e7a0302114058b";
+report.infinityOnchain=[];
+for(const info of infinityPools){try{
+ const queryBlock="0x"+head.toString(16);
+ const [slot,liq]=await Promise.all([
+ call(url,"eth_call",[{to:INF_MANAGER,data:"0xc815641c"+info.poolId.slice(2)},queryBlock]),
+ call(url,"eth_call",[{to:INF_MANAGER,data:"0xfa6793d5"+info.poolId.slice(2)},queryBlock])
+ ]);
+ if(typeof slot!=="string"||slot.length<258||typeof liq!=="string"||liq.length<66)throw Error("invalid manager ABI length");
+ const words=slot.slice(2).match(/.{64}/g),sqrt=BigInt("0x"+words[0]),tick=Number(BigInt.asIntN(24,BigInt("0x"+words[1]))),l=BigInt(liq);
+ if(sqrt<=0n)throw Error("PoolId is uninitialized or incorrect");
+ const before=prev.infinityOnchain?.find(x=>x.symbol===info.symbol&&x.status==="READ_OK");
+ const delta=(before?.activeLiquidityRaw!=null&&prev.blockNumber<head)?(l-BigInt(before.activeLiquidityRaw)).toString():null;
+ report.infinityOnchain.push({symbol:info.symbol,status:"READ_OK",poolId:info.poolId,contract:INF_MANAGER,source:"BSC official RPC eth_call to CLPoolManager",blockNumber:head,sqrtPriceX96:sqrt.toString(),tick,activeLiquidityRaw:l.toString(),liquidityDeltaRaw:delta,deltaFromBlock:delta==null?null:prev.blockNumber,interpretation:"Active-liquidity change is onchain state difference; can arise from price tick crossings OR LP positions; not proof of Mint/Burn/ModifyLiquidity event"});
+ }catch(e){report.infinityOnchain.push({symbol:info.symbol,status:"READ_FAILED",poolId:info.poolId,error:String(e.message).slice(0,160)})}
+}
 report.infinitySnapshots=[];
 for(const inf of infinityPools){try{
 const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),9000);
