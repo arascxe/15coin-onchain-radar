@@ -48,6 +48,41 @@ if(t.kind==="infinity"){if(low(l.address)!==MANAGER||low(tp[0])!==MOD||low(tp[1]
 else{if(low(l.address)!==t.pool||![MINT,BURN].includes(low(tp[0]))||tp.length<4)throw Error("wrong V3 pool");tickLower=Number(intN(tp[2],24));tickUpper=Number(intN(tp[3],24));delta=BigInt(w[low(tp[0])===MINT?1:0])*(low(tp[0])===MINT?1n:-1n);owner=low(tp[1])}
 if(tickLower>=tickUpper)throw Error("bad ticks");return {tx:low(l.transactionHash),block:num(l.blockNumber),logIndex:num(l.logIndex||"0x0"),tickLower,tickUpper,delta:delta.toString(),change:delta>0n?"ADD":delta<0n?"REMOVE":"ZERO",ownerOrSender:owner,pool:t.pool}};
 
+const WATCHED_WALLETS=[
+ {address:"0xc882b111a75c0c657fc507c04fbfcd2cc984f071",label:"Gate 5 third-party candidate"},
+ {address:"0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",label:"Binance proxy third-party candidate"},
+ {address:"0x0d0707963952f2fba59dd06f2b425ace40b492fe",label:"Gate hot third-party candidate"}
+];
+function summarizeFlows(events,tokenInfo){
+ const known=new Set(WATCHED_WALLETS.map(x=>x.address));
+ const pool=(tokenInfo.kind==="infinity"||!tokenInfo.pool)?null:tokenInfo.pool;
+ let poolIn=0n,poolOut=0n,poolInN=0,poolOutN=0;
+ const wallets=WATCHED_WALLETS.map(w=>{
+  let out=0n,incoming=0n,nonPoolOut=0n;const dest=new Set(),proof=[];
+  for(const x of events){
+   const amount=BigInt(x.raw);
+   if(x.from===w.address){
+    out+=amount;
+    if(x.to!==pool&&x.to!==tokenInfo.token&&!known.has(x.to)){
+     nonPoolOut+=amount;dest.add(x.to);
+     proof.push({tx:x.tx,block:x.block,logIndex:x.logIndex,to:x.to,raw:x.raw});
+    }
+   }
+   if(x.to===w.address)incoming+=amount;
+  }
+  return {address:w.address,thirdPartyLabel:w.label,identityVerified:false,rawIn:incoming.toString(),rawOut:out.toString(),rawNetOut:(out-incoming).toString(),rawNonPoolOut:nonPoolOut.toString(),distinctNonPoolRecipients:dest.size,directProof:proof.slice(-5)};
+ });
+ for(const x of events){
+  if(!pool)break;
+  if(x.to===pool){poolIn+=BigInt(x.raw);poolInN++}
+  if(x.from===pool){poolOut+=BigInt(x.raw);poolOutN++}
+ }
+ return {windowOnly:true,token:tokenInfo.token,poolAddress:pool,
+  poolFlow:pool?{rawIn:poolIn.toString(),rawOut:poolOut.toString(),rawNetOut:(poolOut-poolIn).toString(),inCount:poolInN,outCount:poolOutN,caution:"Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading"}:null,
+  walletFlows:wallets,caveat:"Three candidate wallet labels NOT verified as CEX. RawNetOut is only the scanned block interval; not institution-wide exchange reserves."
+ };
+}
+
 function summarizeLpPositions(events){
  const grouped=new Map();
  for(const e of events){
@@ -160,9 +195,9 @@ async function collectBscReceipts(state){
    const inflows=[...by].filter(([addr,n])=>n>0n&&!excluded.has(addr)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED"}));
    const lpEvents=lps.filter(z=>z.coin===t.symbol).map(z=>({...z.decoded}));
    for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
-   const alerts=[];const lpNet=summarizeLpPositions(lpEvents);
+   const alerts=[];const lpNet=summarizeLpPositions(lpEvents);const tokenFlows=summarizeFlows(events,t);
    if(lpNet.netPositionCount>0)alerts.push({level:"NET_LP_POSITION_CHANGE_CONFIRMED",message:"Confirmed nonzero LP position delta within scanned window; bullish interpretation UNVERIFIED"});
-   coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpNet,lpEvents,alerts});
+   coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,tokenFlows,lpEventCount:lpEvents.length,lpNet,lpEvents,alerts});
   }
   if(fetchFailure)errors.push(fetchFailure);
   if(decodeErrors.length)errors.push("LP_DECODE_ERRORS_"+decodeErrors.length);
@@ -188,7 +223,7 @@ const excluded=new Set([t.token,MANAGER,t.pool]);const inflows=[...by].filter(([
 const lpEvents=lps.filter(l=>l.coin===t.symbol).map(x=>({...x.decoded}));for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
 for(const e of events.slice(-12))e.blockUtc=await timestamp(e.block);
 const alerts=[];if(lpEvents.some(e=>e.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"LP modification recorded, not proof of bullish preparation"});
-coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:"TRANSFER_LOGS_QUERIED",transferCount:events.length,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
+coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:"TRANSFER_LOGS_QUERIED",transferCount:events.length,observedTransfers:events.slice(-12),netRecipients:inflows,tokenFlows:summarizeFlows(events,t),lpEventCount:lpEvents.length,lpEvents,alerts});
 }
 return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.max(0,head-5-to),coverage:"SUCCESS",method:"eth_getLogs",legacyBackfillCursor:chain==="base"?Number(state.cursors.base||0):undefined,historicalUnscannedFrom:chain==="base"?Number(state.cursors.base||0)+1:undefined,historicalUnscannedTo:chain==="base"?(Number(state.cursors.baseLiveStart||from)-1):undefined,liveOnlyBootstrap:chain==="base"&&!cursor,coins};
 }catch(e){errs.push(url+": "+String(e.message).slice(0,260));console.warn(chain+" RPC failed",url,String(e.message).slice(0,130))}}
