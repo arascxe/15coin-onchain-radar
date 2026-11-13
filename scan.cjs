@@ -192,7 +192,7 @@ async function collectBscReceipts(state){
     if(e.to!=="0x"+"0".repeat(40))by.set(e.to,(by.get(e.to)||0n)+BigInt(e.raw));
    }
    const excluded=new Set([t.token,MANAGER,t.pool]);
-   const inflows=[...by].filter(([addr,n])=>n>0n&&!excluded.has(addr)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED"}));
+   const inflows=[...by].filter(([addr,n])=>n>0n&&!excluded.has(addr)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED",txProof:events.filter(e=>e.to===address).slice(-3).map(e=>({tx:e.tx,block:e.block,logIndex:e.logIndex,from:e.from,to:e.to,raw:e.raw}))}));
    const lpEvents=lps.filter(z=>z.coin===t.symbol).map(z=>({...z.decoded}));
    for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
    const alerts=[];const lpNet=summarizeLpPositions(lpEvents);const tokenFlows=summarizeFlows(events,t);
@@ -219,7 +219,7 @@ for(const l of vlogs){const t=v3.find(x=>x.pool===low(l.address));if(t)lps.push(
 }
 const blockTime=new Map();async function timestamp(b){if(!blockTime.has(b)){const binfo=await rpc(url,"eth_getBlockByNumber",[hex(b),false]);blockTime.set(b,binfo?.timestamp?new Date(num(binfo.timestamp)*1000).toISOString():null)}return blockTime.get(b)}
 let coins=[];for(const t of tokens){const events=transfer.filter(l=>low(l.address)===t.token).map(dTransfer);const by=new Map();for(const e of events){if(e.from!=="0x"+"0".repeat(40))by.set(e.from,(by.get(e.from)||0n)-BigInt(e.raw));if(e.to!=="0x"+"0".repeat(40))by.set(e.to,(by.get(e.to)||0n)+BigInt(e.raw))}
-const excluded=new Set([t.token,MANAGER,t.pool]);const inflows=[...by].filter(([a,n])=>n>0n&&!excluded.has(a)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED"}));
+const excluded=new Set([t.token,MANAGER,t.pool]);const inflows=[...by].filter(([a,n])=>n>0n&&!excluded.has(a)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED",txProof:events.filter(e=>e.to===address).slice(-3).map(e=>({tx:e.tx,block:e.block,logIndex:e.logIndex,from:e.from,to:e.to,raw:e.raw}))}));
 const lpEvents=lps.filter(l=>l.coin===t.symbol).map(x=>({...x.decoded}));for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
 for(const e of events.slice(-12))e.blockUtc=await timestamp(e.block);
 const alerts=[];if(lpEvents.some(e=>e.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"LP modification recorded, not proof of bullish preparation"});
