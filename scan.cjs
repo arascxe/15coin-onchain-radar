@@ -141,7 +141,6 @@ async function collectBscReceipts(state){
    for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
    const alerts=[];
    if(lpEvents.some(z=>z.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"Hash-verified LP change, bullish interpretation UNVERIFIED"});
-   if(inflows.length>=2)alerts.push({level:"UNKNOWN_WALLET_NET_INFLOW",message:"Unknown-address net inflow, NOT verified CEX/independent accumulation"});
    coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
   }
   if(fetchFailure)errors.push(fetchFailure);
@@ -168,7 +167,6 @@ const excluded=new Set([t.token,MANAGER,t.pool]);const inflows=[...by].filter(([
 const lpEvents=lps.filter(l=>l.coin===t.symbol).map(x=>({...x.decoded}));for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
 for(const e of events.slice(-12))e.blockUtc=await timestamp(e.block);
 const alerts=[];if(lpEvents.some(e=>e.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"LP modification recorded, not proof of bullish preparation"});
-if(inflows.length>=2)alerts.push({level:"UNKNOWN_WALLET_NET_INFLOW",message:"At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"});
 coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:"TRANSFER_LOGS_QUERIED",transferCount:events.length,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
 }
 return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.max(0,head-5-to),coverage:"SUCCESS",method:"eth_getLogs",legacyBackfillCursor:chain==="base"?Number(state.cursors.base||0):undefined,historicalUnscannedFrom:chain==="base"?Number(state.cursors.base||0)+1:undefined,historicalUnscannedTo:chain==="base"?from-1:undefined,liveOnlyBootstrap:chain==="base"&&!cursor,coins};
