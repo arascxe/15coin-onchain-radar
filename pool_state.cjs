@@ -105,6 +105,7 @@ const spotBySymbol=new Map((spotFresh?spotSnapshot.coins:[]).filter(x=>x.priceUS
 function decimalUnits(raw,dec){const z=BigInt(raw),sign=z<0n?-1:1,n=z<0n?-z:z,unit=10n**BigInt(dec);return sign*(Number(n/unit)+Number(n%unit)/Number(unit));}
 const decimalMap=new Map(report.coins.filter(x=>x.status==="READ_OK"&&Number.isInteger(x.decimals)).map(x=>[x.symbol,x.decimals]));
 for(const [symbol,token] of targets){if(decimalMap.has(symbol))continue;try{const x=await call(url,"eth_call",[{to:token,data:"0x313ce567"},"0x"+head.toString(16)]);const dec=Number(BigInt(x));if(Number.isInteger(dec)&&dec>=0&&dec<=30)decimalMap.set(symbol,dec)}catch{}}
+report.tokenDecimals=Object.fromEntries(decimalMap); // Onchain ERC20 decimals across BSC tokens
 for(const [symbol,token] of targets){
  const info=spotBySymbol.get(symbol),price=Number(info?.priceUSDT)||null,dec=decimalMap.get(symbol);
  if(!(price>0)||dec==null)continue;
