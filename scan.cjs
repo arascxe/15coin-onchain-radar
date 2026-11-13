@@ -57,7 +57,102 @@ if(historicalOk)positive="HISTORICAL_LP_PASS";else{const toks=MONITORS.filter(t=
 if(!verified)throw Error("No verified recent positive ERC20 transfer log and historical LP positive unavailable");positive="RECENT_TRANSFER_RECEIPT_PASS_SNAPSHOT_ONLY";}}
 else{const probe=await getLogs(url,{address:MONITORS.find(t=>t.chain==="base").token,topics:[TRANSFER]},Math.max(1,head-3),Math.max(1,head-3));if(!Array.isArray(probe))throw Error("recent logs invalid");positive="NO_KNOWN_POSITIVE";}
 return {chain,url,head,positive}}
-async function collect(chain,state){const c=CHAIN[chain],errs=[];for(const url of c.rpcs){try{
+
+/*
+ * BSC official-RPC fallback: contiguous eth_getBlockReceipts coverage.
+ * Public BSC RPC does not offer reliable eth_getLogs. Each block is only
+ * checkpointed after ALL its receipts have been fetched successfully.
+ * Partial coverage and backlog are explicitly reported, never shown as zero.
+ */
+async function collectBscReceipts(state){
+ const chain="bsc", url="https://bsc-dataseed.bnbchain.org", errors=[];
+ const tokens=MONITORS.filter(x=>x.chain===chain);
+ const tokenMap=new Map(tokens.map(t=>[t.token,t]));
+ const v3Map=new Map(tokens.filter(t=>t.kind==="v3").map(t=>[t.pool,t]));
+ const infMap=new Map(tokens.filter(t=>t.kind==="infinity").map(t=>[t.pool,t]));
+ try{
+  if(num(await rpc(url,"eth_chainId",[]))!==56)throw Error("wrong chain");
+  const head=num(await rpc(url,"eth_blockNumber",[])), safeHead=head-5;
+  const saved=Number(state.cursors.bsc||0);
+  // First activation is explicitly a recent-only bootstrap, NOT historic coverage.
+  const from=saved?saved+1:Math.max(1,safeHead-480);
+  const until=Math.min(safeHead,from+1999);
+  if(from>safeHead)return {chain,provider:url,head,from,to:saved,coverage:"NO_NEW_BLOCKS",backlog:0,coins:[],method:"eth_getBlockReceipts",errors:[]};
+  const allLogs=[], deadline=Date.now()+165000, batchSize=24;
+  let last=from-1, fetchFailure=null, blocksScanned=0, receiptsScanned=0;
+  for(let first=from;first<=until;first+=batchSize){
+   if(Date.now()>deadline){fetchFailure="TIME_BUDGET_EXHAUSTED";break}
+   const lastInBatch=Math.min(until,first+batchSize-1), results=[];
+   for(let b=first;b<=lastInBatch;b+=4){
+    const group=await Promise.all(Array.from({length:Math.min(4,lastInBatch-b+1)},(_,k)=>b+k).map(async n=>{
+     try{
+      const out=await rpc(url,"eth_getBlockReceipts",[hex(n)],11500);
+      if(!Array.isArray(out))throw Error("receipt result is not array");
+      return {n,receipts:out};
+     }catch(e){return {n,error:String(e.message).slice(0,150)}}
+    }));
+    results.push(...group);
+    if(group.some(z=>z.error))break;
+   }
+   for(const result of results){
+    if(result.error){fetchFailure="BLOCK_"+result.n+"_"+result.error;break}
+    for(const receipt of result.receipts){
+     receiptsScanned++;
+     for(const log of receipt.logs||[]){
+      const address=low(log.address),topic0=low(log.topics?.[0]);
+      const transfer=topic0===TRANSFER&&tokenMap.has(address);
+      const v3=([MINT,BURN].includes(topic0)&&v3Map.has(address));
+      const infinity=address===MANAGER&&topic0===MOD&&infMap.has(low(log.topics?.[1]));
+      if(transfer||v3||infinity)allLogs.push({...log,blockNumber:log.blockNumber||hex(result.n),transactionHash:log.transactionHash||receipt.transactionHash});
+     }
+    }
+    blocksScanned++;last=result.n;
+   }
+   if(fetchFailure)break;
+  }
+  const transfers=allLogs.filter(x=>low(x.topics?.[0])===TRANSFER);
+  const lps=[];
+  const decodeErrors=[];
+  for(const l of allLogs){
+   const topic=low(l.topics?.[0]),t=topic===MOD?infMap.get(low(l.topics?.[1])):v3Map.get(low(l.address));
+   if(!t||![MINT,BURN,MOD].includes(topic))continue;
+   try{lps.push({coin:t.symbol,decoded:dLP(l,t)})}catch(e){decodeErrors.push({tx:low(l.transactionHash),reason:String(e.message).slice(0,100)})}
+  }
+  const blockTime=new Map();
+  async function timestamp(b){
+   if(!blockTime.has(b)){
+    try{const block=await rpc(url,"eth_getBlockByNumber",[hex(b),false],10000);blockTime.set(b,block?.timestamp?new Date(num(block.timestamp)*1000).toISOString():null)}
+    catch(e){blockTime.set(b,null);errors.push("BLOCK_TIME_"+b+"_"+String(e.message).slice(0,70))}
+   }
+   return blockTime.get(b);
+  }
+  const coins=[];
+  for(const t of tokens){
+   const events=transfers.filter(l=>low(l.address)===t.token).map(dTransfer);
+   for(const e of events.slice(-12))e.blockUtc=await timestamp(e.block);
+   const by=new Map();
+   for(const e of events){
+    if(e.from!=="0x"+"0".repeat(40))by.set(e.from,(by.get(e.from)||0n)-BigInt(e.raw));
+    if(e.to!=="0x"+"0".repeat(40))by.set(e.to,(by.get(e.to)||0n)+BigInt(e.raw));
+   }
+   const excluded=new Set([t.token,MANAGER,t.pool]);
+   const inflows=[...by].filter(([addr,n])=>n>0n&&!excluded.has(addr)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED"}));
+   const lpEvents=lps.filter(z=>z.coin===t.symbol).map(z=>({...z.decoded}));
+   for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
+   const alerts=[];
+   if(lpEvents.some(z=>z.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"Hash-verified LP change, bullish interpretation UNVERIFIED"});
+   if(inflows.length>=2)alerts.push({level:"UNKNOWN_WALLET_NET_INFLOW",message:"Unknown-address net inflow, NOT verified CEX/independent accumulation"});
+   coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
+  }
+  if(fetchFailure)errors.push(fetchFailure);
+  if(decodeErrors.length)errors.push("LP_DECODE_ERRORS_"+decodeErrors.length);
+  if(!blocksScanned)return {chain,provider:url,method:"eth_getBlockReceipts",head,from,to:last,coverage:"FAILED",backlog:Math.max(0,safeHead-last),errors,coins:[]};
+  const backlog=Math.max(0,safeHead-last);
+  return {chain,provider:url,method:"eth_getBlockReceipts",positive:"ACTUAL_CONTIGUOUS_BLOCK_RECEIPTS",head,from,to:last,coverage:fetchFailure||decodeErrors.length?"PARTIAL":"SUCCESS",backlog,blocksScanned,receiptsScanned,bootstrapFromRecent:!saved,decodeErrors:decodeErrors.slice(0,8),errors,coins};
+ }catch(e){return {chain,provider:url,method:"eth_getBlockReceipts",coverage:"FAILED",errors:[String(e.message)],coins:[]}}
+}
+
+async function collect(chain,state){if(chain==="bsc")return collectBscReceipts(state);const c=CHAIN[chain],errs=[];for(const url of c.rpcs){try{
 const status=await verifyProvider(chain,url);const head=status.head;const cursor=Number(state.cursors[chain]||0);const from=cursor?cursor+1:Math.max(1,head-Math.ceil(900/c.blockSeconds));
 const to=Math.min(head-5,from+Math.ceil(3600/c.blockSeconds)-1);if(to<from)return {chain,provider:url,...status,from,to,coverage:"NO_NEW_BLOCKS",coins:[],backlog:0};
 const tokens=MONITORS.filter(x=>x.chain===chain);const transfer=await getLogs(url,{address:tokens.map(x=>x.token),topics:[TRANSFER]},from,to);
@@ -80,7 +175,7 @@ return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.ma
 }catch(e){errs.push(url+": "+String(e.message).slice(0,260));console.warn(chain+" RPC failed",url,String(e.message).slice(0,130))}}
 if(chain==="bsc"){try{const qs=new URLSearchParams({module:"logs",action:"getLogs",address:MANAGER,fromBlock:"1",toBlock:"1",page:"1",offset:"1"});const u="https://api.routescan.io/v2/network/mainnet/evm/56/etherscan/api?"+qs;const ctrl=new AbortController();const ti=setTimeout(()=>ctrl.abort(),9000);try{const response=await fetch(u,{signal:ctrl.signal});const str=(await response.text()).slice(0,500);errs.push("ROUTESCAN_KEYLESS_PROBE "+response.status+" "+str)}finally{clearTimeout(ti)}}catch(e){errs.push("ROUTESCAN_KEYLESS_PROBE "+String(e.message))}}
 return {chain,coverage:"FAILED",errors:errs,coins:[]}}
-async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if(r.coverage==="SUCCESS")state.cursors[chain]=r.to}
+async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if((r.coverage==="SUCCESS"||r.coverage==="PARTIAL")&&r.to>=r.from)state.cursors[chain]=r.to}
 const by=new Map(results.flatMap(r=>r.coins.map(c=>[c.symbol,c])));const coins=MONITORS.map(t=>by.get(t.symbol)||{symbol:t.symbol,chain:t.chain,coverage:results.find(r=>r.chain===t.chain)?.coverage||"FAILED",transferCount:null,lpEvents:[],alerts:[]});
 const status=results.every(r=>r.coverage==="SUCCESS"||r.coverage==="NO_NEW_BLOCKS")?"COMPLETE":results.some(r=>r.coverage==="SUCCESS")?"PARTIAL":"FAILED";
 const report={schema:"15coin-chain-evidence-v2",asOfUtc:new Date().toISOString(),status,explicitLimits:"Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",chains:results.map(({coins,...rest})=>rest),coins,alerts:coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:c.chain,...a})))};
