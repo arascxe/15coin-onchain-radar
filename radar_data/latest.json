@@ -1,6 +1,6 @@
 {
   "schema": "15coin-chain-evidence-v2",
-  "asOfUtc": "2026-11-13T04:55:25.269Z",
+  "asOfUtc": "2026-11-13T04:58:37.687Z",
   "status": "PARTIAL",
   "explicitLimits": "Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",
   "chains": [
@@ -8,15 +8,15 @@
       "chain": "bsc",
       "coverage": "FAILED",
       "errors": [
-        "https://1rpc.io/bnb: Provider unavailable at 133290381-133290386: HTTP 429",
+        "https://1rpc.io/bnb: Provider unavailable at 133290964-133290966: This operation was aborted",
         "https://bsc.meowrpc.com: HTTP 429",
         "https://rpc.nodeflare.app/bnb/public: HTTP 403",
         "https://bnb.rpc.subquery.network/public: fetch failed",
         "https://56.rpc.thirdweb.com: HTTP 429",
         "https://bsc.blockpi.network/v1/rpc/public: HTTP 503",
-        "https://bsc-rpc.publicnode.com: Provider unavailable at 133291391-133291523: HTTP 403",
-        "https://bsc.drpc.org: HTTP 429",
-        "https://bsc-mainnet.public.blastapi.io: Provider unavailable at 133291397-133291529: HTTP 429",
+        "https://bsc-rpc.publicnode.com: Provider unavailable at 133291813-133291945: HTTP 403",
+        "https://bsc.drpc.org: Provider unavailable at 133290760-133290813: HTTP 429",
+        "https://bsc-mainnet.public.blastapi.io: Provider unavailable at 133291823-133291955: HTTP 429",
         "ROUTESCAN_KEYLESS_PROBE 200 {\"status\":\"0\",\"message\":\"chain not supported\",\"result\":null}"
       ]
     },
@@ -24,9 +24,9 @@
       "chain": "base",
       "provider": "https://base-rpc.publicnode.com",
       "positive": "NO_KNOWN_POSITIVE",
-      "head": 56776747,
-      "from": 56775685,
-      "to": 56776742,
+      "head": 56777707,
+      "from": 56776743,
+      "to": 56777702,
       "backlog": 0,
       "coverage": "SUCCESS"
     }
@@ -94,12 +94,83 @@
       "token": "0x6cd905df2ed214b22e0d48ff17cd4200c1c6d8a3",
       "pool": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
       "coverage": "TRANSFER_LOGS_QUERIED",
-      "transferCount": 0,
-      "observedTransfers": [],
-      "netRecipients": [],
+      "transferCount": 6,
+      "observedTransfers": [
+        {
+          "tx": "0x8c12961344d9fa840f2e90ffe124cda9ac5e590f1c3f3762c2d4452a7dfc456d",
+          "block": 56777316,
+          "logIndex": 55,
+          "from": "0x4446adc0b8136ffc55ddb7a488ba5509ace2a5ef",
+          "to": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
+          "raw": "2128559939002133343103",
+          "blockUtc": "2026-11-13T04:57:18.000Z"
+        },
+        {
+          "tx": "0x8c12961344d9fa840f2e90ffe124cda9ac5e590f1c3f3762c2d4452a7dfc456d",
+          "block": 56777316,
+          "logIndex": 58,
+          "from": "0xbeb0009aca35087ce7ccf11637e24dd1aad3bf2a",
+          "to": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
+          "raw": "2128559939002133343103",
+          "blockUtc": "2026-11-13T04:57:18.000Z"
+        },
+        {
+          "tx": "0x8c12961344d9fa840f2e90ffe124cda9ac5e590f1c3f3762c2d4452a7dfc456d",
+          "block": 56777316,
+          "logIndex": 60,
+          "from": "0x111116056ad60f0f4fb52d60852f9acd2fafca11",
+          "to": "0x111111125421ca6dc452d289314280a0f8842a65",
+          "raw": "2128559939002133343103",
+          "blockUtc": "2026-11-13T04:57:18.000Z"
+        },
+        {
+          "tx": "0x8c12961344d9fa840f2e90ffe124cda9ac5e590f1c3f3762c2d4452a7dfc456d",
+          "block": 56777316,
+          "logIndex": 61,
+          "from": "0x111111125421ca6dc452d289314280a0f8842a65",
+          "to": "0x6aba0315493b7e6989041c91181337b662fb1b90",
+          "raw": "2128559939002133343103",
+          "blockUtc": "2026-11-13T04:57:18.000Z"
+        },
+        {
+          "tx": "0x8c12961344d9fa840f2e90ffe124cda9ac5e590f1c3f3762c2d4452a7dfc456d",
+          "block": 56777316,
+          "logIndex": 65,
+          "from": "0x6aba0315493b7e6989041c91181337b662fb1b90",
+          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+          "raw": "2128559939002133343103",
+          "blockUtc": "2026-11-13T04:57:18.000Z"
+        },
+        {
+          "tx": "0x89f33a8652f8cbf5060c36b7fe230476a32ec45f8043ff97d2de4c98d3b80643",
+          "block": 56777571,
+          "logIndex": 0,
+          "from": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
+          "to": "0x15f46551f5d736c9b8861c1d1358e29183f7a6c7",
+          "raw": "20156465716000000000000",
+          "blockUtc": "2026-11-13T04:58:09.000Z"
+        }
+      ],
+      "netRecipients": [
+        {
+          "address": "0x15f46551f5d736c9b8861c1d1358e29183f7a6c7",
+          "rawNetIn": "20156465716000000000000",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
+          "rawNetIn": "2128559939002133343103",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
-      "alerts": []
+      "alerts": [
+        {
+          "level": "UNKNOWN_WALLET_NET_INFLOW",
+          "message": "At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"
+        }
+      ]
     },
     {
       "symbol": "B2",
@@ -158,5 +229,12 @@
       "alerts": []
     }
   ],
-  "alerts": []
+  "alerts": [
+    {
+      "symbol": "TRUST",
+      "chain": "base",
+      "level": "UNKNOWN_WALLET_NET_INFLOW",
+      "message": "At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"
+    }
+  ]
 }
