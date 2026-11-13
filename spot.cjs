@@ -70,6 +70,25 @@ return {venue:"Bitget Spot "+pair,source:"Bitget v3 SPOT candles",minute15:candl
 async function gecko(c){if(!c.pool)throw Error("no verified primary pool");const prefix="https://api.geckoterminal.com/api/v2/networks/"+c.chain+"/pools/"+c.pool+"/ohlcv/";
 const [a,b]=await Promise.all([getJSON(prefix+"minute?aggregate=15&limit=690"),getJSON(prefix+"hour?aggregate=1&limit=240")]);
 return {venue:"GeckoTerminal pool "+c.pool,source:"GeckoTerminal public DEX spot pool OHLCV",minute15:candlesGecko(a,900),hour1:candlesGecko(b,3600),url:"https://www.geckoterminal.com/"+c.chain+"/pools/"+c.pool}}
+async function gateMicro(c){
+ const pair=encodeURIComponent(c.symbol+"_USDT"),base="https://api.gateio.ws/api/v4/spot/",out={source:"Gate public recent trades + orderbook",asOfUtc:new Date().toISOString()};
+ const [trades,book]=await Promise.allSettled([getJSON(base+"trades?currency_pair="+pair+"&limit=1000",9000),getJSON(base+"order_book?currency_pair="+pair+"&limit=100",9000)]);
+ if(trades.status==="fulfilled"&&Array.isArray(trades.value)){
+  const v=trades.value,arr=v.map(t=>({side:String(t.side||"").toLowerCase(),p:Number(t.price),q:Number(t.amount),ts:Number(t.create_time_ms||0)/1000||Number(t.create_time||0)})).filter(t=>["buy","sell"].includes(t.side)&&t.p>0&&t.q>0&&t.ts>0).sort((a,b)=>a.ts-b.ts);
+  if(arr.length){const now=Date.now()/1000,eligible=arr.filter(t=>now-t.ts<=900&&now-t.ts>=0),first=arr[0].ts,window15Covered=first<=now-900;
+   let buys=0,sells=0;for(const t of eligible)t.side==="buy"?(buys+=t.p*t.q):(sells+=t.p*t.q);
+   out.takerTradeSample={sampleCount:arr.length,firstSampleUtc:new Date(first*1000).toISOString(),lastSampleUtc:new Date(arr.at(-1).ts*1000).toISOString(),last15mSampleComplete:window15Covered,last15mBuysUSD:Math.round(buys*100)/100,last15mSellsUSD:Math.round(sells*100)/100,last15mNetTakerBuyUSD:Math.round((buys-sells)*100)/100,coverageNote:window15Covered?"Full trailing 15m likely covered by 1000 trades":"Sample may cover LESS than full 15m; trade totals INCOMPLETE"};
+  }else out.takerTradeSample={error:"no valid public side/time"};
+ }else out.takerTradeSample={error:String(trades.reason?.message||"no data").slice(0,130)};
+ if(book.status==="fulfilled"&&Array.isArray(book.value?.asks)&&Array.isArray(book.value?.bids)){
+  const asks=book.value.asks.map(x=>[Number(x[0]),Number(x[1])]).filter(x=>x[0]>0&&x[1]>=0).sort((a,b)=>a[0]-b[0]);
+  const bids=book.value.bids.map(x=>[Number(x[0]),Number(x[1])]).filter(x=>x[0]>0&&x[1]>=0).sort((a,b)=>b[0]-a[0]);
+  if(asks.length&&bids.length){const mid=(asks[0][0]+bids[0][0])/2,askMax=100*(asks.at(-1)[0]/mid-1),bidMax=100*(1-bids.at(-1)[0]/mid);
+  const total=(orders,fn)=>round(orders.filter(x=>fn(x[0])).reduce((s,x)=>s+x[0]*x[1],0),2);
+  out.orderbook={midUSDT:mid,spreadPct:round(100*(asks[0][0]-bids[0][0])/mid,4),askDepth2pctUSD:askMax>=2?total(asks,p=>p<=mid*1.02):null,askDepth5pctUSD:askMax>=5?total(asks,p=>p<=mid*1.05):null,bidDepth2pctUSD:bidMax>=2?total(bids,p=>p>=mid*0.98):null,bidDepth5pctUSD:bidMax>=5?total(bids,p=>p>=mid*0.95):null,askMaxDistancePct:round(askMax,3),bidMaxDistancePct:round(bidMax,3),warning:"Null when 100 levels do not cover band; current snapshot only, not historical depth change"};}
+ }else out.orderbook={error:String(book.reason?.message||"orderbook missing").slice(0,130)};
+ return out;
+}
 async function inspect(c){const failures=[];let series=null;
 try{series=await gate(c)}catch(e){failures.push("GATE "+String(e.message).slice(0,150));}
 if(!series){try{series=await bitget(c)}catch(e){failures.push("BITGET "+String(e.message).slice(0,150))}}
@@ -78,10 +97,11 @@ if(!series)return {symbol:c.symbol,status:"OHLCV_UNAVAILABLE",failures};
 const p15=computeRVOL(series.minute15,900),p1=computeRVOL(series.hour1,3600),hl=higherLows(series.hour1);
 const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.minute15.length)),x=(last&&first&&first.c>0)?round(100*(last.c/first.c-1),3):null;
 const verdictResult=verdict(p15,p1,hl);
+let micro=null;if(series.venue.startsWith("Gate Spot")){try{micro=await gateMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
 return {symbol:c.symbol,status:"OHLCV_RECEIVED",venue:series.venue,source:series.source,sourceUrl:series.url,
  measuredAtUtc:new Date().toISOString(),lastCandleUtc:last?new Date(last.ts*1000).toISOString():null,
  priceUSDT:last?.c||null,close1hChangePct:x,bar15mCount:series.minute15.length,bar1hCount:series.hour1.length,
- rvol15m:p15,rvol1h:p1,confirmedHigherLows1h:hl,verdict:verdictResult,failures};
+ rvol15m:p15,rvol1h:p1,confirmedHigherLows1h:hl,verdict:verdictResult,microstructure:micro,failures};
 }
 async function main(){const out={schema:"15coin-spot-ohlcv-v1",asOfUtc:new Date().toISOString(),meaning:"Public real venue/pool OHLCV RVOL; not futures, not direct evidence of CEX inventory or LP event",coins:[]};for(let i=0;i<DATA.length;i+=4){const part=await Promise.all(DATA.slice(i,i+4).map(inspect));out.coins.push(...part);}
 out.status=out.coins.some(x=>x.status==="OHLCV_RECEIVED")?"PARTIAL_OR_COMPLETE":"FAILED_ALL";
