@@ -125,7 +125,7 @@ save("spot_latest.json",out);
  const historyFile=path.join(DIR,"spot_history.json");let history={schema:"15coin-spot-forward-observation-v1",runs:[],alerts:[]};
  try{const old=JSON.parse(fs.readFileSync(historyFile,"utf8"));if(old?.schema===history.schema)history=old}catch{}
  const current=out.coins.map(c=>({symbol:c.symbol,venue:c.venue||null,priceUSDT:c.priceUSDT||null,verdict:c.verdict||"NO_DATA",rvol15m:c.rvol15m?.status==="OK"?c.rvol15m.rvol:null,rvol1h:c.rvol1h?.status==="OK"?c.rvol1h.rvol:null,higherLows:c.confirmedHigherLows1h?.confirmedHigherLow===true,spotAvailable:c.status==="OHLCV_RECEIVED"}));
- history.runs.push({asOfUtc:out.asOfUtc,coins:current});history.runs=history.runs.slice(-24*14);
+ history.runs.push({asOfUtc:out.asOfUtc,coins:current});history.runs=history.runs.slice(-(24*4*14)); // Four 15m observations/hour for 14 days
  for(const c of current){
  if(!c.venue||!c.priceUSDT||!/SPOT_EARLY/.test(c.verdict))continue;
  const last=history.alerts.filter(x=>x.symbol===c.symbol&&x.venue===c.venue&&x.level===c.verdict).at(-1);
