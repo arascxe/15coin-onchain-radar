@@ -102,11 +102,13 @@ async function gateMicro(c){
  }else out.orderbook={error:String(book.reason?.message||"orderbook missing").slice(0,130)};
  return out;
 }
+const candleEvidenceByVenue=new Map();
 async function inspect(c){const failures=[];let series=null;
 try{series=await gate(c)}catch(e){failures.push("GATE "+String(e.message).slice(0,150));}
 if(!series){try{series=await bitget(c)}catch(e){failures.push("BITGET "+String(e.message).slice(0,150))}}
 if(!series){try{await sleep(1800);series=await gecko(c)}catch(e){failures.push("GECKO "+String(e.message).slice(0,150))}}
 if(!series)return {symbol:c.symbol,status:"OHLCV_UNAVAILABLE",failures};
+ candleEvidenceByVenue.set(series.venue,series.minute15.map(b=>({closeUtc:new Date((b.ts+900)*1000).toISOString(),price:b.c,volumeUSD:b.v})));
 const p15=computeRVOL(series.minute15,900),p1=computeRVOL(series.hour1,3600),hl=higherLows(series.hour1);
 const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.minute15.length)),x=(last&&first&&first.c>0)?round(100*(last.c/first.c-1),3):null;
 let micro=null;if(series.venue.startsWith("Gate Spot")){try{micro=await gateMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
@@ -131,12 +133,25 @@ save("spot_latest.json",out);
  if(hours>=12){history.alerts.push({id:c.symbol+"_"+Date.parse(out.asOfUtc),symbol:c.symbol,venue:c.venue,level:c.verdict,ruleVersion:"v2-notional-and-continuation",firstSeenUtc:out.asOfUtc,priceAtFirstSeen:c.priceUSDT,firstSeenRvol15m:c.rvol15m,firstSeenRvol1h:c.rvol1h,followup:{},observationOnly:true});}
  }
  for(const alert of history.alerts){if(!alert.ruleVersion){alert.ruleVersion="v1-preliminary-weak-filter";alert.validForLiveSignal=false;alert.note="Excluded from v2 alert counts: no nominal USD turnover and short-window continuation filter";}}
- for(const x of history.alerts){for(const [field,hours] of [["after1h",1],["after6h",6],["after24h",24]]){if(x.followup?.[field])continue;
- const elapsed=(Date.parse(out.asOfUtc)-Date.parse(x.firstSeenUtc))/3600000;
- if(elapsed<hours)continue;
- const c=current.find(z=>z.symbol===x.symbol&&z.venue===x.venue&&z.priceUSDT>0);
- if(!c)continue;x.followup[field]={observedAtUtc:out.asOfUtc,actualHoursAfterFirstSeen:Number(elapsed.toFixed(2)),price:c.priceUSDT,returnPct:Number(((c.priceUSDT/x.priceAtFirstSeen-1)*100).toFixed(3))};
- }}
- history.alerts=history.alerts.slice(-1000);save("spot_history.json",history);
+  // Forward observations use the true venue candle at the target timestamp.
+  for(const x of history.alerts){
+   const candles=candleEvidenceByVenue.get(x.venue)||[];
+   for(const [field,hours] of [["after1h",1],["after6h",6],["after24h",24]]){
+    const target=Date.parse(x.firstSeenUtc)+hours*3600000;
+    if(!(Date.parse(out.asOfUtc)>=target))continue;
+    const prior=x.followup?.[field];
+    const validPrior=prior?.candleCloseUtc && Math.abs(Date.parse(prior.candleCloseUtc)-target)<=15*60000;
+    if(validPrior)continue;
+    if(prior&&!validPrior){x.legacyMisalignedFollowups||={};x.legacyMisalignedFollowups[field] ||=prior;}
+    const nearest=candles.filter(b=>Math.abs(Date.parse(b.closeUtc)-target)<=15*60000).sort((a,b)=>Math.abs(Date.parse(a.closeUtc)-target)-Math.abs(Date.parse(b.closeUtc)-target))[0];
+    if(!nearest){if(x.followup)x.followup[field]=null;continue}
+    x.followup||={};
+    x.followup[field]={candleCloseUtc:nearest.closeUtc,observedAtUtc:out.asOfUtc,
+     actualHoursAfterFirstSeen:Number(((Date.parse(nearest.closeUtc)-Date.parse(x.firstSeenUtc))/3600000).toFixed(3)),
+     price:nearest.price,returnPct:round((nearest.price/x.priceAtFirstSeen-1)*100,3),
+     basis:"ACTUAL_SPOT_15M_CANDLE_AT_TARGET",toleranceMinutes:15};
+   }
+  }
+  history.alerts=history.alerts.slice(-1000);save("spot_history.json",history);
  console.log(JSON.stringify({status:out.status,counts:out.counts,details:out.coins.map(x=>({s:x.symbol,venue:x.venue,status:x.status,r15:x.rvol15m?.rvol,r1:x.rvol1h?.rvol,hl:x.confirmedHigherLows1h?.confirmedHigherLow,verdict:x.verdict,failures:x.failures}))},null,2))}
 main().catch(e=>{console.error(e);process.exitCode=1});
