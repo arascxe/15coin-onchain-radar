@@ -47,6 +47,27 @@ function dLP(l,t){const w=words(l.data),tp=l.topics||[];let delta,tickLower,tick
 if(t.kind==="infinity"){if(low(l.address)!==MANAGER||low(tp[0])!==MOD||low(tp[1])!==t.pool||w.length<4)throw Error("wrong infinity pool");tickLower=Number(intN(w[0],24));tickUpper=Number(intN(w[1],24));delta=intN(w[2],256);owner=low(tp[2]||"");}
 else{if(low(l.address)!==t.pool||![MINT,BURN].includes(low(tp[0]))||tp.length<4)throw Error("wrong V3 pool");tickLower=Number(intN(tp[2],24));tickUpper=Number(intN(tp[3],24));delta=BigInt(w[low(tp[0])===MINT?1:0])*(low(tp[0])===MINT?1n:-1n);owner=low(tp[1])}
 if(tickLower>=tickUpper)throw Error("bad ticks");return {tx:low(l.transactionHash),block:num(l.blockNumber),logIndex:num(l.logIndex||"0x0"),tickLower,tickUpper,delta:delta.toString(),change:delta>0n?"ADD":delta<0n?"REMOVE":"ZERO",ownerOrSender:owner,pool:t.pool}};
+
+function summarizeLpPositions(events){
+ const grouped=new Map();
+ for(const e of events){
+  const key=[low(e.ownerOrSender),e.tickLower,e.tickUpper].join("|");
+  const p=grouped.get(key)||{ownerOrSender:low(e.ownerOrSender),tickLower:e.tickLower,tickUpper:e.tickUpper,net:0n,events:0,firstBlock:e.block,lastBlock:e.block};
+  p.net+=BigInt(e.delta);p.events++;p.firstBlock=Math.min(p.firstBlock,e.block);p.lastBlock=Math.max(p.lastBlock,e.block);
+  grouped.set(key,p);
+ }
+ const changed=[...grouped.values()].filter(p=>p.net!==0n);
+ const zero=[...grouped.values()].filter(p=>p.net===0n);
+ return {
+  grossLpEvents:events.length,
+  positionsSeen:grouped.size,
+  netPositionCount:changed.length,
+  zeroNetRoundTripPositions:zero.length,
+  netPositions:changed.slice(0,24).map(p=>({ownerOrSender:p.ownerOrSender,tickLower:p.tickLower,tickUpper:p.tickUpper,netLiquidityDeltaRaw:p.net.toString(),eventCount:p.events,fromBlock:p.firstBlock,toBlock:p.lastBlock})),
+  caveat:"Net per owner+tick range is within this scanned window only. A zero net round-trip can be transient/JIT liquidity; NOT evidence of persistent LP removal or pre-pump accumulation."
+ };
+}
+
 async function getLogs(url,filter,from,to){const one=async(a,b)=>rpc(url,"eth_getLogs",[{...filter,fromBlock:hex(a),toBlock:hex(b)}],18000);
 async function scan(a,b){try{const logs=await one(a,b);if(!Array.isArray(logs))throw Error("nonarray logs");if(logs.length>9000)throw Error("large log batch");return logs}
 catch(e){const why=String(e.message);if(/HTTP (401|403|404|429|503)|rate.limit|too many requests|timeout|fetch failed|abort/i.test(why))throw Error("Provider unavailable at "+a+"-"+b+": "+why);if(b-a<=0)throw Error("log coverage failed "+a+"-"+b+": "+why);const m=Math.floor((a+b)/2);return [...await scan(a,m),...await scan(m+1,b)]}}
@@ -139,9 +160,9 @@ async function collectBscReceipts(state){
    const inflows=[...by].filter(([addr,n])=>n>0n&&!excluded.has(addr)).sort((a,b)=>a[1]===b[1]?0:a[1]>b[1]?-1:1).slice(0,6).map(([address,n])=>({address,rawNetIn:n.toString(),identity:"UNVERIFIED"}));
    const lpEvents=lps.filter(z=>z.coin===t.symbol).map(z=>({...z.decoded}));
    for(const e of lpEvents.slice(0,12))e.blockUtc=await timestamp(e.block);
-   const alerts=[];
-   if(lpEvents.some(z=>z.change!=="ZERO"))alerts.push({level:"LP_EVENT_CONFIRMED",message:"Hash-verified LP change, bullish interpretation UNVERIFIED"});
-   coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
+   const alerts=[];const lpNet=summarizeLpPositions(lpEvents);
+   if(lpNet.netPositionCount>0)alerts.push({level:"NET_LP_POSITION_CHANGE_CONFIRMED",message:"Confirmed nonzero LP position delta within scanned window; bullish interpretation UNVERIFIED"});
+   coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:blocksScanned?"RECEIPTS_SCANNED":"FAILED",transferCount:blocksScanned?events.length:null,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpNet,lpEvents,alerts});
   }
   if(fetchFailure)errors.push(fetchFailure);
   if(decodeErrors.length)errors.push("LP_DECODE_ERRORS_"+decodeErrors.length);
