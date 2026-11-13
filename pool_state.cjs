@@ -97,6 +97,35 @@ if(!d)throw Error("missing pool data");
 const tvl=Number(d.reserve_in_usd),before=prev.infinitySnapshots?.find(x=>x.symbol===inf.symbol&&x.status==="READ_OK");
 report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"READ_OK",source:"GeckoTerminal not onchain LP event",sourceTimeUtc:at,network:"bsc",tvlUsd:Number.isFinite(tvl)?tvl:null,tvlChangePct:before?.tvlUsd>0&&Number.isFinite(tvl)?100*(tvl/before.tvlUsd-1):null,volume24hUsd:d.volume_usd?.h24??null,transactions24h:d.transactions?.h24??null,limitations:"TVL changes can be price/swap effect, NOT proof of LP mint/burn"})
 }catch(e){report.infinitySnapshots.push({symbol:inf.symbol,poolId:inf.poolId,status:"FETCH_FAILED",error:String(e.message).slice(0,130)})}}
+// Cross-check actual chain-state changes with fresh, independent spot price to flag PRE-IGNITION *research candidates*.
+let spotSnapshot={};try{spotSnapshot=JSON.parse(fs.readFileSync(path.join(dir,"spot_latest.json"),"utf8")))}catch{}
+report.preparationCandidates=[];
+const spotFresh=spotSnapshot?.asOfUtc&&(Date.now()-Date.parse(spotSnapshot.asOfUtc)<90*60000);
+const spotBySymbol=new Map((spotFresh?spotSnapshot.coins:[]).filter(x=>x.priceUSDT>0).map(x=>[x.symbol,x]));
+function decimalUnits(raw,dec){const z=BigInt(raw),sign=z<0n?-1:1,n=z<0n?-z:z,unit=10n**BigInt(dec);return sign*(Number(n/unit)+Number(n%unit)/Number(unit));}
+const decimalMap=new Map(report.coins.filter(x=>x.status==="READ_OK"&&Number.isInteger(x.decimals)).map(x=>[x.symbol,x.decimals]));
+for(const [symbol,token] of targets){if(decimalMap.has(symbol))continue;try{const x=await call(url,"eth_call",[{to:token,data:"0x313ce567"},"0x"+head.toString(16)]);const dec=Number(BigInt(x));if(Number.isInteger(dec)&&dec>=0&&dec<=30)decimalMap.set(symbol,dec)}catch{}}
+for(const [symbol,token] of targets){
+ const info=spotBySymbol.get(symbol),price=Number(info?.priceUSDT)||null,dec=decimalMap.get(symbol);
+ if(!(price>0)||dec==null)continue;
+ const sources=[];const pool=report.coins.find(x=>x.symbol===symbol);
+ if(pool?.status==="READ_OK"&&pool.deltas?.poolTokenBalanceDeltaRaw!=null){
+ const previous=BigInt(pool.poolTokenBalanceRaw)-BigInt(pool.deltas.poolTokenBalanceDeltaRaw);
+ const delta=BigInt(pool.deltas.poolTokenBalanceDeltaRaw),value=decimalUnits(delta,dec)*price;
+ const pct=previous>0n?100*Number(delta)/Number(previous):null;
+ if(Math.abs(value)>=10000&&pct!=null&&Math.abs(pct)>=5)
+ sources.push({kind:"DEX_POOL_TOKEN_BALANCE_SHIFT",realOnchain:true,blockFrom:pool.deltas.fromBlock,blockTo:pool.deltas.toBlock,amountToken:decimalUnits(delta,dec),deltaUsdApprox:Number(value.toFixed(2)),deltaPct:Number(pct.toFixed(3)),caution:"Could be swaps OR LP liquidity movement; not a verified LP event"});
+ }
+ const owners=report.holderObservations.filter(x=>x.symbol===symbol&&x.status==="READ_OK"&&x.deltaRaw!=null).map(x=>({...x,valueUSD:decimalUnits(x.deltaRaw,dec)*price})).filter(x=>Math.abs(x.valueUSD)>=50000);
+ if(owners.length){sources.push({kind:"UNVERIFIED_LARGE_WALLET_BALANCE_SHIFT",realOnchain:true,holderAddresses:owners.map(x=>({address:x.address,thirdPartyLabel:x.thirdPartyLabel,verifiedOwner:false,deltaTokens:decimalUnits(x.deltaRaw,dec),deltaUsdApprox:Number(x.valueUSD.toFixed(2))})),caution:"Entity label not verified; not evidence of total exchange net withdrawal or independent buyer accumulation"});}
+ const inf=report.infinityOnchain.find(x=>x.symbol===symbol);
+ if(inf?.status==="READ_OK"&&inf.liquidityDeltaRaw!==null){
+ const prior=BigInt(inf.activeLiquidityRaw)-BigInt(inf.liquidityDeltaRaw),v=BigInt(inf.liquidityDeltaRaw),pct=prior>0n?100*Number(v)/Number(prior):null;
+ if(pct!=null&&Math.abs(pct)>=10)sources.push({kind:"INFINITY_ACTIVE_LIQUIDITY_SHIFT",realOnchain:true,fromBlock:inf.deltaFromBlock,toBlock:inf.blockNumber,deltaPct:Number(pct.toFixed(3)),caution:"Tick crossing may change active liquidity; not a ModifyLiquidity LP transaction proof"});
+ }
+ if(sources.length){report.preparationCandidates.push({symbol,priceUSDT:price,priceChangeRecentPct:info?.close1hChangePct??null,sources,level:"ONCHAIN_STATE_CHANGE_CANDIDATE_TX_NOT_VERIFIED",proof:"BSC block-specific eth_call snapshots, not ERC20 Transfer or ModifyLiquidity logs",observedUtc:at,notAnOrder:true});}
+}
+report.preparationCandidateCount=report.preparationCandidates.length;
 save("pool_state_latest.json",report);if(report.coins.some(x=>x.status==="READ_OK"))save("pool_state.json",report);
 console.log(JSON.stringify({status:report.status,provider:url,head,readOk:report.coins.filter(x=>x.status==="READ_OK").length,deltas:report.coins.filter(x=>x.deltas).length,failed:report.coins.filter(x=>x.status==="RPC_CALL_FAILED").length}));}
 main().catch(e=>{console.error(e);process.exitCode=1});
