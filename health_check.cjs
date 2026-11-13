@@ -5,7 +5,7 @@ const fs=require("node:fs"),path=require("node:path");
 const DIR=path.join(__dirname,"radar_data"),OUT=path.join(DIR,"health_latest.json");
 const SYMS=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS","STBL","BSB","AIO","STAR","LYN"];
 function age(t,now){const n=now-Date.parse(t||"");return Number.isFinite(n)?Math.round(n/1000):null}
-function review(d,now=Date.now()){
+function review(d,now=Date.now(),runStartedUtc=null){
  const errors=[],warnings=[];
  const bad=(name,ok)=>{if(!ok)errors.push(name)};
  const recent=(t,s=600)=>{const x=age(t,now);return x!==null&&x>=-60&&x<=s};
@@ -15,6 +15,18 @@ function review(d,now=Date.now()){
  const agesSeconds={chain:age(chain.asOfUtc,now),spot:age(spot.asOfUtc,now),pool:age(pool.asOfUtc,now),
   history:age(history.runs?.at(-1)?.asOfUtc,now),wallet:age(wallet.asOfUtc,now),prep:age(prep.asOfUtc,now)};
  for(const [key,a] of Object.entries(agesSeconds))bad(key.toUpperCase()+"_STALE",a!==null&&a>=-60&&a<=600);
+ // Cross-run freshness guard: a young file from a PREVIOUS job must never turn this job green.
+ // Date of a collection file is evidence; the GitHub run marker comes from before spot.cjs.
+ if(runStartedUtc!=null){
+  const start=Date.parse(runStartedUtc);
+  if(!Number.isFinite(start))errors.push("INVALID_RUN_START_MARKER");
+  else{
+   const sourceTimes={chain:chain.asOfUtc,spot:spot.asOfUtc,pool:pool.asOfUtc,
+    history:history.runs?.at(-1)?.asOfUtc,wallet:wallet.asOfUtc,prep:prep.asOfUtc};
+   for(const [key,t] of Object.entries(sourceTimes))
+    bad(key.toUpperCase()+"_NOT_PRODUCED_IN_THIS_RUN",Number.isFinite(Date.parse(t||""))&&Date.parse(t)>=start-15000);
+  }
+ }
  bad("SPOT_NOT_15",spot.counts?.ohlcvReceived===15&&spot.coins?.filter(c=>c.status==="OHLCV_RECEIVED").length===15);
  const spotSyms=new Set(spot.coins?.map(x=>x.symbol));
  bad("SPOT_SYMBOLS_MISSING",SYMS.every(s=>spotSyms.has(s))&&spotSyms.size===15);
@@ -58,13 +70,13 @@ function read(file){try{return JSON.parse(fs.readFileSync(path.join(DIR,file),"u
 function main(){
  if(process.argv.includes("--verify-only")){
   const x=read("health_latest.json");const seconds=x&&age(x.asOfUtc,Date.now());
-  if(!x||seconds===null||seconds>600||seconds< -60||x.status==="FAILED"||x.errors?.length){console.error("HEALTH CHECK NOT PASSED",JSON.stringify(x?.errors||["NO_HEALTH_REPORT"]));process.exitCode=1}
+  if(!x||seconds===null||seconds>600||seconds< -60||x.status==="FAILED"||x.errors?.length || (process.env.GITHUB_RUN_ID && x.workflowRunId!==process.env.GITHUB_RUN_ID)){console.error("HEALTH CHECK NOT PASSED",JSON.stringify(x?.errors||["NO_HEALTH_REPORT"]));process.exitCode=1}
   else console.log("HEALTH CHECK PASSED",JSON.stringify({ageSeconds:seconds,status:x.status,warnings:x.warnings,quality:x.quality}));
   return;
  }
  const inputs={chain:read("latest.json"),spot:read("spot_latest.json"),pool:read("pool_state_latest.json"),
   history:read("spot_history.json"),prep:read("prep_latest.json"),wallet:read("wallet_latest.json")};
- const report=review(inputs);report.schema="15coin-live-health-v1";report.asOfUtc=report.wallClockUtc;
+ const report=review(inputs,Date.now(),process.env.RADAR_RUN_STARTED_UTC||null);if(process.env.GITHUB_ACTIONS==='true'&&!process.env.RADAR_RUN_STARTED_UTC)report.errors.push('RUN_START_MARKER_MISSING');if(report.errors.length)report.status='FAILED';report.schema="15coin-live-health-v1";report.asOfUtc=report.wallClockUtc;
  report.workflowEvent=process.env.GITHUB_EVENT_NAME||"local";
  report.workflowRunId=process.env.GITHUB_RUN_ID||null;
  fs.writeFileSync(OUT+".tmp",JSON.stringify(report,null,2)+"\n");fs.renameSync(OUT+".tmp",OUT);
