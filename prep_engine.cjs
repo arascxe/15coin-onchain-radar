@@ -20,7 +20,6 @@ function fresh(t,now,minutes=20){
  const age=now-Date.parse(t||"");return Number.isFinite(age)&&age>=-60000&&age<minutes*60000;
 }
 function highestRecentChain(chain,symbol){
- const tip=(chain.liveTips||[]).find(t=>t.chain==="bsc"||t.chain==="base");
  // Find a recent tip for this coin; if a tip is present, never substitute the OLD backfill lane.
  const targetChain=symbol==="TRUST"?"base":"bsc";
  const x=(chain.liveTips||[]).find(t=>t.chain===targetChain);
@@ -42,7 +41,7 @@ function classify({symbol,spot,chain,pool,now}){
  const price24=spotUsable?num(p.change24hPct):null,price6=spotUsable?num(p.change6hPct):null,price1=spotUsable?num(p.close1hChangePct):null;
  const late=(price24!=null&&price24>=25)||(price6!=null&&price6>=20)||(price1!=null&&price1>=12);
  const preBreakout=!late&&price24!=null&&price6!=null&&price1!=null;
- const dec=poolFresh&&Number.isInteger(v?.decimals)?v.decimals:null;
+ const dec=poolFresh?(Number.isInteger(v?.decimals)?v.decimals:(Number.isInteger(pool.tokenDecimals?.[symbol])?pool.tokenDecimals[symbol]:null)):null;
  const code=[],counter=[];
  const evidences={};
  const flowValid=chainFresh&&["SUCCESS","PARTIAL"].includes(live.coverage)&&!!onchain;
