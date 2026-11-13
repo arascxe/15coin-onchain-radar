@@ -81,9 +81,21 @@ jobs:
           const age=Date.now()-Date.parse(data.asOfUtc||'');
           const bsc=data.chains?.find(c=>c.chain==='bsc');
           const base=data.chains?.find(c=>c.chain==='base');
+
+          const spot=JSON.parse(fs.readFileSync('radar_data/spot_latest.json','utf8'));
+          const pool=JSON.parse(fs.readFileSync('radar_data/pool_state_latest.json','utf8'));
+          const history=JSON.parse(fs.readFileSync('radar_data/spot_history.json','utf8'));
+          const fresh=x=>{const dt=Date.now()-Date.parse(x||'');return dt>=0&&dt<600000};
+          const spotOk=fresh(spot.asOfUtc)&&spot.counts?.ohlcvReceived===15;
+          const v3Ok=fresh(pool.asOfUtc)&&pool.coins?.filter(c=>c.status==='READ_OK').length===10;
+          const infinityOk=pool.infinityOnchain?.filter(c=>c.status==='READ_OK').length===3;
+          const holdersOk=pool.holderObservations?.filter(c=>c.status==='READ_OK').length===42;
+          const historyOk=fresh(history.runs?.at(-1)?.asOfUtc);
+          const bscTokensOk=data.coins?.filter(c=>c.chain==='bsc'&&c.coverage==='RECEIPTS_SCANNED').length===14;
+          console.log('SPOT:',spotOk,'V3:',v3Ok,'Infinity:',infinityOk,'holders:',holdersOk,'history:',historyOk,'BSC tokens:',bscTokensOk);
           console.log('BSC:',bsc?.coverage,bsc?.method,'blocks:',bsc?.blocksScanned,'backlog:',bsc?.backlog);
           console.log('BASE:',base?.coverage,'from:',base?.from,'to:',base?.to,'historical gap:',base?.historicalUnscannedFrom,base?.historicalUnscannedTo);
-          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS'){
+          if(!(age>=0&&age<600000) || bsc?.coverage!=='SUCCESS' || !bsc?.blocksScanned || base?.coverage!=='SUCCESS' || !spotOk || !v3Ok || !infinityOk || !holdersOk || !historyOk || !bscTokensOk){
             console.error('DATA HEALTH FAILED: green Actions status must not mask missing or partial live onchain coverage');
             process.exit(1)
           }
