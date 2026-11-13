@@ -155,5 +155,35 @@ save("spot_latest.json",out);
    }
   }
   history.alerts=history.alerts.slice(-1000);save("spot_history.json",history);
+  // Independent forward measurements for preparation-research events, from REAL venue candles.
+  // This never revises the signal itself and never treats a future candle as known at alert time.
+  const prepFile=path.join(DIR,"prep_history.json");
+  if(fs.existsSync(prepFile)){
+   try{
+    const prep=JSON.parse(fs.readFileSync(prepFile,"utf8"));
+    if(prep.schema==="15coin-preparation-events-v1"){
+     let matured=0;
+     for(const e of prep.events||[]){
+      const candles=candleEvidenceByVenue.get(e.venue)||[];
+      if(!(e.priceAtFirstSeen>0))continue;
+      for(const [key,hours] of [["after1h",1],["after6h",6],["after24h",24],["after72h",72]]){
+       const target=Date.parse(e.firstSeenUtc)+hours*3600000;
+       if(!(Date.parse(out.asOfUtc)>=target)||e.followup?.[key]?.candleCloseUtc)continue;
+       const eligible=candles.filter(c=>Math.abs(Date.parse(c.closeUtc)-target)<=15*60000)
+         .sort((a,b)=>Math.abs(Date.parse(a.closeUtc)-target)-Math.abs(Date.parse(b.closeUtc)-target));
+       if(!eligible.length)continue;
+       e.followup ||= {};
+       e.followup[key]={candleCloseUtc:eligible[0].closeUtc,observedAtUtc:out.asOfUtc,
+        price:eligible[0].price,returnPct:round(100*(eligible[0].price/e.priceAtFirstSeen-1),3),
+        basis:"ACTUAL_VENUE_15M_CANDLE_AT_TARGET",toleranceMinutes:15};
+       matured++;
+      }
+     }
+     if(matured)save("prep_history.json",prep);
+     console.log(JSON.stringify({preparationForwardOutcomesUpdated:matured,trackedEvents:prep.events?.length||0}));
+    }
+   }catch(e){console.warn("Preparation outcome read failed, no invented forward",String(e.message).slice(0,180))}
+  }
+
  console.log(JSON.stringify({status:out.status,counts:out.counts,details:out.coins.map(x=>({s:x.symbol,venue:x.venue,status:x.status,r15:x.rvol15m?.rvol,r1:x.rvol1h?.rvol,hl:x.confirmedHigherLows1h?.confirmedHigherLow,verdict:x.verdict,failures:x.failures}))},null,2))}
 main().catch(e=>{console.error(e);process.exitCode=1});
