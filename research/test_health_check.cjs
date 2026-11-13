@@ -33,4 +33,21 @@ const deadBase=fixture();deadBase.chain.liveTips[1].to=1500;assert(review(deadBa
 const shortBsc=fixture();shortBsc.chain.liveTips[0].from=3300;assert(review(shortBsc,now).errors.includes("BSC_LIVE_TIP_NOT_CONFIRMED"),"Short BSC window cannot be 15m complete");
 const shortBase=fixture();shortBase.chain.liveTips[1].from=4500;assert(review(shortBase,now).errors.includes("BASE_LIVE_TIP_NOT_CONFIRMED"),"Short Base window cannot be 15m complete");
 const incompletePool=fixture();incompletePool.pool.coins[0]={status:"READ_OK",poolTokenBalanceRaw:null,activeV3LiquidityRaw:"2000",decimals:18,currentTick:0};assert(review(incompletePool,now).errors.includes("V3_POOL_READ_INCOMPLETE"),"A false green V3 read must fail");
-console.log(JSON.stringify({testsPassed:12,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
+// A file can be young (<10min) yet belong to a previous workflow run.
+const runStart="2026-11-13T23:58:30Z";
+const sameRun=review(fixture(),now,runStart);
+assert.equal(sameRun.errors.length,0,"Six sources really produced during this workflow should pass");
+for(const [key,change] of [
+ ["spot",f=>f.spot.asOfUtc="2026-11-13T23:57:30Z"],
+ ["pool",f=>f.pool.asOfUtc="2026-11-13T23:57:30Z"],
+ ["chain",f=>f.chain.asOfUtc="2026-11-13T23:57:30Z"],
+ ["history",f=>f.history.runs[0].asOfUtc="2026-11-13T23:57:30Z"],
+ ["wallet",f=>f.wallet.asOfUtc="2026-11-13T23:57:30Z"],
+ ["prep",f=>f.prep.asOfUtc="2026-11-13T23:57:30Z"]
+]){
+ const instance=fixture();change(instance);
+ const result=review(instance,now,runStart);
+ assert(result.errors.includes(key.toUpperCase()+"_NOT_PRODUCED_IN_THIS_RUN"),key+" prior-run file must fail health despite age <10m");
+}
+assert(review(fixture(),now,"not-a-time").errors.includes("INVALID_RUN_START_MARKER"));
+console.log(JSON.stringify({testsPassed:20,checks:["fresh data","historical gaps warned","stale tip rejected","stale classifier rejected","incomplete symbol rejected","missing Base wallet snapshot","RPC failure","duplicate symbol","zero-backlog primary lane","old Base tip rejected"]}));
