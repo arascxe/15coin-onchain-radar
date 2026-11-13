@@ -37,9 +37,11 @@ function review(d,now=Date.now()){
   const covered=lag>0?tip?.coverage==="SUCCESS"&&tip?.coins?.length===expected:
    valid(c)&&c?.coins==null; // live primary lane coins are stored in chain.coins instead
   const span=ref&&Number.isFinite(ref.from)&&Number.isFinite(ref.to)&&ref.to>=ref.from;
+  const blocksInWindow=span?ref.to-ref.from+1:0;
+  const minTipBlocks=lag>0?(name==="bsc"?2400:4800):1;
   quality[name]={historicBacklog:lag,tipMode:lag>0?"LIVE_PRIORITY":"CONTIGUOUS_PRIMARY",tipFrom:ref?.from??null,tipTo:ref?.to??null,
-   tipHead:ref?.head??null,tipCoverage:ref?.coverage??null,unsampledMiddle:tip?.missingMiddleRange??null};
-  bad(name.toUpperCase()+"_LIVE_TIP_NOT_CONFIRMED",Boolean(within&&covered&&span));
+   tipHead:ref?.head??null,tipCoverage:ref?.coverage??null,blocksInWindow,minTipBlocks,unsampledMiddle:tip?.missingMiddleRange??null};
+  bad(name.toUpperCase()+"_LIVE_TIP_NOT_CONFIRMED",Boolean(within&&covered&&span&&blocksInWindow>=minTipBlocks));
   if(lag>0)warnings.push(name.toUpperCase()+"_HISTORICAL_GAP_"+lag+"_BLOCKS");
  }
  const syms=new Set(prep.coins?.map(c=>c.symbol));
