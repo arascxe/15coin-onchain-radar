@@ -23,7 +23,7 @@ const MONITORS=[
 ["LYN","bsc","0x302dfaf2cdbe51a18d97186a7384e87cf599877d","0x302642976506d247c7017b85ddc89e3956f96ba1","v3-unverified"]
 ].map(([symbol,chain,token,pool,kind])=>({symbol,chain,token,pool,kind}));
 const CHAIN={
-bsc:{id:56,blockSeconds:0.75,rpcs:["https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
+bsc:{id:56,blockSeconds:0.75,rpcs:["https://rpc.nodeflare.app/bnb/public","https://bnb.rpc.subquery.network/public","https://56.rpc.thirdweb.com","https://bsc.blockpi.network/v1/rpc/public","https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
 base:{id:8453,blockSeconds:2,rpcs:["https://base-rpc.publicnode.com","https://mainnet.base.org"]}
 };
 const TRANSFER="0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
@@ -49,7 +49,7 @@ else{if(low(l.address)!==t.pool||![MINT,BURN].includes(low(tp[0]))||tp.length<4)
 if(tickLower>=tickUpper)throw Error("bad ticks");return {tx:low(l.transactionHash),block:num(l.blockNumber),logIndex:num(l.logIndex||"0x0"),tickLower,tickUpper,delta:delta.toString(),change:delta>0n?"ADD":delta<0n?"REMOVE":"ZERO",ownerOrSender:owner,pool:t.pool}};
 async function getLogs(url,filter,from,to){const one=async(a,b)=>rpc(url,"eth_getLogs",[{...filter,fromBlock:hex(a),toBlock:hex(b)}],18000);
 async function scan(a,b){try{const logs=await one(a,b);if(!Array.isArray(logs))throw Error("nonarray logs");if(logs.length>9000)throw Error("large log batch");return logs}
-catch(e){if(b-a<=24)throw Error("log coverage failed "+a+"-"+b+": "+String(e.message));const m=Math.floor((a+b)/2);return [...await scan(a,m),...await scan(m+1,b)]}}
+catch(e){if(b-a<=0)throw Error("log coverage failed "+a+"-"+b+": "+String(e.message));const m=Math.floor((a+b)/2);return [...await scan(a,m),...await scan(m+1,b)]}}
 let all=[];for(let a=from;a<=to;a+=850)all.push(...await scan(a,Math.min(a+849,to)));return all}
 async function verifyProvider(chain,url){const c=CHAIN[chain];if(num(await rpc(url,"eth_chainId",[]))!==c.id)throw Error("wrong chain");const head=num(await rpc(url,"eth_blockNumber",[]));if(!Number.isFinite(head)||head<=0)throw Error("invalid head");let positive="UNVERIFIED";
 if(chain==="bsc"){const tx=await rpc(url,"eth_getTransactionReceipt",[PROOF_TX]);if(!tx?.blockNumber)throw Error("known LP tx receipt unavailable");const log=await getLogs(url,{address:MANAGER,topics:[MOD,PROOF_POOL]},num(tx.blockNumber),num(tx.blockNumber));if(!log.some(x=>low(x.transactionHash)===PROOF_TX))throw Error("historical positive eth_getLogs failed");positive="HISTORICAL_LP_PASS";}
