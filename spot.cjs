@@ -45,7 +45,7 @@ const past=c.slice(0,-1).filter(x=>x.ts>=latest.ts-7*86400&&x.ts<latest.ts&&late
 const m=median(past.map(x=>x.v));
 const gap=latest.ts-c.at(-2).ts;
 if(past.length<96||gap>intervalSec*1.5||!(m>0))return {status:"GAP_OR_BASELINE_INVALID",n:past.length,gap,medianVolumeUSD:round(m)};
-return {status:"OK",timestampUtc:new Date(latest.ts*1000).toISOString(),volumeUSD:round(latest.v,2),baselineN:past.length,medianVolumeUSD:round(m,2),rvol:round(latest.v/m,3)}}
+return {status:"OK",timestampUtc:new Date(latest.ts*1000).toISOString(),volumeUSD:round(latest.v,2),baselineN:past.length,medianVolumeUSD:round(m,2),rvol:round(latest.v/m,3),previousBarRvol:round(c.at(-2).v/m,3)}}
 function atr14(c){if(c.length<16)return null;const recent=c.slice(-15);let tr=[];for(let i=1;i<recent.length;i++){const a=recent[i],p=recent[i-1];tr.push(Math.max(a.h-a.l,Math.abs(a.h-p.c),Math.abs(a.l-p.c)))}return tr.reduce((x,y)=>x+y,0)/tr.length}
 function higherLows(c){if(c.length<22)return {status:"INSUFFICIENT_CANDLES"};const pts=[];
 for(let i=1;i<c.length-1;i++)if(c[i].l<c[i-1].l&&c[i].l<c[i+1].l)pts.push({ts:c[i].ts,low:c[i].l});
@@ -55,19 +55,25 @@ const delta=last[1].low-last[0].low,eligible=delta>=a*0.25;
 return {status:"OK",confirmedHigherLow:eligible,deltaPct:round(100*delta/last[0].low,3),atr14:round(a,9),lastTwoPivots:last.map(x=>({timestampUtc:new Date(x.ts*1000).toISOString(),low:x.low}))}
 }
 function verdict(r15,r1,hl){const rv15=r15?.status==="OK"?r15.rvol:0,rv1=r1?.status==="OK"?r1.rvol:0,vs=Math.max(rv15,rv1),structure=hl?.confirmedHigherLow===true;
-if(vs>=5&&structure)return "SPOT_EARLY_STRONG_REVIEW_ONLY";
+const twoBars=(rv15>=5&&r15?.previousBarRvol>=3)||(rv1>=5&&r1?.previousBarRvol>=3);
+if(vs>=5&&structure&&twoBars)return "SPOT_EARLY_STRONG_REVIEW_ONLY";
 if(vs>=3&&structure)return "SPOT_EARLY_WATCH";
 if(vs>=3)return "VOLUME_ONLY_NOT_EDGE";
 return "NO_VERIFIED_EARLY_SPOT_SIGNAL"}
 async function gate(c){const pair=c.symbol+"_USDT",base="https://api.gateio.ws/api/v4/spot/candlesticks?currency_pair="+encodeURIComponent(pair);
 const [a,b]=await Promise.all([getJSON(base+"&interval=15m&limit=690"),getJSON(base+"&interval=1h&limit=240")]);
 return {venue:"Gate Spot "+pair,source:"Gate V4 /spot/candlesticks",minute15:candlesGate(a,900),hour1:candlesGate(b,3600),url:"https://www.gate.com/trade/"+pair}}
+function candlesBitget(j,intervalSec){if(String(j?.code)!=="00000"&&!Array.isArray(j?.data))throw Error("Bitget API error");if(!Array.isArray(j?.data))throw Error("Bitget missing candles");const now=Date.now()/1000;return j.data.map(a=>{if(!Array.isArray(a)||a.length<7)throw Error("Bitget schema");const ts=Number(a[0])/1000,o=Number(a[1]),h=Number(a[2]),l=Number(a[3]),c=Number(a[4]),v=Number(a[6]);if(![ts,o,h,l,c,v].every(Number.isFinite)||o<=0||c<=0||v<0||h<Math.max(o,c,l)||l>Math.min(o,c,h))throw Error("Bitget bad OHLCV");return {ts,o,h,l,c,v}}).filter(x=>x.ts+intervalSec<=now-5).sort((a,b)=>a.ts-b.ts).filter((x,i,a)=>!i||x.ts!==a[i-1].ts)}
+async function bitget(c){const pair=c.symbol+"USDT",base="https://api.bitget.com/api/v3/market/candles?category=SPOT&symbol="+encodeURIComponent(pair);
+const [a,b]=await Promise.all([getJSON(base+"&interval=15m&limit=690"),getJSON(base+"&interval=1H&limit=240")]);
+return {venue:"Bitget Spot "+pair,source:"Bitget v3 SPOT candles",minute15:candlesBitget(a,900),hour1:candlesBitget(b,3600),url:"https://www.bitget.com/spot/"+pair}}
 async function gecko(c){if(!c.pool)throw Error("no verified primary pool");const prefix="https://api.geckoterminal.com/api/v2/networks/"+c.chain+"/pools/"+c.pool+"/ohlcv/";
 const [a,b]=await Promise.all([getJSON(prefix+"minute?aggregate=15&limit=690"),getJSON(prefix+"hour?aggregate=1&limit=240")]);
 return {venue:"GeckoTerminal pool "+c.pool,source:"GeckoTerminal public DEX spot pool OHLCV",minute15:candlesGecko(a,900),hour1:candlesGecko(b,3600),url:"https://www.geckoterminal.com/"+c.chain+"/pools/"+c.pool}}
 async function inspect(c){const failures=[];let series=null;
 try{series=await gate(c)}catch(e){failures.push("GATE "+String(e.message).slice(0,150));}
-if(!series){try{await sleep(350);series=await gecko(c)}catch(e){failures.push("GECKO "+String(e.message).slice(0,150))}}
+if(!series){try{series=await bitget(c)}catch(e){failures.push("BITGET "+String(e.message).slice(0,150))}}
+if(!series){try{await sleep(1800);series=await gecko(c)}catch(e){failures.push("GECKO "+String(e.message).slice(0,150))}}
 if(!series)return {symbol:c.symbol,status:"OHLCV_UNAVAILABLE",failures};
 const p15=computeRVOL(series.minute15,900),p1=computeRVOL(series.hour1,3600),hl=higherLows(series.hour1);
 const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.minute15.length)),x=(last&&first&&first.c>0)?round(100*(last.c/first.c-1),3):null;
