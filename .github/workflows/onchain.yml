@@ -37,6 +37,8 @@ jobs:
       - name: Read genuine spot OHLCV and compute RVOL
         run: node spot.cjs
         continue-on-error: true
+      - name: Syntax validate BSC receipt probe
+        run: node --check probe_receipts.cjs
       - name: Probe BSC block receipt event availability
         run: node probe_receipts.cjs
         continue-on-error: true
@@ -47,7 +49,8 @@ jobs:
         run: |
           git config user.name "onchain-radar-bot"
           git config user.email "onchain-radar-bot@users.noreply.github.com"
-          git add -f radar_data/pool_state_latest.json radar_data/spot_latest.json radar_data/receipt_probe.json
+          git add -f radar_data/pool_state_latest.json radar_data/spot_latest.json
+          if test -f radar_data/receipt_probe.json; then git add -f radar_data/receipt_probe.json; fi
           if test -f radar_data/pool_state.json; then git add -f radar_data/pool_state.json; fi
           if ! git diff --cached --quiet; then
             git commit -m "Pool state $(date -u +%Y-%m-%dT%H:%MZ)"
