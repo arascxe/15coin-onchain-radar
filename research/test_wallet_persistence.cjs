@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+"use strict";
+const assert=require("node:assert/strict"),{evolve,decimal}=require("../wallet_persistence.cjs");
+const t0="2026-11-13T20:00:00.000Z",t1="2026-11-13T20:15:00.000Z",t2="2026-11-13T20:30:00.000Z",tLate="2026-11-13T23:30:00.000Z";
+const token="0x"+"1".repeat(40),address="0x"+"2".repeat(40);
+const ob=n=>({symbol:"ON",token,address,balanceRaw:String(BigInt(n)*10n**18n),firstProof:{windowFrom:100,windowTo:200}});
+const a=evolve(null,ob(100000),t0,0.1,18);
+const b=evolve(a,ob(160000),t1,0.1,18);
+const c=evolve(b,ob(220000),t2,0.1,18);
+assert.equal(a.observations,1);
+assert.equal(b.persistenceEligible,false);
+assert.equal(c.observations,3);
+assert.equal(c.persistenceEligible,true);
+assert.equal(c.deltaSinceFirstUSD,12000);
+assert.equal(c.ownerVerified,false);
+assert.deepEqual(c.firstProof,a.firstProof);
+const gap=evolve(c,ob(300000),tLate,0.1,18);
+assert.equal(gap.persistenceEligible,false,"A single reading after hours does not prove uninterrupted persistence");
+assert.equal(gap.consecutive,1);
+assert.equal(decimal("1000000",6,0.2),0.2,"6-decimal token value must be scaled correctly");
+console.log(JSON.stringify({testsPassed:8,examples:["first observation","second insufficient","third sustained","USD exact","no owner attribution","source retained","time gap reset","6-decimal token"]}));
