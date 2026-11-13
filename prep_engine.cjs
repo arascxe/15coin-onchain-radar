@@ -69,6 +69,14 @@ function classify({symbol,spot,chain,pool,wallet,now}){
  })).filter(w=>w.netOutUSD!=null&&w.netOutUSD>=25000&&w.recipientCount>=1&&w.txProof.length>0);
  if(watchMovements.length)code.push("WATCHED_ADDRESS_OUTFLOW_TX");
  evidences.watchedAddressOutflows=watchMovements;
+ const immediateEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
+ (wallet.recentLargeEoaReceipts||[]).filter(x=>x.symbol===symbol&&x.ownerVerified===false&&x.receiptNetUSDApprox>=10000&&x.txProof?.length):[];
+ if(immediateEoa.length)code.push("ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX");
+ evidences.immediateEoaNetReceipts=immediateEoa.map(x=>({
+  address:x.address,receiptNetUSDApprox:x.receiptNetUSDApprox,balanceSnapshotUSDApprox:x.balanceSnapshotUSDApprox,
+  txProof:x.txProof,firstDetectedUtc:x.firstDetectedUtc,
+  caution:"One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
+ }));
  const dynamicEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
  (wallet.candidates||[]).filter(x=>x.symbol===symbol&&x.eoaUnverified===true&&x.netRetainedIncreaseUSD>=10000):[];
  if(dynamicEoa.length)code.push("DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE");
@@ -112,7 +120,7 @@ function classify({symbol,spot,chain,pool,wallet,now}){
    takerSnapshotFresh:tradeFresh,spotVerdict:p?.verdict??null};
  // Stage P2 needs meaningful movement involving two non-identical economic locations,
  // and the onchain address ownership and causal interpretation remain UNVERIFIED.
- const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000)||dynamicEoa.length>0;
+ const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000)||dynamicEoa.length>0||immediateEoa.length>0;
  const poolEvidence=poolDepletion||lpRemoval.length>0;
  const multi=walletEvidence&&poolEvidence;
  const preliminary=walletEvidence||poolEvidence||lpAdds.length>0;
