@@ -1,0 +1,852 @@
+{
+  "schema": "15coin-pre-registered-historical-spot-replay-v1",
+  "asOfUtc": "2026-11-13T20:38:19.330Z",
+  "status": "REPLAY_COMPLETED_NOT_PROVEN",
+  "methodology": {
+    "universe": "All Gate Spot primary symbols from current 15-coin radar, not selected by past winners",
+    "symbols": [
+      "ON",
+      "DOS",
+      "HANA",
+      "LIGHT",
+      "IN",
+      "TRUST",
+      "B2",
+      "CYS",
+      "STBL",
+      "AIO"
+    ],
+    "daysRequested": 42,
+    "holdoutDays": 10,
+    "exchange": "Gate Spot (public, no key)",
+    "timeframe": "15m fully closed candles",
+    "startUtc": "2026-10-02T20:15:00.000Z",
+    "endUtc": "2026-11-13T20:15:00.000Z",
+    "splitUtc": "2026-11-03T20:15:00.000Z",
+    "volumeBaseline": "Median previous 192 bars (48h), minimum seven calendar days of history; this experimental rule differs from the live v2 rules",
+    "earlyHypothesis": "15m RVOL>=2.5 and quote volume >=$5000 AND 1h quote volume >=$15000 AND 1h price +1%..+9% AND 6h price rise below +15% AND rising last 1h low vs previous 1h low",
+    "comparisons": [
+      "Volume-only rule: RVOL>=2.5 + quote volume >=$5000",
+      "Fixed daily 00:00 UTC control with quote volume >=$1000"
+    ],
+    "nonOverlap": "Only one same-rule observation per 24h per coin and split",
+    "entry": "Next 15m bar OPEN; no hindsight",
+    "outcome": "Next 24h highest return >=+20%; conservative -10% stop takes precedence if high and low occur within same bar; ignores fees, slippage and liquidity",
+    "caveats": [
+      "SPOT-only research; DOES NOT validate onchain foresight or prove future 10x",
+      "Price at next open and OHLCV highs can overstate actual tradeability; future high not guaranteed executable",
+      "No optimization, no fit to holdout, no look-ahead",
+      "Low event counts or gaps mean no statistically supported edge"
+    ]
+  },
+  "markets": [
+    {
+      "symbol": "ON",
+      "pair": "ON_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 8,
+        "volumeOnly": 20,
+        "dailyControl": 11
+      },
+      "holdout": {
+        "early": 5,
+        "volumeOnly": 8,
+        "dailyControl": 8
+      }
+    },
+    {
+      "symbol": "DOS",
+      "pair": "DOS_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 16,
+        "volumeOnly": 21,
+        "dailyControl": 23
+      },
+      "holdout": {
+        "early": 3,
+        "volumeOnly": 8,
+        "dailyControl": 4
+      }
+    },
+    {
+      "symbol": "HANA",
+      "pair": "HANA_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 8,
+        "volumeOnly": 15,
+        "dailyControl": 11
+      },
+      "holdout": {
+        "early": 3,
+        "volumeOnly": 7,
+        "dailyControl": 6
+      }
+    },
+    {
+      "symbol": "LIGHT",
+      "pair": "LIGHT_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 8,
+        "volumeOnly": 17,
+        "dailyControl": 10
+      },
+      "holdout": {
+        "early": 1,
+        "volumeOnly": 6,
+        "dailyControl": 2
+      }
+    },
+    {
+      "symbol": "IN",
+      "pair": "IN_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 6,
+        "volumeOnly": 13,
+        "dailyControl": 14
+      },
+      "holdout": {
+        "early": 2,
+        "volumeOnly": 7,
+        "dailyControl": 3
+      }
+    },
+    {
+      "symbol": "TRUST",
+      "pair": "TRUST_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 6,
+        "volumeOnly": 12,
+        "dailyControl": 9
+      },
+      "holdout": {
+        "early": 3,
+        "volumeOnly": 9,
+        "dailyControl": 8
+      }
+    },
+    {
+      "symbol": "B2",
+      "pair": "B2_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 1,
+        "volumeOnly": 14,
+        "dailyControl": 6
+      },
+      "holdout": {
+        "early": 5,
+        "volumeOnly": 8,
+        "dailyControl": 3
+      }
+    },
+    {
+      "symbol": "CYS",
+      "pair": "CYS_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 7,
+        "volumeOnly": 14,
+        "dailyControl": 9
+      },
+      "holdout": {
+        "early": 2,
+        "volumeOnly": 6,
+        "dailyControl": 1
+      }
+    },
+    {
+      "symbol": "STBL",
+      "pair": "STBL_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 5,
+        "volumeOnly": 18,
+        "dailyControl": 13
+      },
+      "holdout": {
+        "early": 0,
+        "volumeOnly": 6,
+        "dailyControl": 1
+      }
+    },
+    {
+      "symbol": "AIO",
+      "pair": "AIO_USDT",
+      "source": "https://api.gateio.ws/api/v4/spot/candlesticks",
+      "candles": 4032,
+      "first": "2026-10-02T20:15:00.000Z",
+      "last": "2026-11-13T20:00:00.000Z",
+      "considered": 3264,
+      "eligible": 3264,
+      "gapRejected": 0,
+      "requests": 9,
+      "errors": [],
+      "train": {
+        "early": 1,
+        "volumeOnly": 10,
+        "dailyControl": 4
+      },
+      "holdout": {
+        "early": 3,
+        "volumeOnly": 8,
+        "dailyControl": 3
+      }
+    }
+  ],
+  "summary": {
+    "train": {
+      "early": {
+        "n": 66,
+        "hit20AnyPct": 15.15,
+        "hit20BeforeStop10Pct": 15.15,
+        "avgMaxRise24Pct": 12.899,
+        "avgMaxFall24Pct": -8.241,
+        "avgReturn6hPct": -1.307,
+        "avgReturn24hPct": -1.236
+      },
+      "volumeOnly": {
+        "n": 154,
+        "hit20AnyPct": 7.79,
+        "hit20BeforeStop10Pct": 7.14,
+        "avgMaxRise24Pct": 10.38,
+        "avgMaxFall24Pct": -5.946,
+        "avgReturn6hPct": 0.272,
+        "avgReturn24hPct": -0.131
+      },
+      "dailyControl": {
+        "n": 110,
+        "hit20AnyPct": 8.18,
+        "hit20BeforeStop10Pct": 8.18,
+        "avgMaxRise24Pct": 9.562,
+        "avgMaxFall24Pct": -6.29,
+        "avgReturn6hPct": -0.053,
+        "avgReturn24hPct": 0.038
+      }
+    },
+    "holdout": {
+      "early": {
+        "n": 27,
+        "hit20AnyPct": 18.52,
+        "hit20BeforeStop10Pct": 18.52,
+        "avgMaxRise24Pct": 10.325,
+        "avgMaxFall24Pct": -10.946,
+        "avgReturn6hPct": -2.667,
+        "avgReturn24hPct": -4.643
+      },
+      "volumeOnly": {
+        "n": 73,
+        "hit20AnyPct": 9.59,
+        "hit20BeforeStop10Pct": 8.22,
+        "avgMaxRise24Pct": 8.395,
+        "avgMaxFall24Pct": -6.99,
+        "avgReturn6hPct": -0.617,
+        "avgReturn24hPct": -1.46
+      },
+      "dailyControl": {
+        "n": 39,
+        "hit20AnyPct": 12.82,
+        "hit20BeforeStop10Pct": 10.26,
+        "avgMaxRise24Pct": 10.324,
+        "avgMaxFall24Pct": -8.25,
+        "avgReturn6hPct": -1.224,
+        "avgReturn24hPct": -1.947
+      }
+    }
+  },
+  "evidence": [
+    {
+      "symbol": "ON",
+      "alertUtc": "2026-11-05T08:15:00.000Z",
+      "entryUtc": "2026-11-05T08:15:00.000Z",
+      "rule": "early",
+      "rv15": 33.927,
+      "volumeUSD": 21042.25,
+      "price1hPct": 1.06,
+      "result": {
+        "entry": 0.16612,
+        "hit20BeforeStop10": true,
+        "hit20Any": true,
+        "maxRise24Pct": 21.466,
+        "maxFall24Pct": -4.978,
+        "return6hPct": 5.851,
+        "return24hPct": 6.134,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "ON",
+      "alertUtc": "2026-11-06T09:00:00.000Z",
+      "entryUtc": "2026-11-06T09:00:00.000Z",
+      "rule": "early",
+      "rv15": 10.165,
+      "volumeUSD": 17301.14,
+      "price1hPct": 2.3,
+      "result": {
+        "entry": 0.18034,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 15.349,
+        "maxFall24Pct": -9.005,
+        "return6hPct": 6.593,
+        "return24hPct": -7.27,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "ON",
+      "alertUtc": "2026-11-09T01:30:00.000Z",
+      "entryUtc": "2026-11-09T01:30:00.000Z",
+      "rule": "early",
+      "rv15": 9.046,
+      "volumeUSD": 8405.24,
+      "price1hPct": 3.99,
+      "result": {
+        "entry": 0.18953,
+        "hit20BeforeStop10": true,
+        "hit20Any": true,
+        "maxRise24Pct": 63.621,
+        "maxFall24Pct": -27.89,
+        "return6hPct": -1.208,
+        "return24hPct": -12.673,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "ON",
+      "alertUtc": "2026-11-10T07:15:00.000Z",
+      "entryUtc": "2026-11-10T07:15:00.000Z",
+      "rule": "early",
+      "rv15": 5.4,
+      "volumeUSD": 26302.59,
+      "price1hPct": 4.87,
+      "result": {
+        "entry": 0.18681,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 7.28,
+        "maxFall24Pct": -50.966,
+        "return6hPct": -42.177,
+        "return24hPct": -50.656,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "ON",
+      "alertUtc": "2026-11-11T13:15:00.000Z",
+      "entryUtc": "2026-11-11T13:15:00.000Z",
+      "rule": "early",
+      "rv15": 4.992,
+      "volumeUSD": 37443.64,
+      "price1hPct": 2.85,
+      "result": {
+        "entry": 0.08828,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 2.9,
+        "maxFall24Pct": -17.512,
+        "return6hPct": -4.542,
+        "return24hPct": -7.386,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "DOS",
+      "alertUtc": "2026-11-05T06:15:00.000Z",
+      "entryUtc": "2026-11-05T06:15:00.000Z",
+      "rule": "early",
+      "rv15": 38.416,
+      "volumeUSD": 19315.48,
+      "price1hPct": 2.81,
+      "result": {
+        "entry": 0.2085,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 0.863,
+        "maxFall24Pct": -8.297,
+        "return6hPct": -2.062,
+        "return24hPct": -3.981,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "DOS",
+      "alertUtc": "2026-11-09T17:00:00.000Z",
+      "entryUtc": "2026-11-09T17:00:00.000Z",
+      "rule": "early",
+      "rv15": 27.008,
+      "volumeUSD": 22565.32,
+      "price1hPct": 2.78,
+      "result": {
+        "entry": 0.1963,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 0.815,
+        "maxFall24Pct": -20.683,
+        "return6hPct": -3.158,
+        "return24hPct": -12.277,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "DOS",
+      "alertUtc": "2026-11-11T18:30:00.000Z",
+      "entryUtc": "2026-11-11T18:30:00.000Z",
+      "rule": "early",
+      "rv15": 3.701,
+      "volumeUSD": 26897.63,
+      "price1hPct": 1.57,
+      "result": {
+        "entry": 0.1754,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 3.364,
+        "maxFall24Pct": -7.127,
+        "return6hPct": -2.281,
+        "return24hPct": -5.188,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "HANA",
+      "alertUtc": "2026-11-08T13:45:00.000Z",
+      "entryUtc": "2026-11-08T13:45:00.000Z",
+      "rule": "early",
+      "rv15": 41.592,
+      "volumeUSD": 34907.89,
+      "price1hPct": 8.09,
+      "result": {
+        "entry": 0.015115,
+        "hit20BeforeStop10": true,
+        "hit20Any": true,
+        "maxRise24Pct": 29.904,
+        "maxFall24Pct": -9.236,
+        "return6hPct": -0.853,
+        "return24hPct": 5.081,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "HANA",
+      "alertUtc": "2026-11-09T17:30:00.000Z",
+      "entryUtc": "2026-11-09T17:30:00.000Z",
+      "rule": "early",
+      "rv15": 4.305,
+      "volumeUSD": 9407.09,
+      "price1hPct": 2.18,
+      "result": {
+        "entry": 0.016725,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 4.395,
+        "maxFall24Pct": -14.248,
+        "return6hPct": 2.141,
+        "return24hPct": -9.734,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "HANA",
+      "alertUtc": "2026-11-12T08:15:00.000Z",
+      "entryUtc": "2026-11-12T08:15:00.000Z",
+      "rule": "early",
+      "rv15": 8.157,
+      "volumeUSD": 8093.93,
+      "price1hPct": 1.22,
+      "result": {
+        "entry": 0.017543,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 5.586,
+        "maxFall24Pct": -10.278,
+        "return6hPct": -4.566,
+        "return24hPct": 3.836,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "LIGHT",
+      "alertUtc": "2026-11-04T07:15:00.000Z",
+      "entryUtc": "2026-11-04T07:15:00.000Z",
+      "rule": "early",
+      "rv15": 10.518,
+      "volumeUSD": 9973.26,
+      "price1hPct": 1.78,
+      "result": {
+        "entry": 0.24624,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 1.811,
+        "maxFall24Pct": -10.571,
+        "return6hPct": -10.226,
+        "return24hPct": -0.544,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "IN",
+      "alertUtc": "2026-11-07T01:30:00.000Z",
+      "entryUtc": "2026-11-07T01:30:00.000Z",
+      "rule": "early",
+      "rv15": 7.203,
+      "volumeUSD": 5377.43,
+      "price1hPct": 1.15,
+      "result": {
+        "entry": 0.02633,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 7.634,
+        "maxFall24Pct": -3.038,
+        "return6hPct": 1.215,
+        "return24hPct": -2.962,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "IN",
+      "alertUtc": "2026-11-08T04:00:00.000Z",
+      "entryUtc": "2026-11-08T04:00:00.000Z",
+      "rule": "early",
+      "rv15": 64.051,
+      "volumeUSD": 54723.3,
+      "price1hPct": 1.64,
+      "result": {
+        "entry": 0.02595,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 2.543,
+        "maxFall24Pct": -10.983,
+        "return6hPct": -0.308,
+        "return24hPct": -6.474,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "TRUST",
+      "alertUtc": "2026-11-04T12:15:00.000Z",
+      "entryUtc": "2026-11-04T12:15:00.000Z",
+      "rule": "early",
+      "rv15": 43.202,
+      "volumeUSD": 32801.83,
+      "price1hPct": 1.29,
+      "result": {
+        "entry": 0.05727,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 12.502,
+        "maxFall24Pct": -0.786,
+        "return6hPct": 2.183,
+        "return24hPct": 4.994,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "TRUST",
+      "alertUtc": "2026-11-06T10:15:00.000Z",
+      "entryUtc": "2026-11-06T10:15:00.000Z",
+      "rule": "early",
+      "rv15": 9.636,
+      "volumeUSD": 21482.12,
+      "price1hPct": 1.34,
+      "result": {
+        "entry": 0.06112,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 6.446,
+        "maxFall24Pct": -1.26,
+        "return6hPct": -1.047,
+        "return24hPct": -1.014,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "TRUST",
+      "alertUtc": "2026-11-08T22:00:00.000Z",
+      "entryUtc": "2026-11-08T22:00:00.000Z",
+      "rule": "early",
+      "rv15": 31.164,
+      "volumeUSD": 30911.8,
+      "price1hPct": 4.59,
+      "result": {
+        "entry": 0.05971,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 2.294,
+        "maxFall24Pct": -6.883,
+        "return6hPct": 0.737,
+        "return24hPct": -1.273,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "B2",
+      "alertUtc": "2026-11-07T12:15:00.000Z",
+      "entryUtc": "2026-11-07T12:15:00.000Z",
+      "rule": "early",
+      "rv15": 198.628,
+      "volumeUSD": 46690.16,
+      "price1hPct": 2.91,
+      "result": {
+        "entry": 0.3927,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 3.667,
+        "maxFall24Pct": -1.07,
+        "return6hPct": 1.961,
+        "return24hPct": -0.153,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "B2",
+      "alertUtc": "2026-11-08T13:30:00.000Z",
+      "entryUtc": "2026-11-08T13:30:00.000Z",
+      "rule": "early",
+      "rv15": 4.178,
+      "volumeUSD": 5410.75,
+      "price1hPct": 2.91,
+      "result": {
+        "entry": 0.3993,
+        "hit20BeforeStop10": true,
+        "hit20Any": true,
+        "maxRise24Pct": 20.987,
+        "maxFall24Pct": -5.034,
+        "return6hPct": -0.726,
+        "return24hPct": 13.849,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "B2",
+      "alertUtc": "2026-11-09T15:45:00.000Z",
+      "entryUtc": "2026-11-09T15:45:00.000Z",
+      "rule": "early",
+      "rv15": 4.735,
+      "volumeUSD": 10880.66,
+      "price1hPct": 1.08,
+      "result": {
+        "entry": 0.4515,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 6.6,
+        "maxFall24Pct": -5.382,
+        "return6hPct": 1.152,
+        "return24hPct": 0.886,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "B2",
+      "alertUtc": "2026-11-10T18:15:00.000Z",
+      "entryUtc": "2026-11-10T18:15:00.000Z",
+      "rule": "early",
+      "rv15": 3.171,
+      "volumeUSD": 8448.14,
+      "price1hPct": 2.18,
+      "result": {
+        "entry": 0.4781,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 15.248,
+        "maxFall24Pct": -8.304,
+        "return6hPct": 1.506,
+        "return24hPct": -4.33,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "B2",
+      "alertUtc": "2026-11-12T05:45:00.000Z",
+      "entryUtc": "2026-11-12T05:45:00.000Z",
+      "rule": "early",
+      "rv15": 4.192,
+      "volumeUSD": 8924.94,
+      "price1hPct": 1.05,
+      "result": {
+        "entry": 0.453,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 2.141,
+        "maxFall24Pct": -11.611,
+        "return6hPct": -7.616,
+        "return24hPct": -10.861,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "CYS",
+      "alertUtc": "2026-11-09T19:45:00.000Z",
+      "entryUtc": "2026-11-09T19:45:00.000Z",
+      "rule": "early",
+      "rv15": 119.806,
+      "volumeUSD": 54706.1,
+      "price1hPct": 3.32,
+      "result": {
+        "entry": 0.09286,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 11.2,
+        "maxFall24Pct": -13.063,
+        "return6hPct": -7.786,
+        "return24hPct": -12.266,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "CYS",
+      "alertUtc": "2026-11-12T19:15:00.000Z",
+      "entryUtc": "2026-11-12T19:15:00.000Z",
+      "rule": "early",
+      "rv15": 88.381,
+      "volumeUSD": 43776.55,
+      "price1hPct": 1.46,
+      "result": {
+        "entry": 0.07194,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 2.989,
+        "maxFall24Pct": -6.936,
+        "return6hPct": -1.612,
+        "return24hPct": 1.529,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "AIO",
+      "alertUtc": "2026-11-04T05:30:00.000Z",
+      "entryUtc": "2026-11-04T05:30:00.000Z",
+      "rule": "early",
+      "rv15": 24.156,
+      "volumeUSD": 5641.04,
+      "price1hPct": 1.81,
+      "result": {
+        "entry": 0.03752,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 6.05,
+        "maxFall24Pct": -8.342,
+        "return6hPct": -2.186,
+        "return24hPct": 1.439,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "AIO",
+      "alertUtc": "2026-11-08T16:15:00.000Z",
+      "entryUtc": "2026-11-08T16:15:00.000Z",
+      "rule": "early",
+      "rv15": 15.008,
+      "volumeUSD": 8511.64,
+      "price1hPct": 7.45,
+      "result": {
+        "entry": 0.04441,
+        "hit20BeforeStop10": true,
+        "hit20Any": true,
+        "maxRise24Pct": 20.919,
+        "maxFall24Pct": -10.741,
+        "return6hPct": 6.057,
+        "return24hPct": -4.729,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    },
+    {
+      "symbol": "AIO",
+      "alertUtc": "2026-11-10T08:00:00.000Z",
+      "entryUtc": "2026-11-10T08:00:00.000Z",
+      "rule": "early",
+      "rv15": 6.055,
+      "volumeUSD": 7709.46,
+      "price1hPct": 8.98,
+      "result": {
+        "entry": 0.04741,
+        "hit20BeforeStop10": false,
+        "hit20Any": false,
+        "maxRise24Pct": 0.19,
+        "maxFall24Pct": -11.327,
+        "return6hPct": -9.049,
+        "return24hPct": -9.344,
+        "firstExit": "BOTH_IN_SAME_CANDLE_IS_STOP_FIRST"
+      }
+    }
+  ],
+  "verifiedMarkets": 10,
+  "totalEligibleSamples": 32640,
+  "validationVerdict": "Observe lift against volume-only and same-coin daily control; even positive lift is only exploratory"
+}
