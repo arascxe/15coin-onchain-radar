@@ -46,27 +46,25 @@ jobs:
       - name: Read public BSC pool state via official RPC
         run: node pool_state.cjs
         continue-on-error: true
-      - name: Persist BSC pool state before risky event queries
-        run: |
-          git config user.name "onchain-radar-bot"
-          git config user.email "onchain-radar-bot@users.noreply.github.com"
-          git add -f radar_data/pool_state_latest.json radar_data/spot_latest.json radar_data/spot_history.json
-          if test -f radar_data/receipt_probe.json; then git add -f radar_data/receipt_probe.json; fi
-          if test -f radar_data/pool_state.json; then git add -f radar_data/pool_state.json; fi
-          if ! git diff --cached --quiet; then
-            git commit -m "Pool state $(date -u +%Y-%m-%dT%H:%MZ)"
-            git push
-          fi
       - name: Scan public chain transfer and liquidity events
         run: node scan.cjs
         continue-on-error: true
-      - name: Persist current verified coverage and cursors
+      - name: Persist all radar data in one commit
         run: |
           git config user.name "onchain-radar-bot"
           git config user.email "onchain-radar-bot@users.noreply.github.com"
-          git add -f radar_data/latest.json radar_data/state.json radar_data/pool_state_latest.json radar_data/pool_state.json
+          for file in \
+            radar_data/spot_latest.json \
+            radar_data/spot_history.json \
+            radar_data/pool_state_latest.json \
+            radar_data/pool_state.json \
+            radar_data/receipt_probe.json \
+            radar_data/latest.json \
+            radar_data/state.json; do
+            if test -f "$file"; then git add -f -- "$file"; fi
+          done
           if ! git diff --cached --quiet; then
-            git commit -m "Onchain evidence snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            git commit -m "Radar evidence snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
             git push
           fi
 
