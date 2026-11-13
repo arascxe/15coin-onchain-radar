@@ -153,7 +153,7 @@ async function collectBscReceipts(state){
 }
 
 async function collect(chain,state){if(chain==="bsc")return collectBscReceipts(state);const c=CHAIN[chain],errs=[];for(const url of c.rpcs){try{
-const status=await verifyProvider(chain,url);const head=status.head;const cursor=Number(state.cursors[chain]||0);const from=cursor?cursor+1:Math.max(1,head-Math.ceil(900/c.blockSeconds));
+const status=await verifyProvider(chain,url);const head=status.head;const cursor=Number(chain==="base"?(state.cursors.baseLive||0):(state.cursors[chain]||0));const from=cursor?cursor+1:Math.max(1,head-Math.ceil(900/c.blockSeconds));
 const to=Math.min(head-5,from+Math.ceil(3600/c.blockSeconds)-1);if(to<from)return {chain,provider:url,...status,from,to,coverage:"NO_NEW_BLOCKS",coins:[],backlog:0};
 const tokens=MONITORS.filter(x=>x.chain===chain);const transfer=await getLogs(url,{address:tokens.map(x=>x.token),topics:[TRANSFER]},from,to);
 let lps=[];if(chain==="bsc"){
@@ -171,14 +171,14 @@ const alerts=[];if(lpEvents.some(e=>e.change!=="ZERO"))alerts.push({level:"LP_EV
 if(inflows.length>=2)alerts.push({level:"UNKNOWN_WALLET_NET_INFLOW",message:"At least two addresses gained tokens in scan interval; CEX/bridge/LP ownership NOT established"});
 coins.push({symbol:t.symbol,chain,token:t.token,pool:t.pool,coverage:"TRANSFER_LOGS_QUERIED",transferCount:events.length,observedTransfers:events.slice(-12),netRecipients:inflows,lpEventCount:lpEvents.length,lpEvents,alerts});
 }
-return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.max(0,head-5-to),coverage:"SUCCESS",coins};
+return {chain,provider:url,positive:status.positive,head,from,to,backlog:Math.max(0,head-5-to),coverage:"SUCCESS",method:"eth_getLogs",legacyBackfillCursor:chain==="base"?Number(state.cursors.base||0):undefined,historicalUnscannedFrom:chain==="base"?Number(state.cursors.base||0)+1:undefined,historicalUnscannedTo:chain==="base"?from-1:undefined,liveOnlyBootstrap:chain==="base"&&!cursor,coins};
 }catch(e){errs.push(url+": "+String(e.message).slice(0,260));console.warn(chain+" RPC failed",url,String(e.message).slice(0,130))}}
 if(chain==="bsc"){try{const qs=new URLSearchParams({module:"logs",action:"getLogs",address:MANAGER,fromBlock:"1",toBlock:"1",page:"1",offset:"1"});const u="https://api.routescan.io/v2/network/mainnet/evm/56/etherscan/api?"+qs;const ctrl=new AbortController();const ti=setTimeout(()=>ctrl.abort(),9000);try{const response=await fetch(u,{signal:ctrl.signal});const str=(await response.text()).slice(0,500);errs.push("ROUTESCAN_KEYLESS_PROBE "+response.status+" "+str)}finally{clearTimeout(ti)}}catch(e){errs.push("ROUTESCAN_KEYLESS_PROBE "+String(e.message))}}
 return {chain,coverage:"FAILED",errors:errs,coins:[]}}
-async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if((r.coverage==="SUCCESS"||r.coverage==="PARTIAL")&&r.to>=r.from)state.cursors[chain]=r.to}
+async function main(){const state=readState(),results=[];for(const chain of ["bsc","base"]){const r=await collect(chain,state);results.push(r);if((r.coverage==="SUCCESS"||r.coverage==="PARTIAL")&&r.to>=r.from)state.cursors[chain==="base"?"baseLive":chain]=r.to}
 const by=new Map(results.flatMap(r=>r.coins.map(c=>[c.symbol,c])));const coins=MONITORS.map(t=>by.get(t.symbol)||{symbol:t.symbol,chain:t.chain,coverage:results.find(r=>r.chain===t.chain)?.coverage||"FAILED",transferCount:null,lpEvents:[],alerts:[]});
 const status=results.every(r=>r.coverage==="SUCCESS"||r.coverage==="NO_NEW_BLOCKS")?"COMPLETE":results.some(r=>r.coverage==="SUCCESS")?"PARTIAL":"FAILED";
-const report={schema:"15coin-chain-evidence-v2",asOfUtc:new Date().toISOString(),status,explicitLimits:"Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP addition or removal is NOT necessarily a bullish event. Unscanned blocks and failed RPC are NOT zero events.",chains:results.map(({coins,...rest})=>rest),coins,alerts:coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:c.chain,...a})))};
+const report={schema:"15coin-chain-evidence-v2",asOfUtc:new Date().toISOString(),status,explicitLimits:"BSC: contiguous receipts. Base live cursor is separate from unresolved historic base cursor; historical gap NOT COVERED. Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP actions are NOT necessarily bullish. Unscanned blocks and failed RPC are NOT zero events.",chains:results.map(({coins,...rest})=>rest),coins,alerts:coins.flatMap(c=>c.alerts.map(a=>({symbol:c.symbol,chain:c.chain,...a})))};
 saveJSON(OUT_FILE,report);
 state.lastRunUtc=report.asOfUtc;state.lastStatus=status;saveJSON(STATE_FILE,state);
 console.log(JSON.stringify({status,asOfUtc:report.asOfUtc,measured:coins.filter(c=>c.transferCount!==null).length,lpEvents:coins.reduce((n,c)=>n+c.lpEvents.length,0),alerts:report.alerts.length,chains:report.chains.map(x=>({chain:x.chain,coverage:x.coverage,provider:x.provider,from:x.from,to:x.to,backlog:x.backlog,errors:x.errors}))},null,2));
