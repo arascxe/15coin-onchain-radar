@@ -23,7 +23,7 @@ const MONITORS=[
 ["LYN","bsc","0x302dfaf2cdbe51a18d97186a7384e87cf599877d","0x302642976506d247c7017b85ddc89e3956f96ba1","v3-unverified"]
 ].map(([symbol,chain,token,pool,kind])=>({symbol,chain,token,pool,kind}));
 const CHAIN={
-bsc:{id:56,blockSeconds:0.75,rpcs:["https://rpc.nodeflare.app/bnb/public","https://bnb.rpc.subquery.network/public","https://56.rpc.thirdweb.com","https://bsc.blockpi.network/v1/rpc/public","https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
+bsc:{id:56,blockSeconds:0.75,rpcs:["https://1rpc.io/bnb","https://bsc.meowrpc.com","https://rpc.nodeflare.app/bnb/public","https://bnb.rpc.subquery.network/public","https://56.rpc.thirdweb.com","https://bsc.blockpi.network/v1/rpc/public","https://bsc-rpc.publicnode.com","https://bsc.drpc.org","https://bsc-mainnet.public.blastapi.io"]},
 base:{id:8453,blockSeconds:2,rpcs:["https://base-rpc.publicnode.com","https://mainnet.base.org"]}
 };
 const TRANSFER="0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef";
