@@ -69,7 +69,7 @@ async function main(){
    const usd=decimal(entry.rawNetIn,decBy[c.symbol],priceBy.get(c.symbol));
    if(!(usd>=100))continue;
    const key=c.symbol+"|"+address;
-   proofMap.set(key,{chain:c.network,windowFrom:tip.from,windowTo:tip.to,positiveNetTransferRaw:entry.rawNetIn,usdApprox:Number(usd.toFixed(2)),hashesOnlyIfInObservedTransfers:(c.observedTransfers||[]).filter(x=>x.to===address).slice(-3).map(x=>x.tx),caution:"Net received in a scanned block window; does not prove retained balance or unique holder."});
+   proofMap.set(key,{chain:c.network,windowFrom:tip.from,windowTo:tip.to,positiveNetTransferRaw:entry.rawNetIn,usdApprox:Number(usd.toFixed(2)),txProof:(entry.txProof||[]).slice(-3),caution:"Net received in a scanned block window; does not prove retained balance or unique holder."});
    candidates.push({symbol:c.symbol,chain:c.network,address,token:c.token,firstProof:proofMap.get(key)});
   }
  }
@@ -83,7 +83,7 @@ async function main(){
  }
  const jobs=[...bySym.values()].flatMap(arr=>arr.slice(0,10));
  // Read a recent block on EACH chain, never reusing BSC tags for Base.
- let snapshotBlock=null,tracked=[],skippedContract=0,failures=[...decimalsErrors],eoaChecks=0;
+ let snapshotBlock=null,tracked=[],skippedContract=0,failures=[...decimalsErrors],eoaChecks=0,recentLargeEoaReceipts=[];
  const snapshotBlocks={bsc:null,base:null},tags={},codeMap=new Map();
  for(const network of ["bsc","base"]){
   if(!tipBy.has(network))continue;
@@ -106,6 +106,13 @@ async function main(){
   const r=reads[i],j=eoa[i];if(!r.ok){failures.push({network:j.chain,symbol:j.symbol,address:j.address,error:r.error});continue}
   const oldEntry=old.tracked.find(q=>q.symbol===j.symbol&&q.address===j.address&&(q.chain||"bsc")===j.chain);
   const obs=evolve(oldEntry,r.value,NOW,priceBy.get(j.symbol),decBy[j.symbol]);tracked.push(obs);
+  const amt=j.firstProof?.usdApprox,heldUSD=decimal(r.value.balanceRaw,decBy[j.symbol],priceBy.get(j.symbol));
+  if(amt>=10000&&heldUSD!=null&&heldUSD>=0.75*amt&&j.firstProof?.txProof?.length){
+   recentLargeEoaReceipts.push({symbol:j.symbol,chain:j.chain,address:j.address,ownerVerified:false,
+    receiptNetUSDApprox:amt,balanceSnapshotUSDApprox:Number(heldUSD.toFixed(2)),
+    txProof:j.firstProof.txProof,firstDetectedUtc:NOW,blockWindow:{from:j.firstProof.windowFrom,to:j.firstProof.windowTo},
+    caveat:"Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."});
+  }
  }
  // Keep evidence after intermittent RPC outages; mark stale, never call it current.
  for(const prev of old.tracked)if(!tracked.some(x=>x.symbol===prev.symbol&&x.address===prev.address)&&Date.parse(prev.lastSeenUtc)>=cutoff)tracked.push(prev);
@@ -118,7 +125,7 @@ async function main(){
  const report={schema:"15coin-dynamic-wallet-latest-v1",asOfUtc:NOW,status:snapshotBlocks.bsc!=null&&snapshotBlocks.base!=null?"SNAPSHOT_ATTEMPTED":"PARTIAL_SNAPSHOT_COVERAGE",snapshotBlock,snapshotBlocks,
   source:"Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   dataFresh:Date.parse(NOW)-Date.parse(chain.asOfUtc)<20*60000,
-  candidates:signals,counts:{newRecipients:candidates.length,trackedEOAs:tracked.filter(x=>x.lastSeenUtc===NOW).length,
+  candidates:signals,recentLargeEoaReceipts,counts:{newRecipients:candidates.length,oneShotLargeEoaReceipts:recentLargeEoaReceipts.length,trackedEOAs:tracked.filter(x=>x.lastSeenUtc===NOW).length,
   contractCandidatesSkipped:skippedContract,codeReads:eoaChecks,failedRPC:failures.length,qualifiedPersistence:signals.length},
   caveats:["EOA != independent private holder, exchange or whale. Candidate labels are unverified",
   "Early stage window excludes unscanned blocks; cumulative balance is not the same as independently funded buying",
