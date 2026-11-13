@@ -1,0 +1,41 @@
+name: 15 Coin Onchain Evidence
+on:
+  push:
+    paths:
+      - "scan.cjs"
+      - ".github/workflows/onchain.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "45 * * * *"
+permissions:
+  contents: write
+concurrency:
+  group: fifteen-coin-onchain-hourly
+  cancel-in-progress: false
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+      - name: Node runtime
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax validation
+        run: node --check scan.cjs
+      - name: Scan public chain transfer and liquidity events
+        run: node scan.cjs
+        continue-on-error: true
+      - name: Persist current verified coverage and cursors
+        run: |
+          git config user.name "onchain-radar-bot"
+          git config user.email "onchain-radar-bot@users.noreply.github.com"
+          git add -f radar_data/latest.json radar_data/state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Onchain evidence snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
