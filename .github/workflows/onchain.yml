@@ -35,6 +35,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Mark start time of THIS collection run
+        shell: bash
+        run: echo "RADAR_RUN_STARTED_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
       - name: Syntax validation
         run: node --check scan.cjs
       - name: Syntax validate pool state module
