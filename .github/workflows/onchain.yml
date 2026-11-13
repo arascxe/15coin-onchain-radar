@@ -30,6 +30,16 @@ jobs:
       - name: Read public BSC pool state via official RPC
         run: node pool_state.cjs
         continue-on-error: true
+      - name: Persist BSC pool state before risky event queries
+        run: |
+          git config user.name "onchain-radar-bot"
+          git config user.email "onchain-radar-bot@users.noreply.github.com"
+          git add -f radar_data/pool_state_latest.json
+          if test -f radar_data/pool_state.json; then git add -f radar_data/pool_state.json; fi
+          if ! git diff --cached --quiet; then
+            git commit -m "Pool state $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
       - name: Scan public chain transfer and liquidity events
         run: node scan.cjs
         continue-on-error: true
