@@ -1,6 +1,6 @@
 {
   "schema": "15coin-chain-evidence-v2",
-  "asOfUtc": "2026-11-13T18:34:02.680Z",
+  "asOfUtc": "2026-11-13T18:34:26.792Z",
   "status": "COMPLETE",
   "explicitLimits": "BSC: contiguous receipts. Base live cursor is separate from unresolved historic base cursor; historical gap NOT COVERED. Observed transfers are NOT exchange net inventory or confirmed independent wallets. LP actions are NOT necessarily bullish. Unscanned blocks and failed RPC are NOT zero events.",
   "chains": [
@@ -9,13 +9,13 @@
       "provider": "https://bsc-dataseed.bnbchain.org",
       "method": "eth_getBlockReceipts",
       "positive": "ACTUAL_CONTIGUOUS_BLOCK_RECEIPTS",
-      "head": 133400497,
-      "from": 133400285,
-      "to": 133400492,
+      "head": 133400556,
+      "from": 133400493,
+      "to": 133400551,
       "coverage": "SUCCESS",
       "backlog": 0,
-      "blocksScanned": 208,
-      "receiptsScanned": 18865,
+      "blocksScanned": 59,
+      "receiptsScanned": 4969,
       "bootstrapFromRecent": false,
       "decodeErrors": [],
       "errors": []
@@ -24,15 +24,15 @@
       "chain": "base",
       "provider": "https://base-rpc.publicnode.com",
       "positive": "NO_KNOWN_POSITIVE",
-      "head": 57022334,
-      "from": 57021933,
-      "to": 57022329,
+      "head": 57022455,
+      "from": 57022330,
+      "to": 57022450,
       "backlog": 0,
       "coverage": "SUCCESS",
       "method": "eth_getLogs",
       "legacyBackfillCursor": 56783102,
       "historicalUnscannedFrom": 56783103,
-      "historicalUnscannedTo": 57021932,
+      "historicalUnscannedTo": 57022329,
       "liveOnlyBootstrap": false
     }
   ],
@@ -46,52 +46,63 @@
       "transferCount": 5,
       "observedTransfers": [
         {
-          "tx": "0xc6307e178dcb71b036b07b0976233631a8f06011481182f5dfe1dd09d7ae4a20",
-          "block": 133400378,
-          "logIndex": 47,
+          "tx": "0x661b57aa2eaf54e62ba5c057457c5c079100c1e372d8504c7f2b5f240ea9ff98",
+          "block": 133400518,
+          "logIndex": 185,
+          "from": "0x0e42a16ee377a8fe5180b1bdba10f6ba2bbab2b8",
+          "to": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "raw": "1934426027538807164515",
+          "blockUtc": "2026-11-13T18:34:06.000Z"
+        },
+        {
+          "tx": "0x661b57aa2eaf54e62ba5c057457c5c079100c1e372d8504c7f2b5f240ea9ff98",
+          "block": 133400518,
+          "logIndex": 186,
+          "from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "to": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+          "raw": "2418032534423508955",
+          "blockUtc": "2026-11-13T18:34:06.000Z"
+        },
+        {
+          "tx": "0x661b57aa2eaf54e62ba5c057457c5c079100c1e372d8504c7f2b5f240ea9ff98",
+          "block": 133400518,
+          "logIndex": 189,
+          "from": "0x1231deb6f5749ef6ce6943a275a1d3e7486f4eae",
+          "to": "0xe6eeda550918638529c6cf2ea14f9ea0572d6f88",
+          "raw": "1932007995004383655560",
+          "blockUtc": "2026-11-13T18:34:06.000Z"
+        },
+        {
+          "tx": "0x661b57aa2eaf54e62ba5c057457c5c079100c1e372d8504c7f2b5f240ea9ff98",
+          "block": 133400518,
+          "logIndex": 191,
+          "from": "0xe6eeda550918638529c6cf2ea14f9ea0572d6f88",
+          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
+          "raw": "1932007995004383655560",
+          "blockUtc": "2026-11-13T18:34:06.000Z"
+        },
+        {
+          "tx": "0x080916dbf885eb64e64578c9500a56fcbfb3ebca5139595beb8e9fea1d0dc292",
+          "block": 133400519,
+          "logIndex": 56,
           "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "to": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
-          "raw": "1554585967375631350958",
-          "blockUtc": "2026-11-13T18:33:03.000Z"
-        },
-        {
-          "tx": "0x679e6a7af06c6e8e13f82bf049e3f7d1a622f74e65dc7220c15e11bcece1d02d",
-          "block": 133400426,
-          "logIndex": 54,
-          "from": "0xee381ac03d1b2147e394f5812e9aa60e18d6ae80",
-          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "raw": "1554585967375631350958",
-          "blockUtc": "2026-11-13T18:33:25.000Z"
-        },
-        {
-          "tx": "0xc6fc32576d7cddb829fa2c6f8190ad46a17b47c48500e83fb35aa27bb4c48e66",
-          "block": 133400475,
-          "logIndex": 31,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "raw": "4131726493387329077612",
-          "blockUtc": "2026-11-13T18:33:47.000Z"
-        },
-        {
-          "tx": "0xc4f93fed0411a7b6a34cd16e5b74e486bd28f1c26d2144f790e6f50bec516f58",
-          "block": 133400475,
-          "logIndex": 163,
-          "from": "0xf975e7e240c59146e67971e2aa5497f0f22441ff",
-          "to": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "raw": "1565400000000000000000",
-          "blockUtc": "2026-11-13T18:33:47.000Z"
-        },
-        {
-          "tx": "0x97fa17725d6a857bad23c839c5ef034bd2105d2ce7196ca3b52ab2cb77c1d748",
-          "block": 133400492,
-          "logIndex": 30,
-          "from": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "to": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "raw": "2894544499225093153707",
-          "blockUtc": "2026-11-13T18:33:54.000Z"
+          "to": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "raw": "1027844111684468264988",
+          "blockUtc": "2026-11-13T18:34:06.000Z"
         }
       ],
-      "netRecipients": [],
+      "netRecipients": [
+        {
+          "address": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "rawNetIn": "1027844111684468264988",
+          "identity": "UNVERIFIED"
+        },
+        {
+          "address": "0xc06ebbefd94032b85424d51906e2a335efae264b",
+          "rawNetIn": "2418032534423508955",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -102,146 +113,85 @@
       "token": "0xb0f09ea9ae0515c3551080d4a745c8115aa30e37",
       "pool": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 43,
+      "transferCount": 8,
       "observedTransfers": [
         {
-          "tx": "0xdb30b37d8d534d7cb985bc657aab4c93206d81c7ac85d0dfb0eb883aa01d37e5",
-          "block": 133400399,
-          "logIndex": 166,
-          "from": "0x6e1a719d18bf2264d1b12266fb763394247a6964",
-          "to": "0x07964f135f276412b3182a3b2407b8dd45000000",
-          "raw": "1284185565931319860531",
-          "blockUtc": "2026-11-13T18:33:12.000Z"
-        },
-        {
-          "tx": "0xdb30b37d8d534d7cb985bc657aab4c93206d81c7ac85d0dfb0eb883aa01d37e5",
-          "block": 133400399,
-          "logIndex": 168,
-          "from": "0x07964f135f276412b3182a3b2407b8dd45000000",
+          "tx": "0xbb4201c5d29ef6814412be255472673de42e5b24b560b70b404906eda3fb6b32",
+          "block": 133400513,
+          "logIndex": 30,
+          "from": "0xe354719775fd2c2113132183c7d9314e7cc4debf",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "1280333009233525900950",
-          "blockUtc": "2026-11-13T18:33:12.000Z"
+          "raw": "126256159597814595584",
+          "blockUtc": "2026-11-13T18:34:04.000Z"
         },
         {
-          "tx": "0xac21398f86d50dd656e3de2692d28a80ad736eb2965fea77ba3780eb219f6818",
-          "block": 133400407,
-          "logIndex": 33,
-          "from": "0x491c3e907cf37cf83bc6fcdfcd195f47ac05da52",
+          "tx": "0xba94fb785112b3868154317223def7030596f5a411fbd620cd071fa113568a05",
+          "block": 133400517,
+          "logIndex": 709,
+          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "1073887145284648556897",
-          "blockUtc": "2026-11-13T18:33:16.000Z"
+          "raw": "1502968157903615347906",
+          "blockUtc": "2026-11-13T18:34:05.000Z"
         },
         {
-          "tx": "0xb351fc284841c1def913eb716cece939b5e7ddffea4b01e4ed1474bf185a4dbb",
-          "block": 133400407,
+          "tx": "0xac269665484f237b2517863547fa1e2e331264d0efa7339dc3f617b451bfc680",
+          "block": 133400532,
+          "logIndex": 25,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
+          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "raw": "366523954371857154048",
+          "blockUtc": "2026-11-13T18:34:12.000Z"
+        },
+        {
+          "tx": "0x5a202226d5073ee301a69a6e5e7c39a55fa9d2f19b5a534a33d0805024475eca",
+          "block": 133400532,
           "logIndex": 38,
-          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "945628838877872166904",
-          "blockUtc": "2026-11-13T18:33:16.000Z"
+          "from": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
+          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
+          "raw": "379000000000000000000",
+          "blockUtc": "2026-11-13T18:34:12.000Z"
         },
         {
-          "tx": "0x3897774d8412a574718421d0bae6ecb7a2b900162ee095d2cc42a8e33e5fd48c",
-          "block": 133400407,
-          "logIndex": 47,
-          "from": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "tx": "0x5a202226d5073ee301a69a6e5e7c39a55fa9d2f19b5a534a33d0805024475eca",
+          "block": 133400532,
+          "logIndex": 41,
+          "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "438162566448338694620",
-          "blockUtc": "2026-11-13T18:33:16.000Z"
+          "raw": "379000000000000000000",
+          "blockUtc": "2026-11-13T18:34:12.000Z"
         },
         {
-          "tx": "0x78b6a06788349e00ac46f4dbe017b4fa3df51c7dcd95202f1bcd107f8f00ed9f",
-          "block": 133400411,
-          "logIndex": 141,
-          "from": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
+          "tx": "0x1438cf6c36ab13948597ff0159d627d97f78963c85208110d34dbe394bceade0",
+          "block": 133400533,
+          "logIndex": 98,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "369042869794082448715",
-          "blockUtc": "2026-11-13T18:33:18.000Z"
+          "raw": "737687452470022897664",
+          "blockUtc": "2026-11-13T18:34:13.000Z"
         },
         {
-          "tx": "0x290f0e5671d9db9255c92860b2c36524247008658c7486c65bcff6d37cf4e9ea",
-          "block": 133400444,
-          "logIndex": 51,
-          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "tx": "0x2940f068c69ca7de0155b54b9372420ba463790e53909be927fdcfbc2132634b",
+          "block": 133400534,
+          "logIndex": 5,
+          "from": "0x60b97709d633dd4e0f0f44f6102fd50341c0afa6",
           "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "439461086379726378518",
-          "blockUtc": "2026-11-13T18:33:33.000Z"
+          "raw": "258687603739042283520",
+          "blockUtc": "2026-11-13T18:34:13.000Z"
         },
         {
-          "tx": "0xb262ac18001eb2abccad1b57e18bb7cfd4ba095b0c0b584ef5268a323e619367",
-          "block": 133400444,
-          "logIndex": 527,
-          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "507390968807191433098",
-          "blockUtc": "2026-11-13T18:33:33.000Z"
-        },
-        {
-          "tx": "0x075dd7b7db15812a92f380ddca31979b61c8e2c407c4390cf9905d60c9a00b83",
-          "block": 133400468,
-          "logIndex": 54,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "263301978855801250536",
-          "blockUtc": "2026-11-13T18:33:43.000Z"
-        },
-        {
-          "tx": "0x4951e49a2392136107c7477d7c74201cd8f18f44b9b51ce15dbaeff6e3d6a572",
-          "block": 133400469,
-          "logIndex": 137,
-          "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "1429998814880259224977",
-          "blockUtc": "2026-11-13T18:33:44.000Z"
-        },
-        {
-          "tx": "0x8fd5b972c1aec1a7abd06897dc2be196246c91a38c54a4416ca91f10a19119f8",
-          "block": 133400487,
-          "logIndex": 10,
-          "from": "0x9e229b12cc9081d6a510b29ccbd6311743e277ed",
-          "to": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "raw": "1819000000000000002552",
-          "blockUtc": "2026-11-13T18:33:52.000Z"
-        },
-        {
-          "tx": "0x784f0dc22c70a0ec833d251fd3a8e0437299b67ea09258975e3f90f2432e29b5",
-          "block": 133400492,
-          "logIndex": 681,
-          "from": "0x653dd7677aea3030eab68c97ed3594bacf560158",
-          "to": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "raw": "9782137270000000000000",
-          "blockUtc": "2026-11-13T18:33:54.000Z"
+          "tx": "0x1d9168d2a0631e0703a4159d849f163ba933851caf8a2260452a1a03dec21ed3",
+          "block": 133400546,
+          "logIndex": 656,
+          "from": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "1136881635311770760944",
+          "blockUtc": "2026-11-13T18:34:19.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0xaab08a3e3158964d005478b2d0fefe8d1bfe6480",
-          "rawNetIn": "33826145761333286294539",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x73d8bd54f7cf5fab43fe4ef40a62d390644946db",
-          "rawNetIn": "9782137270000000000000",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x491c3e907cf37cf83bc6fcdfcd195f47ac05da52",
-          "rawNetIn": "5639829992373869370007",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0xe354719775fd2c2113132183c7d9314e7cc4debf",
-          "rawNetIn": "126256285854100436300",
-          "identity": "UNVERIFIED"
-        },
-        {
           "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "122409009507195026014",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
-          "rawNetIn": "14716140743121815802",
+          "rawNetIn": "1136881635311770760944",
           "identity": "UNVERIFIED"
         }
       ],
@@ -255,136 +205,22 @@
       "token": "0x6261963ebe9ff014aad10ecc3b0238d4d04e8353",
       "pool": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 13,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0xa7b52666792c9cdb9aad150340437a1a57f98329b6c8c3e98883acb287fcbac6",
-          "block": 133400288,
-          "logIndex": 33,
-          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "raw": "10677461566729924068126",
-          "blockUtc": "2026-11-13T18:32:22.000Z"
-        },
-        {
-          "tx": "0xefdf6afc503185c64fde789644d60671e286a0555fecdbe4d660fe6268b9e357",
-          "block": 133400297,
-          "logIndex": 342,
-          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "3004452461786892540658",
-          "blockUtc": "2026-11-13T18:32:26.000Z"
-        },
-        {
-          "tx": "0x81083f0eb314fb472603d431f73de62f8c74363e8fe7c441959915f10431bca7",
-          "block": 133400308,
-          "logIndex": 99,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "5308016958213232308566",
-          "blockUtc": "2026-11-13T18:32:31.000Z"
-        },
-        {
-          "tx": "0x68239ed6478bcd42aacf89ee36aa5ab843bf10d681734fb0574b5ad2ff53424a",
-          "block": 133400371,
-          "logIndex": 424,
-          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "raw": "5742634848149642530017",
-          "blockUtc": "2026-11-13T18:33:00.000Z"
-        },
-        {
-          "tx": "0x09c110c7b955a234a3fe52f39ee4bd4361bd1692498095e85ef2a931d0d1bf97",
-          "block": 133400371,
-          "logIndex": 645,
+          "tx": "0xcfe08e05e5d8582bbce7c6037cc4cf3be3a19b5fb4269888ecd3858f0a2e011d",
+          "block": 133400504,
+          "logIndex": 546,
           "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
           "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "raw": "2434708833664443307505",
-          "blockUtc": "2026-11-13T18:33:00.000Z"
-        },
-        {
-          "tx": "0x8940bd7b21501820435956e1bd8b1f662c96e1adb1c2a154761f2e88649dcb19",
-          "block": 133400397,
-          "logIndex": 47,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "12758624088206126113398",
-          "blockUtc": "2026-11-13T18:33:11.000Z"
-        },
-        {
-          "tx": "0xc63c97c0d556c0a863362d2075e6d868b2a8159bb244d609141c8f9453a25003",
-          "block": 133400398,
-          "logIndex": 46,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "3821256767947511166391",
-          "blockUtc": "2026-11-13T18:33:12.000Z"
-        },
-        {
-          "tx": "0xeba42520714c472847f196c820a1bdbc8b0a7e7a04cad17d24d0bac1170b409b",
-          "block": 133400401,
-          "logIndex": 96,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "3524331746420482610207",
-          "blockUtc": "2026-11-13T18:33:13.000Z"
-        },
-        {
-          "tx": "0xa2a0ef04a2f8040e97785803b797a37c1d3889c8b6f1f8f0bc919f2bc947c6b0",
-          "block": 133400411,
-          "logIndex": 756,
-          "from": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "4753860074534336230778",
-          "blockUtc": "2026-11-13T18:33:18.000Z"
-        },
-        {
-          "tx": "0x8e34ebf5d90d79ee88696428418a97bb53e3b39ea9d64deae6e22621d7111078",
-          "block": 133400486,
-          "logIndex": 87,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "2711904056920829323400",
-          "blockUtc": "2026-11-13T18:33:52.000Z"
-        },
-        {
-          "tx": "0xfc81c3db60016413f28f4b0259de955d8912a31141c055a0cf47f22b7b4c9213",
-          "block": 133400486,
-          "logIndex": 122,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "3476316012017583536280",
-          "blockUtc": "2026-11-13T18:33:52.000Z"
-        },
-        {
-          "tx": "0xc92b3f17bf14dc2ba5afc8edabc20051f287476b6648ea4cba4acb33d3d2f2cf",
-          "block": 133400487,
-          "logIndex": 69,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "raw": "2396961808383017826800",
-          "blockUtc": "2026-11-13T18:33:52.000Z"
+          "raw": "4002172818827023771532",
+          "blockUtc": "2026-11-13T18:34:00.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "rawNetIn": "9419417351557727987093",
-          "identity": "UNVERIFIED"
-        },
-        {
           "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "rawNetIn": "2434708833664443307505",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "1749407612747443690120",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "rawNetIn": "633768982845795379817",
+          "rawNetIn": "4002172818827023771532",
           "identity": "UNVERIFIED"
         }
       ],
@@ -398,31 +234,22 @@
       "token": "0x4b3d30992f003c8167699735f5ab2831b2a087d3",
       "pool": "0xef470f9ae8512d2762e4f1cd91ae58caea17143afa61b8d56e9b20c8f87688c4",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 2,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0x5114c9c61efb03af3fa4b000d123a0ff75f13b56f02c42eb25671b0d8b5ccc2e",
-          "block": 133400460,
-          "logIndex": 404,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "3889623011376896106048",
-          "blockUtc": "2026-11-13T18:33:40.000Z"
-        },
-        {
-          "tx": "0xd81e18c404f013870a9af6a6a49039a10c8aa014c85ba218b891748bc25c828d",
-          "block": 133400465,
-          "logIndex": 135,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "4468967353211714456278",
-          "blockUtc": "2026-11-13T18:33:42.000Z"
+          "tx": "0x961981882cb7c2814711fa544acdee00ea2f2fcbd2584c5784db978c4e1773d0",
+          "block": 133400506,
+          "logIndex": 714,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "1829647753455356088757",
+          "blockUtc": "2026-11-13T18:34:01.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "8358590364588610562326",
+          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "rawNetIn": "1829647753455356088757",
           "identity": "UNVERIFIED"
         }
       ],
@@ -436,48 +263,9 @@
       "token": "0x477c2c0459004e3354ba427fa285d7c053203c0e",
       "pool": "0xae02717e94c9b5bae817601a49b4584f58324015",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 3,
-      "observedTransfers": [
-        {
-          "tx": "0xa0b04ccf053a3219500d30d597a10bf0cc0fa9c63b724c2a09b8173f0e5c62b5",
-          "block": 133400291,
-          "logIndex": 375,
-          "from": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "to": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "raw": "356544614",
-          "blockUtc": "2026-11-13T18:32:24.000Z"
-        },
-        {
-          "tx": "0xd68165becccf942da16d141912a1cd9a4f528c958463c9e8737da16b36a0164f",
-          "block": 133400382,
-          "logIndex": 3,
-          "from": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "to": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "raw": "661379712",
-          "blockUtc": "2026-11-13T18:33:05.000Z"
-        },
-        {
-          "tx": "0xc18e3fe5b7b2b4bab2e82478805a6afa922fbca819926c18388002b7dd73cbe5",
-          "block": 133400471,
-          "logIndex": 787,
-          "from": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "587335404",
-          "blockUtc": "2026-11-13T18:33:45.000Z"
-        }
-      ],
-      "netRecipients": [
-        {
-          "address": "0x25969b07deae51968ec46de173a51eedf1225032",
-          "rawNetIn": "661379712",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "587335404",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "transferCount": 0,
+      "observedTransfers": [],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -488,146 +276,40 @@
       "token": "0x299ad4299da5b2b93fba4c96967b040c7f611099",
       "pool": null,
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 23,
+      "transferCount": 3,
       "observedTransfers": [
         {
-          "tx": "0x327c986ec5ae1bff09606262e5de88cb91ef5f33b9c0d60210fce38f1ae1fd35",
-          "block": 133400387,
-          "logIndex": 52,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "tx": "0xe77e1fa8567a83e41bbd07fe125cdd9a11439cf9c9cab3c7a64b9a5dafb0dbb2",
+          "block": 133400508,
+          "logIndex": 101,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1005615086720264592300",
-          "blockUtc": "2026-11-13T18:33:07.000Z"
+          "raw": "1150355744354044300952",
+          "blockUtc": "2026-11-13T18:34:01.000Z"
         },
         {
-          "tx": "0x5542f1f6d4c2fe3b5a4084f35c8bb71731d7e959e022701ae25ccca0469c5ea2",
-          "block": 133400400,
-          "logIndex": 329,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "tx": "0x3191ae98cccbd31bd684a308208f6549677845f901853a1f7c4e9ffe77f58a43",
+          "block": 133400546,
+          "logIndex": 172,
+          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1878405640601105302768",
-          "blockUtc": "2026-11-13T18:33:13.000Z"
+          "raw": "1450857047089563454862",
+          "blockUtc": "2026-11-13T18:34:19.000Z"
         },
         {
-          "tx": "0xeba42520714c472847f196c820a1bdbc8b0a7e7a04cad17d24d0bac1170b409b",
-          "block": 133400401,
-          "logIndex": 103,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "tx": "0x14335556b56d85046e197693cb1e05a0b9df23fe04aacded0f229c9fc6047612",
+          "block": 133400546,
+          "logIndex": 209,
+          "from": "0x18505f440e6b9c203fd96c3fc11cf64e8e0ddc9f",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1434674075952736504125",
-          "blockUtc": "2026-11-13T18:33:13.000Z"
-        },
-        {
-          "tx": "0xba5ac2172fd7aee3c2027afb3142234e2f6cdfbdd2f9bc2619ff476d44bba58c",
-          "block": 133400405,
-          "logIndex": 922,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "953079760761006958237",
-          "blockUtc": "2026-11-13T18:33:15.000Z"
-        },
-        {
-          "tx": "0x62fb43f54e9cfcc2c0a1b4d5f99c0743323b2ec9497855697b7c3e9331090216",
-          "block": 133400423,
-          "logIndex": 516,
-          "from": "0xe94753d6e067d25e0dbe90ed782b7ea21475fc48",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "888235923578779684301",
-          "blockUtc": "2026-11-13T18:33:23.000Z"
-        },
-        {
-          "tx": "0x5c1224b919421e54a4c088d59b066a2d4d10ba49b26206c70e432a970ced82a1",
-          "block": 133400426,
-          "logIndex": 114,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "852759669281898141394",
-          "blockUtc": "2026-11-13T18:33:25.000Z"
-        },
-        {
-          "tx": "0xadb36e0189c4be024d02897dbe641761fa82e1d52c2ab3e2c1341580da0d1d53",
-          "block": 133400440,
-          "logIndex": 540,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "875268424217409580343",
-          "blockUtc": "2026-11-13T18:33:31.000Z"
-        },
-        {
-          "tx": "0xa2a5d01f4ec30790d9927da93a4aadc75a82a0a6c951def89171b5e0817140b5",
-          "block": 133400441,
-          "logIndex": 5,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "462630368786115765843",
-          "blockUtc": "2026-11-13T18:33:31.000Z"
-        },
-        {
-          "tx": "0x4c1d1b0a01b78e7f9207c49deec8c95ef486d903e3103bb99eecc075fbcb5711",
-          "block": 133400441,
-          "logIndex": 123,
-          "from": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "532881527030825600644",
-          "blockUtc": "2026-11-13T18:33:31.000Z"
-        },
-        {
-          "tx": "0x5af24a93772f7059b52fcc3fa74d07f46ccd337651f66758fe5196de1cf461ad",
-          "block": 133400445,
-          "logIndex": 614,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x18505f440e6b9c203fd96c3fc11cf64e8e0ddc9f",
-          "raw": "1287109758867409136120",
-          "blockUtc": "2026-11-13T18:33:33.000Z"
-        },
-        {
-          "tx": "0xdb683d884634f906c726b942f923175e2b4f6b029e6ec5aa144bdf0d5396175f",
-          "block": 133400446,
-          "logIndex": 50,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x491c3e907cf37cf83bc6fcdfcd195f47ac05da52",
-          "raw": "2270356064771248793823",
-          "blockUtc": "2026-11-13T18:33:34.000Z"
-        },
-        {
-          "tx": "0xaa42d1cf7f0ff7f47b96c6e04ec2bee13eff51dc008e3ab67d2994fb4befb2de",
-          "block": 133400458,
-          "logIndex": 929,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "raw": "949066909096765975170",
-          "blockUtc": "2026-11-13T18:33:39.000Z"
+          "raw": "1098702711573887057920",
+          "blockUtc": "2026-11-13T18:34:19.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "rawNetIn": "3338732423984214038436",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x491c3e907cf37cf83bc6fcdfcd195f47ac05da52",
-          "rawNetIn": "2270356064771248793823",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
-          "rawNetIn": "1673061825607897331825",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x18505f440e6b9c203fd96c3fc11cf64e8e0ddc9f",
-          "rawNetIn": "1287109758867409136120",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "rawNetIn": "949066909096765975170",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "11267320252496189936",
+          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "rawNetIn": "3699915503017494813734",
           "identity": "UNVERIFIED"
         }
       ],
@@ -641,84 +323,19 @@
       "token": "0x61fac5f038515572d6f42d4bcb6b581642753d50",
       "pool": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 7,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0x02bb23de9ea2e50c9cb1c4a0ae3c90e7316eed95ae9987f3157abb8cd1ed4ed0",
-          "block": 133400295,
-          "logIndex": 43,
-          "from": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
+          "tx": "0xb3e736a45fd4da61b207d4066ddcc38f26cb67f379890735b2796ba1a66be44f",
+          "block": 133400511,
+          "logIndex": 1048,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
           "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "3655282246845821049181",
-          "blockUtc": "2026-11-13T18:32:26.000Z"
-        },
-        {
-          "tx": "0x5fbc20298cf21bb5488ed1bccaad38be110060004a0984a932508b5eecef2482",
-          "block": 133400309,
-          "logIndex": 16,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "1799718468878926542159",
-          "blockUtc": "2026-11-13T18:32:32.000Z"
-        },
-        {
-          "tx": "0x1ed681949cf56864fa21b336df2a9ff9b4306d21d52c8938b0d4982a082f771f",
-          "block": 133400363,
-          "logIndex": 10,
-          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
-          "raw": "5646386357243259369050",
-          "blockUtc": "2026-11-13T18:32:56.000Z"
-        },
-        {
-          "tx": "0x48a26ed38d2fb553747aabec43e20e4a36ec6a1d48ca6cc78daf95aff0dd3147",
-          "block": 133400366,
-          "logIndex": 1297,
-          "from": "0xc4dc171d499b3f5340bffed8433bddcec8d33b04",
-          "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "raw": "157048542288579214492",
-          "blockUtc": "2026-11-13T18:32:58.000Z"
-        },
-        {
-          "tx": "0x48a26ed38d2fb553747aabec43e20e4a36ec6a1d48ca6cc78daf95aff0dd3147",
-          "block": 133400366,
-          "logIndex": 1299,
-          "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "to": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "raw": "157048542288579214492",
-          "blockUtc": "2026-11-13T18:32:58.000Z"
-        },
-        {
-          "tx": "0xe3458ce15f7f52bc6bfbaa36204a99dc08de5c4849f4f0417f50d7f9fccd5f71",
-          "block": 133400450,
-          "logIndex": 113,
-          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "1984749066987642429070",
-          "blockUtc": "2026-11-13T18:33:35.000Z"
-        },
-        {
-          "tx": "0x862eb63c836a907ff7c26c31732edc2605ccdca435a7c82ffb1f6a866bf3110b",
-          "block": 133400468,
-          "logIndex": 860,
-          "from": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "2767210048667060001875",
-          "blockUtc": "2026-11-13T18:33:43.000Z"
+          "raw": "1298609211916699595770",
+          "blockUtc": "2026-11-13T18:34:03.000Z"
         }
       ],
-      "netRecipients": [
-        {
-          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "rawNetIn": "2952240646775775888786",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x5836abdf71efa0e5dd5a590aba36ed5ae75730ac",
-          "rawNetIn": "1991104110397438319869",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -729,71 +346,9 @@
       "token": "0x6cd905df2ed214b22e0d48ff17cd4200c1c6d8a3",
       "pool": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
       "coverage": "TRANSFER_LOGS_QUERIED",
-      "transferCount": 5,
-      "observedTransfers": [
-        {
-          "tx": "0x70564d5afa1f51ff28beb004f7870a6f193c64679311db7cc2f07d67f7499cd6",
-          "block": 57021969,
-          "logIndex": 0,
-          "from": "0x20c1fea90a97b0c32edbe051d166fe18ecf92360",
-          "to": "0x8b7c0a860c8b2997250480a338a2d050d05c80a9",
-          "raw": "204936016000000000000",
-          "blockUtc": "2026-11-13T18:32:49.000Z"
-        },
-        {
-          "tx": "0x95b942a17c74ff8d7c8433acc7072838ad7b35c123fc06dc5483b8f793cbb1d3",
-          "block": 57021985,
-          "logIndex": 43,
-          "from": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "356326181309124299146",
-          "blockUtc": "2026-11-13T18:32:52.000Z"
-        },
-        {
-          "tx": "0x0343d2a4a993d48f26498671eca52f8fbc60890770f73ace594b15bbbee70143",
-          "block": 57021990,
-          "logIndex": 2,
-          "from": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
-          "to": "0x0f0067cd819cb8f20bda62046daff7a2b5c88280",
-          "raw": "1060497985222137110403",
-          "blockUtc": "2026-11-13T18:32:53.000Z"
-        },
-        {
-          "tx": "0xa50d81dc7ff4473babb42d7cd04675ce389c52152b4b42ca1afb4da8622b80df",
-          "block": 57021990,
-          "logIndex": 5,
-          "from": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "329309884265502433051",
-          "blockUtc": "2026-11-13T18:32:53.000Z"
-        },
-        {
-          "tx": "0xaef614b7e58125b0569714cfbf9084cf6d4f1c6b72a36276dd475f2ae7485ae7",
-          "block": 57022274,
-          "logIndex": 1,
-          "from": "0x52448e17dabcb3b6654045974afd572090bcc1f5",
-          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "435489273430100661329",
-          "blockUtc": "2026-11-13T18:33:50.000Z"
-        }
-      ],
-      "netRecipients": [
-        {
-          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "rawNetIn": "1121125339004727393526",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x0f0067cd819cb8f20bda62046daff7a2b5c88280",
-          "rawNetIn": "1060497985222137110403",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x8b7c0a860c8b2997250480a338a2d050d05c80a9",
-          "rawNetIn": "204936016000000000000",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "transferCount": 0,
+      "observedTransfers": [],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -804,131 +359,49 @@
       "token": "0x783c3f003f172c6ac5ac700218a357d2d66ee2a2",
       "pool": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 22,
+      "transferCount": 4,
       "observedTransfers": [
         {
-          "tx": "0x0a43873ce2fc402a0683b548144301610658e04f9bc08565d5d1345fdef426b8",
-          "block": 133400390,
-          "logIndex": 10,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "911813318757763758644",
-          "blockUtc": "2026-11-13T18:33:08.000Z"
+          "tx": "0xc9f4a30ba058814ebd832daa9f5faca041abe2506586db8ef9f407c0537eb45b",
+          "block": 133400505,
+          "logIndex": 487,
+          "from": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
+          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "raw": "71430462908461354006",
+          "blockUtc": "2026-11-13T18:34:00.000Z"
         },
         {
-          "tx": "0xccf647c58dfa1aa50e291d98abd2b35bd7df64ce08b36746ee65a027edafc977",
-          "block": 133400390,
-          "logIndex": 19,
-          "from": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "271517197219509273891",
-          "blockUtc": "2026-11-13T18:33:08.000Z"
+          "tx": "0x3e374407abe9b06a088c1c9915fd928b5249493b1afcf6512633e48df722b3f7",
+          "block": 133400509,
+          "logIndex": 1316,
+          "from": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
+          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "raw": "222591523905463197307",
+          "blockUtc": "2026-11-13T18:34:02.000Z"
         },
         {
-          "tx": "0x98382ccf72fbfb583e9aba5dfaeea0aed99085ebb2549e463d058d3513f9deac",
-          "block": 133400455,
-          "logIndex": 459,
+          "tx": "0x45b4b9d9c40b7db1499e6386effbd8b746c96725eae07241f04605cac9b308ed",
+          "block": 133400524,
+          "logIndex": 60,
           "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
           "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "178950950832220869500",
-          "blockUtc": "2026-11-13T18:33:38.000Z"
+          "raw": "78983209120506258539",
+          "blockUtc": "2026-11-13T18:34:09.000Z"
         },
         {
-          "tx": "0xff57884fc75a50b6c853a57717f76b2446067c766afdf20b239e5030de0d6b6e",
-          "block": 133400456,
-          "logIndex": 128,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "tx": "0xfe79574aec2517a47777e9bc59a2c00a5df53c9e4a2631a44ad9ef1d8ef72a2b",
+          "block": 133400528,
+          "logIndex": 45,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
           "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "155636214694011956282",
-          "blockUtc": "2026-11-13T18:33:38.000Z"
-        },
-        {
-          "tx": "0xa11951093008196f3a2d94f07b7800606bfa7ee4aeedb3af3b2c57c9123338b2",
-          "block": 133400458,
-          "logIndex": 103,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "126037318859213232919",
-          "blockUtc": "2026-11-13T18:33:39.000Z"
-        },
-        {
-          "tx": "0xaa42d1cf7f0ff7f47b96c6e04ec2bee13eff51dc008e3ab67d2994fb4befb2de",
-          "block": 133400458,
-          "logIndex": 926,
-          "from": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "227243807665973266563",
-          "blockUtc": "2026-11-13T18:33:39.000Z"
-        },
-        {
-          "tx": "0xa6578e1ac09c4f26e3a3fa8a1bb04badade616344272fb431bcc69a5f00e2ebc",
-          "block": 133400462,
-          "logIndex": 129,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "66907147469174453434",
-          "blockUtc": "2026-11-13T18:33:41.000Z"
-        },
-        {
-          "tx": "0xfdc05c80c5f99b702936be713e3c9bea3907368df5f4dc2783a2ff9b0eb00c16",
-          "block": 133400464,
-          "logIndex": 87,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "51987173560100927457",
-          "blockUtc": "2026-11-13T18:33:42.000Z"
-        },
-        {
-          "tx": "0x513de8047cd20df86766919028547036b01b20361bc0fce6ba79043694db3fbb",
-          "block": 133400467,
-          "logIndex": 82,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "111908287799701362011",
-          "blockUtc": "2026-11-13T18:33:43.000Z"
-        },
-        {
-          "tx": "0xf75fcf524385cb3c290726e81ecbf5122a3c96e46f60e75a18fa9a73920d51f6",
-          "block": 133400470,
-          "logIndex": 78,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "65985737212658935359",
-          "blockUtc": "2026-11-13T18:33:44.000Z"
-        },
-        {
-          "tx": "0x35a43bfdc2fed249c793286ccf8d0fcbffdc6c58fe4678e219849055fa481a0c",
-          "block": 133400479,
-          "logIndex": 92,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "95987362776868075990",
-          "blockUtc": "2026-11-13T18:33:48.000Z"
-        },
-        {
-          "tx": "0x3d0ea2a51af4daaf865dc702bf54aea1c09c11175444dc6ffc9831071b8105a6",
-          "block": 133400490,
-          "logIndex": 127,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "raw": "95986050381306277838",
-          "blockUtc": "2026-11-13T18:33:53.000Z"
+          "raw": "71430462908461354006",
+          "blockUtc": "2026-11-13T18:34:10.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "rawNetIn": "1677475790936671660789",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x76801132a22801640284cd67f7dd41fed2926b6a",
-          "rawNetIn": "239913139770826084870",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
-          "rawNetIn": "67404991166990258119",
+          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "rawNetIn": "222591523905463197307",
           "identity": "UNVERIFIED"
         }
       ],
@@ -942,57 +415,9 @@
       "token": "0x0c69199c1562233640e0db5ce2c399a88eb507c7",
       "pool": "0x9cfea9ef82f26857c3426487774c088330555da6113c61ac7fb8b30d0ae434b3",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
-      "observedTransfers": [
-        {
-          "tx": "0x53d6df019b9a7fbce13fc01b290d6ccb9a6ed04341afdea999a6568992b06dff",
-          "block": 133400370,
-          "logIndex": 1,
-          "from": "0xf8d0f8dc913defe7a6bd9bc518ead166fdfb3ae1",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "2941145274167689478144",
-          "blockUtc": "2026-11-13T18:32:59.000Z"
-        },
-        {
-          "tx": "0xaf2993d87f7b00831e0dda99f941fa4296d8334ce25d954a13b194229aa7ae9b",
-          "block": 133400370,
-          "logIndex": 23,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1158176649410262926710",
-          "blockUtc": "2026-11-13T18:32:59.000Z"
-        },
-        {
-          "tx": "0x842402c4c699b32cf94486110e2c4f0591d012d9988beb08eab52f365ddd2979",
-          "block": 133400376,
-          "logIndex": 16,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "raw": "1550902838772658547642",
-          "blockUtc": "2026-11-13T18:33:02.000Z"
-        },
-        {
-          "tx": "0xc7e07f74a1992d3d1c93f96da4afe9d2fe3726c5d349e80a5518fdfc6b29036a",
-          "block": 133400377,
-          "logIndex": 783,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1823051166259945653853",
-          "blockUtc": "2026-11-13T18:33:02.000Z"
-        }
-      ],
-      "netRecipients": [
-        {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "4371470251065239511065",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
-          "rawNetIn": "1550902838772658547642",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "transferCount": 0,
+      "observedTransfers": [],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -1003,9 +428,52 @@
       "token": "0x8dedf84656fa932157e27c060d8613824e7979e3",
       "pool": "0x90166b5795250fe7f0831e844121cc91799787e9",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 0,
-      "observedTransfers": [],
-      "netRecipients": [],
+      "transferCount": 4,
+      "observedTransfers": [
+        {
+          "tx": "0x1434c018e56a30adafcb9da79c6b90cee40b9a33974b6b9107fe7bc9668a726d",
+          "block": 133400534,
+          "logIndex": 277,
+          "from": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "5470738189465948167096",
+          "blockUtc": "2026-11-13T18:34:13.000Z"
+        },
+        {
+          "tx": "0x667bb27cf1ddab98449e86838a73816b9e742fc47f2283c448eef5a98819a336",
+          "block": 133400536,
+          "logIndex": 115,
+          "from": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
+          "raw": "33420696655506189678",
+          "blockUtc": "2026-11-13T18:34:14.000Z"
+        },
+        {
+          "tx": "0x667bb27cf1ddab98449e86838a73816b9e742fc47f2283c448eef5a98819a336",
+          "block": 133400536,
+          "logIndex": 118,
+          "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
+          "to": "0xc4e3cc8b29e3fc837cca763ac222b31b3bdf0653",
+          "raw": "33420696655506189678",
+          "blockUtc": "2026-11-13T18:34:14.000Z"
+        },
+        {
+          "tx": "0x2f9d0aa35e5c2903e78ddfa5f7de5d2996a085d6b2ce319f2898391d9abdf428",
+          "block": 133400539,
+          "logIndex": 733,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
+          "to": "0x90166b5795250fe7f0831e844121cc91799787e9",
+          "raw": "1531160547934736266240",
+          "blockUtc": "2026-11-13T18:34:15.000Z"
+        }
+      ],
+      "netRecipients": [
+        {
+          "address": "0xc4e3cc8b29e3fc837cca763ac222b31b3bdf0653",
+          "rawNetIn": "33420696655506189678",
+          "identity": "UNVERIFIED"
+        }
+      ],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
@@ -1016,104 +484,63 @@
       "token": "0x595deaad1eb5476ff1e649fdb7efc36f1e4679cc",
       "pool": "0x26a8e4591b7a0efcd45a577ad0d54aa64a99efaf2546ad4d5b0454c99eb70eab",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 9,
+      "transferCount": 5,
       "observedTransfers": [
         {
-          "tx": "0x75020ab322211f08513f1d9eaeaee2ab0717570587f7d94ba4dc178bb2c9a952",
-          "block": 133400292,
-          "logIndex": 645,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "raw": "3365214144270367077675",
-          "blockUtc": "2026-11-13T18:32:24.000Z"
-        },
-        {
-          "tx": "0x40ce8d4bc76ace7fda8a306a6e8cbf9f84d7291344da20d6ceffb7ed37e465f0",
-          "block": 133400306,
-          "logIndex": 50,
-          "from": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "5355284082136272114700",
-          "blockUtc": "2026-11-13T18:32:31.000Z"
-        },
-        {
-          "tx": "0xe4aa36482dcb171394c62889b5d23543037d72e7810a38a424a4ab6d0e321170",
-          "block": 133400306,
-          "logIndex": 57,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1535281059281732073102",
-          "blockUtc": "2026-11-13T18:32:31.000Z"
-        },
-        {
-          "tx": "0xd418c77a6c9a241bec7f4335d3bd958aa9b4362ce0f9ce890941d7327bad259f",
-          "block": 133400307,
-          "logIndex": 308,
+          "tx": "0x961981882cb7c2814711fa544acdee00ea2f2fcbd2584c5784db978c4e1773d0",
+          "block": 133400506,
+          "logIndex": 709,
           "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "1049370356129899529516",
-          "blockUtc": "2026-11-13T18:32:31.000Z"
+          "raw": "1586825357063620499349",
+          "blockUtc": "2026-11-13T18:34:01.000Z"
         },
         {
-          "tx": "0x963beb83306b8f459d449215782e7eda9ced0da00ead206637422c2f556b31b3",
-          "block": 133400361,
-          "logIndex": 470,
+          "tx": "0xa7dfd614b025122e213daedc48f7e10a70960774a02fc8fc49df79aea4fba556",
+          "block": 133400534,
+          "logIndex": 13,
           "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "raw": "2033861495782348956140",
-          "blockUtc": "2026-11-13T18:32:55.000Z"
+          "to": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "raw": "2443225428814923856371",
+          "blockUtc": "2026-11-13T18:34:13.000Z"
         },
         {
-          "tx": "0x9c0ad24b08416549c8c1ef3b42821768a8a8cab39c1efe3e7842bc1cda47b210",
-          "block": 133400362,
-          "logIndex": 58,
+          "tx": "0xbe31532014389b121dd9ff51fedd09cd2959050b3bd07dd03c07b079e6d3903c",
+          "block": 133400538,
+          "logIndex": 68,
           "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "raw": "5584326474618150200175",
-          "blockUtc": "2026-11-13T18:32:56.000Z"
+          "to": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "raw": "2818800447582698849117",
+          "blockUtc": "2026-11-13T18:34:15.000Z"
         },
         {
-          "tx": "0x610c6b2737a299ad137bfe30a4a408828e60dc9b749fe8a08e3d42caaf896db3",
-          "block": 133400363,
-          "logIndex": 28,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
+          "tx": "0x6e244eab289f284e8d2d1b594fafd8be4c4fe1b2e991c7b5f9395e6b851cc5f1",
+          "block": 133400539,
+          "logIndex": 148,
+          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
+          "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "raw": "1845660232448693394481",
+          "blockUtc": "2026-11-13T18:34:15.000Z"
+        },
+        {
+          "tx": "0xde410a073ef588e750b46de3e5c1beb169f536e7823d4149d992b75e8ab256ee",
+          "block": 133400540,
+          "logIndex": 743,
+          "from": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
           "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "2534248133437629908451",
-          "blockUtc": "2026-11-13T18:32:56.000Z"
-        },
-        {
-          "tx": "0xeba42520714c472847f196c820a1bdbc8b0a7e7a04cad17d24d0bac1170b409b",
-          "block": 133400401,
-          "logIndex": 106,
-          "from": "0xe7595821a5270b93b2bc9db2f51f7333699bafd3",
-          "to": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "raw": "3019782395542544527351",
-          "blockUtc": "2026-11-13T18:33:13.000Z"
-        },
-        {
-          "tx": "0x260ed09606c64b082af0a2da5e545981f9414d4f6927d4ab575ca1d3ceb266db",
-          "block": 133400441,
-          "logIndex": 79,
-          "from": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "to": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "raw": "1146772630741762626766",
-          "blockUtc": "2026-11-13T18:33:31.000Z"
+          "raw": "729018431076847048810",
+          "blockUtc": "2026-11-13T18:34:16.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x11eacd2bedd700a5e21ff70dea4086305100e5e0",
-          "rawNetIn": "3180634126524111582906",
+          "address": "0xb3e17d2ebbd710be53ecd8e8727337a8dd792811",
+          "rawNetIn": "5262025876397622705488",
           "identity": "UNVERIFIED"
         },
         {
-          "address": "0x54afee92a2173f9e0494794b8826f8fe6e701603",
-          "rawNetIn": "2315843788140467548159",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-          "rawNetIn": "1363791281115449292364",
+          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "rawNetIn": "1845660232448693394481",
           "identity": "UNVERIFIED"
         }
       ],
@@ -1127,49 +554,22 @@
       "token": "0x81a7da4074b8e0ed51bea40f9dcbdf4d9d4832b4",
       "pool": "0x97620e003c03381eacbde7135f28d94303bb5672",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 4,
+      "transferCount": 1,
       "observedTransfers": [
         {
-          "tx": "0x29aec92f08f8f9101dd7ad979134b76821c7cd665c1510a2b7425addace2d677",
-          "block": 133400318,
-          "logIndex": 149,
+          "tx": "0x615d9ff5d30030e14083e64d57f9badd3f73c9ecdd63aa9d6010d3fd6d3955bd",
+          "block": 133400532,
+          "logIndex": 53,
           "from": "0x97620e003c03381eacbde7135f28d94303bb5672",
           "to": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "raw": "268248685658353755852",
-          "blockUtc": "2026-11-13T18:32:36.000Z"
-        },
-        {
-          "tx": "0x21fa574b90fa84b7ed65ccf9f739808beb8c81e53c5e5e9fb54d0cb20cc9465a",
-          "block": 133400367,
-          "logIndex": 461,
-          "from": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
-          "to": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "raw": "331881274748938299720",
-          "blockUtc": "2026-11-13T18:32:58.000Z"
-        },
-        {
-          "tx": "0xd408a672f0b3058011a6de3161c2f6e81ac576a1e0d11c43e7aba6667b6db539",
-          "block": 133400368,
-          "logIndex": 119,
-          "from": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "to": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "raw": "74657798033273878217",
-          "blockUtc": "2026-11-13T18:32:58.000Z"
-        },
-        {
-          "tx": "0xd408a672f0b3058011a6de3161c2f6e81ac576a1e0d11c43e7aba6667b6db539",
-          "block": 133400368,
-          "logIndex": 122,
-          "from": "0x95337791024b5f0480b353fbafd2882b4d8e99c8",
-          "to": "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-          "raw": "74657798033273878217",
-          "blockUtc": "2026-11-13T18:32:58.000Z"
+          "raw": "301293810317552789149",
+          "blockUtc": "2026-11-13T18:34:12.000Z"
         }
       ],
       "netRecipients": [
         {
-          "address": "0x28e2ea090877bf75740558f6bfb36a5ffee9e9df",
-          "rawNetIn": "74657798033273878217",
+          "address": "0x278d858f05b94576c1e6f73285886876ff6ef8d2",
+          "rawNetIn": "301293810317552789149",
           "identity": "UNVERIFIED"
         }
       ],
@@ -1183,120 +583,9 @@
       "token": "0x8fce7206e3043dd360f115afa956ee31b90b787c",
       "pool": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
       "coverage": "RECEIPTS_SCANNED",
-      "transferCount": 11,
-      "observedTransfers": [
-        {
-          "tx": "0x2cac082becc7d9f1e2522d23f3313431390563ae6043f96abdb3c8834fb85194",
-          "block": 133400286,
-          "logIndex": 451,
-          "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
-          "raw": "1553000000000000000000",
-          "blockUtc": "2026-11-13T18:32:22.000Z"
-        },
-        {
-          "tx": "0x2cac082becc7d9f1e2522d23f3313431390563ae6043f96abdb3c8834fb85194",
-          "block": 133400286,
-          "logIndex": 456,
-          "from": "0x000000000a01ea06f8b3a01319bbaa2cb2453a3c",
-          "to": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
-          "raw": "1553000000000000000000",
-          "blockUtc": "2026-11-13T18:32:22.000Z"
-        },
-        {
-          "tx": "0xcbef9b9b31ec3ccb03fc4770b2ec5b1583e67fca74b1593e3dca4f661e2eb4c7",
-          "block": 133400286,
-          "logIndex": 561,
-          "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "raw": "1980250280119718594352",
-          "blockUtc": "2026-11-13T18:32:22.000Z"
-        },
-        {
-          "tx": "0x1ea3d49470bc887c02e16e499a289dbda4fecefff384602c1cddd6aec9eb3f54",
-          "block": 133400288,
-          "logIndex": 557,
-          "from": "0x1b91688f4b67fdd660b3a7ea95b3246548c03d55",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "2116855146737953720239",
-          "blockUtc": "2026-11-13T18:32:22.000Z"
-        },
-        {
-          "tx": "0x594aeb4af7a29c0fb6458d53cd1173043597107fab50112cae8721f92b77efa8",
-          "block": 133400349,
-          "logIndex": 1111,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "4745762020268856933770",
-          "blockUtc": "2026-11-13T18:32:50.000Z"
-        },
-        {
-          "tx": "0x379e04f141afe9fc0c53b9106ce0a2e246fb9261b41e7689012e664e7fc2fe80",
-          "block": 133400372,
-          "logIndex": 32,
-          "from": "0x1125124106fdeb8bbe751c1fbe73424ac060298e",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "2259908221339243648901",
-          "blockUtc": "2026-11-13T18:33:00.000Z"
-        },
-        {
-          "tx": "0x1bf508016951b0846eda01869806240236c9c6f1b21a6342889334f1f3c42e96",
-          "block": 133400422,
-          "logIndex": 32,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "1177317159461123620302",
-          "blockUtc": "2026-11-13T18:33:23.000Z"
-        },
-        {
-          "tx": "0xe727eddf8b093a7147fe7d55e0ef67ef75d3e71377d9d1febd5e291b0de734a4",
-          "block": 133400424,
-          "logIndex": 19,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "1382657159423076811075",
-          "blockUtc": "2026-11-13T18:33:24.000Z"
-        },
-        {
-          "tx": "0x3d79f3306a08f495bea585b057be928ef066bf3f5a1cebb986ffc72ce702ca0c",
-          "block": 133400449,
-          "logIndex": 195,
-          "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "to": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
-          "raw": "4456853503386203147885",
-          "blockUtc": "2026-11-13T18:33:35.000Z"
-        },
-        {
-          "tx": "0x3d79f3306a08f495bea585b057be928ef066bf3f5a1cebb986ffc72ce702ca0c",
-          "block": 133400449,
-          "logIndex": 198,
-          "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
-          "to": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
-          "raw": "4456853503386203147885",
-          "blockUtc": "2026-11-13T18:33:35.000Z"
-        },
-        {
-          "tx": "0xf237953c0d3810d916086932af3b1d94f67f54ad5108e7b208d86ad91863d4c2",
-          "block": 133400450,
-          "logIndex": 102,
-          "from": "0xa2349c76cb0806103e913d0f1c5786fb5c60d3ca",
-          "to": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "raw": "1177184317109906284923",
-          "blockUtc": "2026-11-13T18:33:35.000Z"
-        }
-      ],
-      "netRecipients": [
-        {
-          "address": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
-          "rawNetIn": "4456853503386203147885",
-          "identity": "UNVERIFIED"
-        },
-        {
-          "address": "0x57fd714755dbe55798501e1b4b2bcc355c06bf6a",
-          "rawNetIn": "1553000000000000000000",
-          "identity": "UNVERIFIED"
-        }
-      ],
+      "transferCount": 0,
+      "observedTransfers": [],
+      "netRecipients": [],
       "lpEventCount": 0,
       "lpEvents": [],
       "alerts": []
