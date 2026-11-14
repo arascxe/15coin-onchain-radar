@@ -1,24 +1,83 @@
 {
   "schema": "15coin-dynamic-wallet-latest-v1",
-  "asOfUtc": "2026-11-14T01:57:13.057Z",
+  "asOfUtc": "2026-11-14T03:00:33.047Z",
   "status": "SNAPSHOT_ATTEMPTED",
-  "snapshotBlock": 133459586,
+  "snapshotBlock": 133468028,
   "snapshotBlocks": {
-    "bsc": 133459586,
-    "base": 57155283
+    "bsc": 133468028,
+    "base": 57174283
   },
   "source": "Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   "dataFresh": true,
-  "candidates": [],
+  "candidates": [
+    {
+      "symbol": "CYS",
+      "address": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-13T22:20:37.579Z",
+      "chain": "bsc",
+      "observations": 4,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 54214.82,
+      "lastSnapshotBlock": 133468028,
+      "firstProof": {
+        "chain": "bsc",
+        "windowFrom": 133427267,
+        "windowTo": 133430495,
+        "positiveNetTransferRaw": "21446066949730000000000",
+        "usdApprox": 1569.21,
+        "txProof": [
+          {
+            "tx": "0xd0c62f68c63eedd214d91e1645236f72997eaefd757a80d1f1988790fb930214",
+            "block": 133430463,
+            "logIndex": 71,
+            "from": "0x0f80d0668a6f82ad9b97b82459f3ba1b91a1819f",
+            "to": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+            "raw": "14540819999730000000000"
+          },
+          {
+            "tx": "0x8a90abd9aad21b8458472335e8b890d35bc1c0797ee088992698e6623bc648a6",
+            "block": 133430485,
+            "logIndex": 124,
+            "from": "0x5fa29c78aaf58cc966782f482296275911c06e1b",
+            "to": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+            "raw": "6905246950000000000000"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "STAR",
+      "address": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-13T21:22:39.127Z",
+      "chain": "bsc",
+      "observations": 10,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 13316.65,
+      "lastSnapshotBlock": 133468028,
+      "firstProof": {
+        "windowFrom": 133421552,
+        "windowTo": 133422889,
+        "positiveNetTransferRaw": "22283227266533861250203",
+        "usdApprox": 852.83,
+        "hashesOnlyIfInObservedTransfers": [],
+        "caution": "Net received in scanned window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    }
+  ],
   "recentLargeEoaReceipts": [],
   "counts": {
-    "newRecipients": 36,
+    "newRecipients": 45,
     "oneShotLargeEoaReceipts": 0,
-    "trackedEOAs": 43,
-    "contractCandidatesSkipped": 23,
-    "codeReads": 41,
+    "trackedEOAs": 46,
+    "contractCandidatesSkipped": 35,
+    "codeReads": 49,
     "failedRPC": 0,
-    "qualifiedPersistence": 0
+    "qualifiedPersistence": 2
   },
   "caveats": [
     "EOA != independent private holder, exchange or whale. Candidate labels are unverified",
