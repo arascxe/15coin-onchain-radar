@@ -1,0 +1,23 @@
+# Isolated GitHub scheduler diagnostic. No radar code, credentials or repository writes.
+name: Cron Trigger Diagnostic (No Radar)
+
+on:
+  schedule:
+    - cron: "3,18,33,48 * * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  record-time:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Record actual scheduled execution time
+        shell: bash
+        run: |
+          echo "event=$GITHUB_EVENT_NAME"
+          echo "run_id=$GITHUB_RUN_ID"
+          date -u +"actual_utc=%Y-%m-%dT%H:%M:%SZ"
+          echo "Scheduled event: $GITHUB_EVENT_NAME" >> "$GITHUB_STEP_SUMMARY"
+          date -u +"Executed at UTC: %Y-%m-%dT%H:%M:%SZ" >> "$GITHUB_STEP_SUMMARY"
