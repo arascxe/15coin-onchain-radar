@@ -6,7 +6,7 @@
  independent whale or proof of intent. A watched address can be a bot or deposit EOA.
  */
 const fs=require("node:fs"),path=require("node:path"),DIR=path.join(__dirname,"radar_data");
-const URLS={bsc:"https://bsc-dataseed.bnbchain.org",base:"https://base-rpc.publicnode.com"},NOW=new Date().toISOString(),LOOKBACK_MS=7*86400000;
+const URLS={bsc:["https://bsc-dataseed.bnbchain.org","https://bsc-dataseed-public.bnbchain.org","https://bsc-dataseed1.binance.org"],base:["https://base-rpc.publicnode.com","https://mainnet.base.org"]},NOW=new Date().toISOString(),LOOKBACK_MS=7*86400000;
 function load(f){return JSON.parse(fs.readFileSync(path.join(DIR,f),"utf8"))}
 function save(f,j){const t=path.join(DIR,f),tmp=t+".tmp";fs.writeFileSync(tmp,JSON.stringify(j,null,2)+"\n");fs.renameSync(tmp,t)}
 const hex=n=>"0x"+BigInt(n).toString(16);
@@ -15,11 +15,25 @@ function decimal(raw,dec,price){if(raw==null||!Number.isInteger(dec)||!(price>0)
  let n=BigInt(raw),sign=n<0n?-1:1;n=n<0n?-n:n;const d=10n**BigInt(dec);
  return sign*(Number(n/d)+Number(n%d)/Number(d))*price;
 }catch{return null}}
+// Bounded retry of public read-only RPCs; keep the SAME block tag across providers.
 async function rpc(method,params,chain="bsc"){
- const ac=new AbortController(),t=setTimeout(()=>ac.abort(),9000);
- try{const r=await fetch(URLS[chain],{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method,params}),signal:ac.signal});
- if(!r.ok)throw Error("HTTP "+r.status);const j=await r.json();if(j.error)throw Error(JSON.stringify(j.error));return j.result;
- }finally{clearTimeout(t)}
+ let last;
+ const providers=URLS[chain]||[];
+ for(let i=0;i<providers.length*2;i++){
+  const url=providers[i%providers.length],ac=new AbortController(),t=setTimeout(()=>ac.abort(),9000);
+  try{
+   const r=await fetch(url,{method:"POST",headers:{"content-type":"application/json"},body:JSON.stringify({jsonrpc:"2.0",id:1,method,params}),signal:ac.signal});
+   if(!r.ok)throw Error("HTTP "+r.status);
+   const j=await r.json();if(j.error)throw Error(JSON.stringify(j.error));
+   if(!Object.hasOwn(j,"result")||j.result==null)throw Error("Missing RPC result");
+   return j.result;
+  }catch(e){
+   last=e;const message=String(e.message);
+   if(!/HTTP (408|429|500|502|503|504)|limit|timeout|abort|fetch failed|network|missing trie node|header not found|missing RPC result/i.test(message))throw e;
+  }finally{clearTimeout(t)}
+  if(i+1<providers.length*2)await new Promise(resolve=>setTimeout(resolve,180*(i+1)));
+ }
+ throw last||Error("RPC providers exhausted");
 }
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 async function mapLimited(items,n,fn){const result=[];for(let i=0;i<items.length;i+=n){const batch=await Promise.all(items.slice(i,i+n).map(async(item,k)=>{try{return {ok:true,value:await fn(item)}}catch(e){return{ok:false,error:String(e.message).slice(0,150)}}}));result.push(...batch);if(i+n<items.length)await sleep(110)}return result}
@@ -93,7 +107,7 @@ async function main(){
  }
  snapshotBlock=snapshotBlocks.bsc;
  const addresses=[...new Map(jobs.map(j=>[j.chain+"|"+j.address,{chain:j.chain,address:j.address}])).values()].filter(j=>tags[j.chain]);
- const codes=await mapLimited(addresses,7,async j=>({key:j.chain+"|"+j.address,code:await rpc("eth_getCode",[j.address,tags[j.chain]],j.chain)}));
+ const codes=await mapLimited(addresses,4,async j=>({key:j.chain+"|"+j.address,code:await rpc("eth_getCode",[j.address,tags[j.chain]],j.chain)}));
  for(let i=0;i<addresses.length;i++){
   const r=codes[i],j=addresses[i],key=j.chain+"|"+j.address;
   if(r.ok){const code=String(r.value.code||"").toLowerCase();codeMap.set(key,code==="0x"?"EOA":"CONTRACT");eoaChecks++}
@@ -101,7 +115,7 @@ async function main(){
  }
  const eoa=jobs.filter(j=>codeMap.get(j.chain+"|"+j.address)==="EOA");
  skippedContract=jobs.filter(j=>codeMap.get(j.chain+"|"+j.address)==="CONTRACT").length;
- const reads=await mapLimited(eoa,7,async j=>({...j,balanceRaw:BigInt(await rpc("eth_call",[{to:j.token,data:"0x70a08231"+j.address.slice(2).padStart(64,"0")},tags[j.chain]],j.chain)).toString()}));
+ const reads=await mapLimited(eoa,4,async j=>({...j,balanceRaw:BigInt(await rpc("eth_call",[{to:j.token,data:"0x70a08231"+j.address.slice(2).padStart(64,"0")},tags[j.chain]],j.chain)).toString()}));
  for(let i=0;i<eoa.length;i++){
   const r=reads[i],j=eoa[i];if(!r.ok){failures.push({network:j.chain,symbol:j.symbol,address:j.address,error:r.error});continue}
   const oldEntry=old.tracked.find(q=>q.symbol===j.symbol&&q.address===j.address&&(q.chain||"bsc")===j.chain);
