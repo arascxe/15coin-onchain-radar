@@ -31,7 +31,7 @@ const call=async(url,method,params)=>{
   try{rpcStats.attempts++;const v=await rawCall(order[i],method,params);if(order[i]!==url)rpcStats.fallbacks++;return v}
   catch(e){
    last=e;const msg=String(e.message);
-   if(!/limit exceeded|rate.limit|too many requests|HTTP (401|403|429|500|502|503|504)|fetch failed|abort|timeout|network/i.test(msg))throw e;
+   if(!/limit exceeded|rate.limit|too many requests|HTTP (401|403|408|429|500|502|503|504)|fetch failed|abort|timeout|network|missing trie node|header not found/i.test(msg))throw e;
    rpcStats.retries++;if(i+1<order.length)await sleep(180*(i+1));
   }
  }
@@ -67,7 +67,7 @@ const at=new Date().toISOString();
 if(!url){const report={asOfUtc:at,status:"FAILED_NO_RPC",errors:fail,coins:[]};save("pool_state_latest.json",report);console.log(JSON.stringify(report));return}
 const report={schema:"15coin-bsc-pool-state-v1",asOfUtc:at,status:"SUCCESS_WITH_PARTIAL_POOL_COVERAGE",provider:url,blockNumber:head,chainId:56,meaning:"Current on-chain pool token balance/active liquidity snapshots, NOT authenticated LP Mint/Burn events or CEX wallet accumulation",coins:[]};
 for(const [symbol,token,pool] of targets){if(!pool){report.coins.push({symbol,status:"NO_DIRECT_POOL_CONTRACT_IN_MAP"});continue}
- try{const obs=await query(url,token.toLowerCase(),pool.toLowerCase(),"0x"+head.toString(16));let before=prev.coins?.find(x=>x.symbol===symbol&&x.status==="READ_OK");
+ try{let obs=await query(url,token.toLowerCase(),pool.toLowerCase(),"0x"+head.toString(16));if(obs.status==="RPC_PARTIAL"){await sleep(400);obs=await query(url,token.toLowerCase(),pool.toLowerCase(),"0x"+head.toString(16));}let before=prev.coins?.find(x=>x.symbol===symbol&&x.status==="READ_OK");
  let deltas=null;if(obs.status==="READ_OK"&&before?.status==="READ_OK"&&prev.blockNumber<head){const x=obs.poolTokenBalanceRaw!=null&&before.poolTokenBalanceRaw!=null?(BigInt(obs.poolTokenBalanceRaw)-BigInt(before.poolTokenBalanceRaw)).toString():null;const l=obs.activeV3LiquidityRaw!=null&&before.activeV3LiquidityRaw!=null?(BigInt(obs.activeV3LiquidityRaw)-BigInt(before.activeV3LiquidityRaw)).toString():null;deltas={fromBlock:prev.blockNumber,toBlock:head,poolTokenBalanceDeltaRaw:x,activeLiquidityDeltaRaw:l,caveat:"Balance delta may be swaps or LP action; liquidity delta may also reflect tick crossings. Neither proves LP removal."}}
  report.coins.push({symbol,tokenContract:token,poolAddress:pool,...obs,deltas})}
  catch(e){report.coins.push({symbol,status:"RPC_CALL_FAILED",error:String(e.message).slice(0,150)})}
@@ -79,13 +79,25 @@ const walletSeeds=[
 ];
 report.holderObservations=[];
 const holderJobs=targets.flatMap(([symbol,token])=>walletSeeds.map(w=>({symbol,token,address:w.address,thirdPartyLabel:w.thirdPartyLabel,identityVerified:false})));
-for(let i=0;i<holderJobs.length;i+=3){const part=await Promise.all(holderJobs.slice(i,i+3).map(async j=>{try{
+for(let i=0;i<holderJobs.length;i+=2){const part=await Promise.all(holderJobs.slice(i,i+2).map(async j=>{try{
 const raw=await call(url,"eth_call",[{to:j.token,data:"0x70a08231"+addrWord(j.address)},"0x"+head.toString(16)]);
 const now=BigInt(raw).toString();
 const before=prev.holderObservations?.find(x=>x.symbol===j.symbol&&x.address===j.address&&x.status==="READ_OK");
 const delta=before?.balanceRaw!=null&&prev.blockNumber<head?(BigInt(now)-BigInt(before.balanceRaw)).toString():null;
 return {...j,status:"READ_OK",balanceRaw:now,deltaRaw:delta,fromBlock:delta==null?null:prev.blockNumber,toBlock:head}
-}catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part);if(i+3<holderJobs.length)await sleep(140)}
+}catch(e){return {...j,status:"RPC_FAILED",error:String(e.message).slice(0,120)}}}));report.holderObservations.push(...part);if(i+2<holderJobs.length)await sleep(200)}
+// A few public RPC failures must not force an entire good snapshot to be discarded.
+// Retry only failed wallet reads at the SAME BSC block; never reuse an old value as fresh.
+for(let i=0;i<report.holderObservations.length;i++){
+ const bad=report.holderObservations[i];if(bad.status!=="RPC_FAILED")continue;
+ await sleep(350);
+ try{
+  const raw=await call(url,"eth_call",[{to:bad.token,data:"0x70a08231"+addrWord(bad.address)},"0x"+head.toString(16)]);
+  const now=BigInt(raw).toString(),before=prev.holderObservations?.find(x=>x.symbol===bad.symbol&&x.address===bad.address&&x.status==="READ_OK");
+  const delta=before?.balanceRaw!=null&&prev.blockNumber<head?(BigInt(now)-BigInt(before.balanceRaw)).toString():null;
+  report.holderObservations[i]={...bad,status:"READ_OK",balanceRaw:now,deltaRaw:delta,fromBlock:delta==null?null:prev.blockNumber,toBlock:head,error:undefined};
+ }catch(e){report.holderObservations[i]={...bad,error:String(e.message).slice(0,120)}}
+}
 report.rpcStats=rpcStats;
 report.caveat="Wallet labels are unverified third-party attribution, not verified full exchange entity net reserves. Do not infer actual buyers or bullish accumulation from balance deltas alone.";
 const infinityPools=[
@@ -107,6 +119,24 @@ for(const info of infinityPools){try{
  const delta=(before?.activeLiquidityRaw!=null&&prev.blockNumber<head)?(l-BigInt(before.activeLiquidityRaw)).toString():null;
  report.infinityOnchain.push({symbol:info.symbol,status:"READ_OK",poolId:info.poolId,contract:INF_MANAGER,source:"BSC official RPC eth_call to CLPoolManager",blockNumber:head,sqrtPriceX96:sqrt.toString(),tick,activeLiquidityRaw:l.toString(),liquidityDeltaRaw:delta,deltaFromBlock:delta==null?null:prev.blockNumber,interpretation:"Active-liquidity change is onchain state difference; can arise from price tick crossings OR LP positions; not proof of Mint/Burn/ModifyLiquidity event"});
  }catch(e){report.infinityOnchain.push({symbol:info.symbol,status:"READ_FAILED",poolId:info.poolId,error:String(e.message).slice(0,160)})}
+}
+// Retry incomplete CL pool reads at the original block tag. Never synthesize a successful read.
+for(let i=0;i<report.infinityOnchain.length;i++){
+ if(report.infinityOnchain[i].status==="READ_OK")continue;
+ const info=infinityPools[i],queryBlock="0x"+head.toString(16);
+ await sleep(400);
+ try{
+  const [slot,liq]=await Promise.all([
+   call(url,"eth_call",[{to:INF_MANAGER,data:"0xc815641c"+info.poolId.slice(2)},queryBlock]),
+   call(url,"eth_call",[{to:INF_MANAGER,data:"0xfa6793d5"+info.poolId.slice(2)},queryBlock])
+  ]);
+  if(typeof slot!=="string"||slot.length<258||typeof liq!=="string"||liq.length<66)throw Error("invalid manager ABI length");
+  const words=slot.slice(2).match(/.{64}/g),sqrt=BigInt("0x"+words[0]),tick=Number(BigInt.asIntN(24,BigInt("0x"+words[1]))),l=BigInt(liq);
+  if(sqrt<=0n)throw Error("PoolId is uninitialized or incorrect");
+  const before=prev.infinityOnchain?.find(x=>x.symbol===info.symbol&&x.status==="READ_OK");
+  const delta=(before?.activeLiquidityRaw!=null&&prev.blockNumber<head)?(l-BigInt(before.activeLiquidityRaw)).toString():null;
+  report.infinityOnchain[i]={symbol:info.symbol,status:"READ_OK",poolId:info.poolId,contract:INF_MANAGER,source:"BSC official RPC eth_call to CLPoolManager",blockNumber:head,sqrtPriceX96:sqrt.toString(),tick,activeLiquidityRaw:l.toString(),liquidityDeltaRaw:delta,deltaFromBlock:delta==null?null:prev.blockNumber,interpretation:"Active liquidity change can be tick crossing or LP movement; not proof of ModifyLiquidity."};
+ }catch(e){report.infinityOnchain[i].error=String(e.message).slice(0,160)}
 }
 report.infinitySnapshots=[];
 for(const inf of infinityPools){try{
