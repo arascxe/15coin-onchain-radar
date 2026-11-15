@@ -8,6 +8,8 @@ on:
       - "pool_state.cjs"
       - "spot.cjs"
       - "evidence_gate.cjs"
+      - "exchange_inventory.cjs"
+      - "research/test_exchange_inventory.cjs"
       - "research/test_evidence_gate.cjs"
       - "prep_engine.cjs"
       - "wallet_persistence.cjs"
@@ -73,6 +75,13 @@ jobs:
           node research/test_wallet_persistence.cjs
       - name: Read dynamic EOA balances on BSC official RPC
         run: node wallet_persistence.cjs
+      - name: Validate independent labeled-exchange wallet observation rules
+        run: |
+          node --check exchange_inventory.cjs
+          node --check research/test_exchange_inventory.cjs
+          node research/test_exchange_inventory.cjs
+      - name: Read labeled Gate and Bitget balances at fixed public chain blocks
+        run: node exchange_inventory.cjs
       - name: Validate preparation decision rules against positive and negative controls
         run: |
           node --check prep_engine.cjs
@@ -108,6 +117,8 @@ jobs:
             radar_data/spot_latest.json
             radar_data/health_latest.json
             radar_data/coverage_latest.json
+            radar_data/exchange_inventory_latest.json
+            radar_data/exchange_inventory_history.json
             radar_data/spot_history.json
             radar_data/research_backtest_latest.json
             radar_data/prep_latest.json
@@ -139,7 +150,7 @@ jobs:
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
             fi
-            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs evidence_gate.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
+            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs evidence_gate.cjs exchange_inventory.cjs research/test_exchange_inventory.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
               echo "::notice::Collector code changed since the checkout; do not publish older-code evidence."
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
