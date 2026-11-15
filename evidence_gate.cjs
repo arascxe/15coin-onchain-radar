@@ -8,7 +8,7 @@
 const fs=require("node:fs"),path=require("node:path");
 const ROOT=path.join(__dirname,"radar_data");
 const SYMBOLS=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS","STBL","BSB","AIO","STAR","LYN"];
-const number=x=>Number.isFinite(Number(x))?Number(x):null;
+const number=x=>x==null||x===""?null:(Number.isFinite(Number(x))?Number(x):null);
 function fresh(ts,now,maxMinutes){
  const t=Date.parse(ts||""),delta=now-t;
  return Number.isFinite(t)&&delta>=-60000&&delta<=maxMinutes*60000;
@@ -42,14 +42,15 @@ function buildReport({spot,prep,health,chain},now=Date.now()){
    Number.isFinite(tape.last15mSellsUSD);
   const book=p.microstructure?.orderbook;
   const bookCurrent=ohlcv&&!!book&&Number.isFinite(book.spreadPct)&&
-   (book.askDepth2pctUSD!==null||book.askDepth5pctUSD!==null)&&
+   (Number.isFinite(book.askDepth2pctUSD)||Number.isFinite(book.askDepth5pctUSD))&&
    fresh(p.microstructure?.asOfUtc,now,15);
   const index=p.indexConstituents;
   const indexCurrent=index?.status==="OK"&&fresh(index.asOfUtc,now,40);
   const priorities=indexCurrent?index.prioritySpots:[];
   const primaryWeight=priorities.find(v=>v.exchange===exchange)?.weight??null;
   const price24=number(p.change24hPct);
-  const early=price24!==null&&price24>=-10&&price24<=15&&number(p.change6hPct)<=15;
+  const price6=number(p.change6hPct);
+  const early=price24!==null&&price6!==null&&price24>=-10&&price24<=15&&price6<=15;
   const quoteVolume=number(p.rvol15m?.volumeUSD);
   const buyFlow=tapeComplete&&early&&quoteVolume>=5000&&tape.last15mBuysUSD>=10000&&
    tape.last15mBuysUSD>=1.4*Math.max(1,tape.last15mSellsUSD);
