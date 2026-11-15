@@ -102,6 +102,64 @@ async function gateMicro(c){
  }else out.orderbook={error:String(book.reason?.message||"orderbook missing").slice(0,130)};
  return out;
 }
+
+// Bitget V3 PUBLIC SPOT fills + order book; never infer full 15m tape from a 100-fill sample.
+async function bitgetMicro(c){
+ const pair=encodeURIComponent(c.symbol+"USDT"),base="https://api.bitget.com/api/v3/market/";
+ const out={source:"Bitget v3 public SPOT fills + orderbook",asOfUtc:new Date().toISOString()};
+ const [trades,book]=await Promise.allSettled([
+  getJSON(base+"fills?category=SPOT&symbol="+pair+"&limit=100",9000),
+  getJSON(base+"orderbook?category=SPOT&symbol="+pair+"&limit=100",9000)
+ ]);
+ if(trades.status==="fulfilled"&&String(trades.value?.code)==="00000"&&Array.isArray(trades.value?.data)){
+  const arr=trades.value.data.map(t=>({side:String(t.side||"").toLowerCase(),p:Number(t.price),q:Number(t.size),ts:Number(t.ts)/1000}))
+   .filter(t=>["buy","sell"].includes(t.side)&&t.p>0&&t.q>0&&Number.isFinite(t.ts)&&t.ts>0).sort((a,b)=>a.ts-b.ts);
+  if(arr.length){
+   const now=Date.now()/1000,eligible=arr.filter(t=>now-t.ts>=0&&now-t.ts<=900),first=arr[0].ts;
+   const full=first<=now-900&&now-arr.at(-1).ts<=720;
+   let buys=0,sells=0;for(const t of eligible){if(t.side==="buy")buys+=t.p*t.q;else sells+=t.p*t.q}
+   out.takerTradeSample={sampleCount:arr.length,firstSampleUtc:new Date(first*1000).toISOString(),
+    lastSampleUtc:new Date(arr.at(-1).ts*1000).toISOString(),
+    last15mSampleComplete:full,last15mBuysUSD:round(buys,2),last15mSellsUSD:round(sells,2),
+    last15mNetTakerBuyUSD:round(buys-sells,2),
+    coverageNote:full?"Last 15m spans all returned fills; only 100 fills are available":"INCOMPLETE: only 100 recent fills; NEVER treat as full 15m"};
+  }else out.takerTradeSample={error:"No valid Bitget public SPOT fills"};
+ }else out.takerTradeSample={error:String(trades.reason?.message||trades.value?.msg||"Bitget fills unavailable").slice(0,140)};
+ if(book.status==="fulfilled"&&String(book.value?.code)==="00000"&&Array.isArray(book.value?.data?.a)&&Array.isArray(book.value?.data?.b)){
+  const ask=book.value.data.a.map(z=>[+z[0],+z[1]]).filter(z=>z[0]>0&&z[1]>=0).sort((a,b)=>a[0]-b[0]);
+  const bid=book.value.data.b.map(z=>[+z[0],+z[1]]).filter(z=>z[0]>0&&z[1]>=0).sort((a,b)=>b[0]-a[0]);
+  if(ask.length&&bid.length){
+   const mid=(ask[0][0]+bid[0][0])/2,ma=100*(ask.at(-1)[0]/mid-1),mb=100*(1-bid.at(-1)[0]/mid);
+   const sum=(a,pred)=>round(a.filter(z=>pred(z[0])).reduce((n,z)=>n+z[0]*z[1],0),2);
+   out.orderbook={midUSDT:round(mid,10),spreadPct:round(100*(ask[0][0]-bid[0][0])/mid,4),
+    askDepth2pctUSD:ma>=2?sum(ask,p=>p<=mid*1.02):null,askDepth5pctUSD:ma>=5?sum(ask,p=>p<=mid*1.05):null,
+    bidDepth2pctUSD:mb>=2?sum(bid,p=>p>=mid*.98):null,bidDepth5pctUSD:mb>=5?sum(bid,p=>p>=mid*.95):null,
+    askMaxDistancePct:round(ma,3),bidMaxDistancePct:round(mb,3),
+    exchangeAsOfUtc:new Date(Number(book.value.data.ts)).toISOString(),
+    warning:"One snapshot; NULL when 100 depth levels do not reach band. No proof of replenishment."};
+  }else out.orderbook={error:"Empty Bitget orderbook"};
+ }else out.orderbook={error:String(book.reason?.message||book.value?.msg||"Bitget orderbook unavailable").slice(0,140)};
+ return out;
+}
+// Venue ranking metadata is NOT an independent spot buy signal.
+// Binance may include Binance Futures itself in the index constituents.
+async function indexConstituents(c){
+ const src="https://fapi.binance.com/fapi/v1/constituents?symbol="+encodeURIComponent(c.symbol+"USDT");
+ try{
+  const x=await getJSON(src,9000),arr=x?.constituents;
+  if(!Array.isArray(arr)||!arr.length)throw Error("Missing constituents");
+  const venues=arr.map(y=>({exchange:String(y.exchange||""),symbol:String(y.symbol||""),
+   weight:Number(y.weight),price:Number(y.price)})).filter(y=>y.exchange&&Number.isFinite(y.weight)&&y.weight>=0&&y.weight<=1);
+  if(venues.length!==arr.length)throw Error("Invalid index weights");
+  const asOfUtc=new Date(Number(x.time)).toISOString(),age=Date.now()-Date.parse(asOfUtc);
+  if(!Number.isFinite(age)||age>3600000||age< -300000)throw Error("Stale or future index timestamp");
+  const actualSpot=venues.filter(y=>y.exchange!=="binance_future");
+  return {status:"OK",asOfUtc,source:src,venues,prioritySpots:actualSpot.sort((a,b)=>b.weight-a.weight).slice(0,4).map(y=>({exchange:y.exchange,weight:round(y.weight,6)})),
+   hasFuturesSelf:venues.some(y=>y.exchange==="binance_future"),
+   caution:"CURRENT index composition only; not historical proof of spot order flow or market maker identity"};
+ }catch(e){return {status:"UNKNOWN",source:src,error:String(e.message||e).slice(0,140)}}
+}
+
 const candleEvidenceByVenue=new Map();
 async function inspect(c){const failures=[];let series=null;
 try{series=await gate(c)}catch(e){failures.push("GATE "+String(e.message).slice(0,150));}
@@ -114,11 +172,13 @@ const last=series.minute15.at(-1),first=series.minute15.at(-Math.min(5,series.mi
 const candleChange=(barsBack)=>{const previous=series.minute15.at(-(barsBack+1));return last&&previous&&last.ts-previous.ts===barsBack*900&&previous.c>0?round(100*(last.c/previous.c-1),3):null};
 const ret24=candleChange(96),ret6=candleChange(24),ret15=candleChange(1);
 let micro=null;if(series.venue.startsWith("Gate Spot")){try{micro=await gateMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
+ if(series.venue.startsWith("Bitget Spot")){try{micro=await bitgetMicro(c)}catch(e){micro={error:String(e.message).slice(0,150)}}}
+ const index=await indexConstituents(c);
 const verdictResult=verdict(p15,p1,hl,micro);
 return {symbol:c.symbol,status:"OHLCV_RECEIVED",venue:series.venue,source:series.source,sourceUrl:series.url,
  measuredAtUtc:new Date().toISOString(),lastCandleUtc:last?new Date(last.ts*1000).toISOString():null,
  priceUSDT:last?.c||null,close1hChangePct:x,change15mPct:ret15,change6hPct:ret6,change24hPct:ret24,bar15mCount:series.minute15.length,bar1hCount:series.hour1.length,
- rvol15m:p15,rvol1h:p1,confirmedHigherLows1h:hl,verdict:verdictResult,microstructure:micro,failures};
+ rvol15m:p15,rvol1h:p1,confirmedHigherLows1h:hl,verdict:verdictResult,microstructure:micro,indexConstituents:index,failures};
 }
 async function main(){const out={schema:"15coin-spot-ohlcv-v1",asOfUtc:new Date().toISOString(),meaning:"Public real venue/pool OHLCV RVOL; not futures, not direct evidence of CEX inventory or LP event",coins:[]};for(let i=0;i<DATA.length;i+=4){const part=await Promise.all(DATA.slice(i,i+4).map(inspect));out.coins.push(...part);}
 out.status=out.coins.some(x=>x.status==="OHLCV_RECEIVED")?"PARTIAL_OR_COMPLETE":"FAILED_ALL";
