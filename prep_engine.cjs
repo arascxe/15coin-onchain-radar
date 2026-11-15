@@ -58,7 +58,7 @@ function classify({symbol,spot,chain,pool,wallet,now}){
  const poolUSD=money(delta,dec,price);
  const poolDepletion=v3&&poolUSD!=null&&poolPct!=null&&poolUSD<=-10000&&poolPct<=-2;
  if(poolDepletion)code.push("DEX_POOL_INVENTORY_DECLINE");
- evidences.poolBalance=v3?{pool:v3.poolAddress,fromBlock:v3.deltas?.fromBlock,toBlock:v3.deltas?.toBlock,rawDelta:delta,deltaPct:ROUND(poolPct),deltaUSD:ROUND(poolUSD,2),interpretation:"Pool token balance decreased. Swaps, LP changes, and other pool operations indistinguishable without matched receipts."}:null;
+ evidences.poolBalance=v3?{pool:v3.poolAddress,fromBlock:v3.deltas?.fromBlock,toBlock:v3.deltas?.toBlock,rawDelta:delta,deltaPct:ROUND(poolPct),deltaUSD:ROUND(poolUSD,2),interpretation:delta==null?"Pool token balance change UNKNOWN":BigInt(delta)<0n?"Pool token balance DECREASED; swaps, LP and transfers unresolved":BigInt(delta)>0n?"Pool token balance INCREASED; swaps, LP and transfers unresolved":"Pool token balance UNCHANGED"}:null;
  // Raw block receipts are a separate proof of TRANSFER, but do not prove which entity controlled the funds.
  const seedFlows=flowValid?(onchain.tokenFlows?.walletFlows||[]):[];
  const watchMovements=seedFlows.map(w=>({
@@ -112,12 +112,12 @@ function classify({symbol,spot,chain,pool,wallet,now}){
    trade.last15mBuysUSD>=10000&&trade.last15mBuysUSD>=1.4*Math.max(1,trade.last15mSellsUSD);
  const spotIgnition=spotUsable&&p.rvol15m?.status==="OK"&&p.rvol15m.rvol>=3&&
    p.rvol15m.volumeUSD>=5000&&price1!=null&&price1>=0&&price1<=12;
- if(buyFlow)code.push("INDEPENDENT_GATE_SPOT_TAKER_BUY");
+ if(buyFlow)code.push(p?.venue?.startsWith("Bitget Spot")?"INDEPENDENT_BITGET_SPOT_TAKER_BUY":"INDEPENDENT_GATE_SPOT_TAKER_BUY");
  if(spotIgnition)code.push("SPOT_FIRST_IGNITION_CANDIDATE");
  evidences.spot={venue:p?.venue||null,priceUSDT:price,price24hPct:ROUND(price24),price6hPct:ROUND(price6),price1hPct:ROUND(price1),
    rvol15m:p?.rvol15m?.rvol??null,volume15mUSD:p?.rvol15m?.volumeUSD??null,
    takerBuysUSD:tradeFresh?trade?.last15mBuysUSD:null,takerSellsUSD:tradeFresh?trade?.last15mSellsUSD:null,
-   takerSnapshotFresh:tradeFresh,spotVerdict:p?.verdict??null};
+   takerSnapshotFresh:tradeFresh,takerSampleComplete:trade?.last15mSampleComplete===true,spotVerdict:p?.verdict??null,indexPriority:p?.indexConstituents?.prioritySpots??null};
  // Stage P2 needs meaningful movement involving two non-identical economic locations,
  // and the onchain address ownership and causal interpretation remain UNVERIFIED.
  const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000)||dynamicEoa.length>0||immediateEoa.length>0;
