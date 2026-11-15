@@ -13,7 +13,7 @@ function fresh(ts,now,maxMinutes){
  const t=Date.parse(ts||""),delta=now-t;
  return Number.isFinite(t)&&delta>=-60000&&delta<=maxMinutes*60000;
 }
-function buildReport({spot,prep,health,chain,pool,exchange},now=Date.now()){
+function buildReport({spot,prep,health,chain,pool,exchange:exchangeInventory},now=Date.now()){
  if(!(spot&&prep&&health&&chain))throw Error("Missing evidence file");
  const seen=new Set(SYMBOLS);
  if(SYMBOLS.length!==15||seen.size!==15)throw Error("15-symbol universe invalid");
@@ -28,11 +28,11 @@ function buildReport({spot,prep,health,chain,pool,exchange},now=Date.now()){
  const prepTimeValid=fresh(prep.asOfUtc,now,30)&&prep.status==="DATA_FRESH";
  const chainTimeValid=fresh(chain.asOfUtc,now,30);
  const poolTimeValid=pool&&fresh(pool.asOfUtc,now,30);
- const exchangeTimeValid=exchange?.schema==="15coin-exchange-wallet-observation-v1"&&fresh(exchange.asOfUtc,now,30);
+ const exchangeTimeValid=exchangeInventory?.schema==="15coin-exchange-wallet-observation-v1"&&fresh(exchangeInventory.asOfUtc,now,30);
  const symbols=SYMBOLS.map(symbol=>{
   const p=spot.coins.find(x=>x.symbol===symbol),e=prep.coins.find(x=>x.symbol===symbol);
   const poolEntry=pool?.coins?.find(z=>z.symbol===symbol),poolSnapshot=!!(poolTimeValid&&poolEntry?.status==="READ_OK");
-  const trackedExchange=exchange?.coins?.find(z=>z.symbol===symbol);
+  const trackedExchange=exchangeInventory?.coins?.find(z=>z.symbol===symbol);
   const exFresh=!!(exchangeTimeValid&&trackedExchange?.status==="FULL");
   const exComparable=exFresh&&trackedExchange.exchanges?.some(e=>e.deltaToken!==null);
   const exDecline=exComparable&&trackedExchange.exchanges.some(e=>e.movement==="LABELED_BALANCE_DECREASE");
