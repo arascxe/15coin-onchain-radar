@@ -37,7 +37,9 @@ jobs:
           node-version: "22"
       - name: Mark start time of THIS collection run
         shell: bash
-        run: echo "RADAR_RUN_STARTED_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+        run: |
+          echo "RADAR_RUN_STARTED_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+          echo "RADAR_CHECKOUT_SHA=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
       - name: Syntax validation
         run: node --check scan.cjs
       - name: Syntax validate pool state module
@@ -127,8 +129,8 @@ jobs:
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
             fi
-            if ! git diff --quiet "$GITHUB_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
-              echo "::notice::Collector code changed since this run started; do not publish older-code evidence."
+            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
+              echo "::notice::Collector code changed since the checkout; do not publish older-code evidence."
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
             fi
