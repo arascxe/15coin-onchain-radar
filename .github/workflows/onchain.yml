@@ -7,6 +7,8 @@ on:
       - "research/test_health_check.cjs"
       - "pool_state.cjs"
       - "spot.cjs"
+      - "evidence_gate.cjs"
+      - "research/test_evidence_gate.cjs"
       - "prep_engine.cjs"
       - "wallet_persistence.cjs"
       - "research/test_wallet_persistence.cjs"
@@ -85,6 +87,13 @@ jobs:
         run: node health_check.cjs
         continue-on-error: true
       # A failed or incomplete scan must never overwrite the last valid evidence snapshot.
+      - name: Test fail-closed fifteen-coin coverage and evidence gate
+        run: |
+          node --check evidence_gate.cjs
+          node --check research/test_evidence_gate.cjs
+          node research/test_evidence_gate.cjs
+      - name: Generate per-coin source coverage and independently gated review labels
+        run: node evidence_gate.cjs
       - name: Persist verified radar data without race conditions
         id: publish
         shell: bash
@@ -98,6 +107,7 @@ jobs:
           files=(
             radar_data/spot_latest.json
             radar_data/health_latest.json
+            radar_data/coverage_latest.json
             radar_data/spot_history.json
             radar_data/research_backtest_latest.json
             radar_data/prep_latest.json
@@ -129,7 +139,7 @@ jobs:
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
             fi
-            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
+            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs evidence_gate.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
               echo "::notice::Collector code changed since the checkout; do not publish older-code evidence."
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
