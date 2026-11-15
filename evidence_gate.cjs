@@ -13,7 +13,7 @@ function fresh(ts,now,maxMinutes){
  const t=Date.parse(ts||""),delta=now-t;
  return Number.isFinite(t)&&delta>=-60000&&delta<=maxMinutes*60000;
 }
-function buildReport({spot,prep,health,chain,pool},now=Date.now()){
+function buildReport({spot,prep,health,chain,pool,exchange},now=Date.now()){
  if(!(spot&&prep&&health&&chain))throw Error("Missing evidence file");
  const seen=new Set(SYMBOLS);
  if(SYMBOLS.length!==15||seen.size!==15)throw Error("15-symbol universe invalid");
@@ -28,9 +28,14 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
  const prepTimeValid=fresh(prep.asOfUtc,now,30)&&prep.status==="DATA_FRESH";
  const chainTimeValid=fresh(chain.asOfUtc,now,30);
  const poolTimeValid=pool&&fresh(pool.asOfUtc,now,30);
+ const exchangeTimeValid=exchange?.schema==="15coin-exchange-wallet-observation-v1"&&fresh(exchange.asOfUtc,now,30);
  const symbols=SYMBOLS.map(symbol=>{
   const p=spot.coins.find(x=>x.symbol===symbol),e=prep.coins.find(x=>x.symbol===symbol);
   const poolEntry=pool?.coins?.find(z=>z.symbol===symbol),poolSnapshot=!!(poolTimeValid&&poolEntry?.status==="READ_OK");
+  const trackedExchange=exchange?.coins?.find(z=>z.symbol===symbol);
+  const exFresh=!!(exchangeTimeValid&&trackedExchange?.status==="FULL");
+  const exComparable=exFresh&&trackedExchange.exchanges?.some(e=>e.deltaToken!==null);
+  const exDecline=exComparable&&trackedExchange.exchanges.some(e=>e.movement==="LABELED_BALANCE_DECREASE");
   const venue=p.venue||null,exchange=venue?.startsWith("Gate Spot")?"gateio":venue?.startsWith("Bitget Spot")?"bitget":venue?.startsWith("GeckoTerminal")?"dex":null;
   const chainName=symbol==="TRUST"?"base":"bsc",quality=health.quality?.[chainName]||{};
   const freshTip=healthy&&chainTimeValid&&e.chainWindow?.coverage==="SUCCESS"&&quality.tipCoverage==="SUCCESS";
@@ -74,6 +79,9 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
   const limitations=[];
   if(!ohlcv)limitations.push("SPOT_OHLCV_MISSING_OR_STALE");
   if(!poolSnapshot)limitations.push("POOL_BALANCE_SNAPSHOT_NOT_AVAILABLE");
+  if(!exFresh)limitations.push("LABELED_EXCHANGE_WALLET_SNAPSHOT_MISSING_OR_PARTIAL");
+  else if(!exComparable)limitations.push("LABELED_EXCHANGE_WALLET_BASELINE_NOT_READY");
+  if(exDecline)limitations.push("LABELED_WALLET_BALANCE_DECREASE_NOT_PROOF_OF_TOTAL_CEX_OUTFLOW");
   if(!tapeComplete)limitations.push("NO_COMPLETE_FRESH_15M_TAKER_TAPE");
   if(!bookCurrent)limitations.push("NO_FRESH_FULLY_MEASURED_BOOK");
   if(!indexCurrent)limitations.push("INDEX_VENUE_PRIORITY_UNKNOWN");
@@ -83,7 +91,7 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
   if(!spotReview)limitations.push("INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED");
   return {
    symbol,decision,preparationStage:stage,signalResearchOnly:true,
-   coverage:{ohlcv:!!ohlcv,poolBalanceSnapshot:!!poolSnapshot,takerTape15mComplete:!!tapeComplete,orderbookSnapshot:!!bookCurrent,
+   coverage:{ohlcv:!!ohlcv,exchangeLabeledWalletSnapshot:!!exFresh,exchangeWalletDeltaComparable:!!exComparable,labeledWalletBalanceDecline:!!exDecline,poolBalanceSnapshot:!!poolSnapshot,takerTape15mComplete:!!tapeComplete,orderbookSnapshot:!!bookCurrent,
     priorityIndexCurrent:!!indexCurrent,liveChainTip:!!freshTip,historicalChainComplete:!!historicalComplete,
     verifiedCexOutflow:e.verifiedCexOutflow===true,
     independentSpotBuyReview:!!spotReview,orderbookReplenishmentMeasured:false},
@@ -97,7 +105,8 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
     trackedSpotIndexWeight:primaryWeight,
     historicMissingBlocks:historicBacklog,
     unverifiedEOAWithGrowth:wallet,netLpRemovalPositions:lpRemovals,
-    evidenceCodes:e.signalReasons||[]},
+    evidenceCodes:e.signalReasons||[],
+    exchangeLabeledWalletChanges:exComparable?trackedExchange.exchanges.map(z=>({exchange:z.exchange,trackedWallets:z.monitoredAddressCount,deltaToken:z.deltaToken,deltaUSDAtCurrentPrice:z.deltaUSDAtCurrentPrice,movement:z.movement,fromBlock:z.fromBlock,toBlock:z.toBlock})):null},
    limitations,
    evidenceProvenance:{spotAsOfUtc:spot.asOfUtc,prepAsOfUtc:prep.asOfUtc,
     healthAsOfUtc:health.asOfUtc,mostRecentTapeUtc:tape?.lastSampleUtc||null,
@@ -109,7 +118,7 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
  return {schema:"15coin-evidence-coverage-v1",asOfUtc:new Date(now).toISOString(),status:healthy&&spotTimeValid&&prepTimeValid&&chainTimeValid?"LIVE_SNAPSHOT_WITH_KNOWN_LIMITS":"STALE_OR_INCOMPLETE",
    objective:"Evidence review and data coverage for exactly 15 symbols; NO validated 5x/10x predictor or trading signal",
    meaning:"All coverage fields explicitly typed. UNKNOWN never equals no movement or verified preparation.",
-   counts:{requested:15,ohlcv:count("ohlcv"),poolBalanceSnapshot:count("poolBalanceSnapshot"),takerTape15mComplete:count("takerTape15mComplete"),
+   counts:{requested:15,ohlcv:count("ohlcv"),exchangeLabeledWalletSnapshot:count("exchangeLabeledWalletSnapshot"),exchangeWalletDeltaComparable:count("exchangeWalletDeltaComparable"),labeledWalletBalanceDecline:count("labeledWalletBalanceDecline"),poolBalanceSnapshot:count("poolBalanceSnapshot"),takerTape15mComplete:count("takerTape15mComplete"),
     orderbookSnapshot:count("orderbookSnapshot"),priorityIndexCurrent:count("priorityIndexCurrent"),
     liveChainTip:count("liveChainTip"),historicalChainComplete:count("historicalChainComplete"),
     verifiedCexOutflow:count("verifiedCexOutflow"),independentSpotBuyReview:count("independentSpotBuyReview"),
@@ -118,7 +127,7 @@ function buildReport({spot,prep,health,chain,pool},now=Date.now()){
 function main(){
  const read=name=>JSON.parse(fs.readFileSync(path.join(ROOT,name),"utf8"));
  const input={spot:read("spot_latest.json"),prep:read("prep_latest.json"),
-  health:read("health_latest.json"),chain:read("latest.json"),pool:read("pool_state_latest.json")};
+  health:read("health_latest.json"),chain:read("latest.json"),pool:read("pool_state_latest.json"),exchange:(()=>{try{return read("exchange_inventory_latest.json")}catch{return null}})()};
  const output=buildReport(input);
  const file=path.join(ROOT,"coverage_latest.json"),tmp=file+".tmp";
  fs.writeFileSync(tmp,JSON.stringify(output,null,2)+"\n");fs.renameSync(tmp,file);
