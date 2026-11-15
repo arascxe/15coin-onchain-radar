@@ -103,6 +103,41 @@ async function gateMicro(c){
  return out;
 }
 
+
+// Bitget V2 public SPOT history: complete a 15m window only if response pagination truly reaches its start.
+// There is no private account access, API key, or trade placement.
+async function bitgetPublicWindow(c){
+ const now=Date.now(),begin=now-20*60000,target=now-15*60000,base="https://api.bitget.com/api/v2/spot/market/fills-history";
+ let items=[],cursor=null,complete=false,prior=null;
+ for(let page=0;page<4;page++){
+  let url=base+"?symbol="+encodeURIComponent(c.symbol+"USDT")+"&limit=1000&startTime="+begin+"&endTime="+now;
+  if(cursor)url+="&idLessThan="+encodeURIComponent(cursor);
+  const j=await getJSON(url,9000);
+  if(String(j?.code)!=="00000"||!Array.isArray(j?.data))throw Error("Bitget public V2 history unavailable");
+  if(j.data.length===0){complete=true;break}
+  const b=j.data.map(x=>({id:String(x.tradeId||""),side:String(x.side||"").toLowerCase(),
+   p:Number(x.price),q:Number(x.size),ts:Number(x.ts)/1000}))
+   .filter(x=>x.id&&["buy","sell"].includes(x.side)&&x.p>0&&x.q>0&&Number.isFinite(x.ts));
+  if(b.length!==j.data.length)throw Error("Invalid Bitget history trade identity");
+  items.push(...b);
+  const old=b.toSorted((x,y)=>x.ts-y.ts)[0];
+  if(!old)throw Error("Empty Bitget history page");
+  if(j.data.length<1000||old.ts*1000<=target){complete=true;break}
+  if(old.id===cursor||old.id===prior)break;
+  prior=cursor;cursor=old.id;
+ }
+ const dedup=new Map(items.map(x=>[x.id,x]));items=[...dedup.values()].sort((a,b)=>a.ts-b.ts);
+ const latest=items.at(-1)?.ts||0,eligible=items.filter(x=>x.ts*1000>=target&&x.ts*1000<=now);
+ let buys=0,sells=0;for(const x of eligible){if(x.side==="buy")buys+=x.p*x.q;else sells+=x.p*x.q}
+ const full=complete&&latest>0&&now/1000-latest<=720;
+ return {sampleCount:items.length,firstSampleUtc:items.length?new Date(items[0].ts*1000).toISOString():null,
+  lastSampleUtc:latest?new Date(latest*1000).toISOString():null,last15mSampleComplete:full,
+  last15mBuysUSD:round(buys,2),last15mSellsUSD:round(sells,2),
+  last15mNetTakerBuyUSD:round(buys-sells,2),
+  coverageNote:full?"Public V2 history paginated to cover the full 15-minute window":"Public V2 data incomplete: page limit or no fresh public fill",
+  provenance:"Bitget public /api/v2/spot/market/fills-history, no credentials"};
+}
+
 // Bitget V3 PUBLIC SPOT fills + order book; never infer full 15m tape from a 100-fill sample.
 async function bitgetMicro(c){
  const pair=encodeURIComponent(c.symbol+"USDT"),base="https://api.bitget.com/api/v3/market/";
@@ -125,6 +160,11 @@ async function bitgetMicro(c){
     coverageNote:full?"Last 15m spans all returned fills; only 100 fills are available":"INCOMPLETE: only 100 recent fills; NEVER treat as full 15m"};
   }else out.takerTradeSample={error:"No valid Bitget public SPOT fills"};
  }else out.takerTradeSample={error:String(trades.reason?.message||trades.value?.msg||"Bitget fills unavailable").slice(0,140)};
+ if(out.takerTradeSample?.last15mSampleComplete!==true){
+  try{const extended=await bitgetPublicWindow(c);if(extended.last15mSampleComplete)out.takerTradeSample=extended;
+   else out.takerTradeSample.historyFallback=extended.coverageNote;}
+  catch(e){out.takerTradeSample.historyFallbackError=String(e.message||e).slice(0,140)}
+ }
  if(book.status==="fulfilled"&&String(book.value?.code)==="00000"&&Array.isArray(book.value?.data?.a)&&Array.isArray(book.value?.data?.b)){
   const ask=book.value.data.a.map(z=>[+z[0],+z[1]]).filter(z=>z[0]>0&&z[1]>=0).sort((a,b)=>a[0]-b[0]);
   const bid=book.value.data.b.map(z=>[+z[0],+z[1]]).filter(z=>z[0]>0&&z[1]>=0).sort((a,b)=>b[0]-a[0]);
