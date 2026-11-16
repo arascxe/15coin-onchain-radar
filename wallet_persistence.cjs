@@ -11,6 +11,23 @@ function load(f){return JSON.parse(fs.readFileSync(path.join(DIR,f),"utf8"))}
 function save(f,j){const t=path.join(DIR,f),tmp=t+".tmp";fs.writeFileSync(tmp,JSON.stringify(j,null,2)+"\n");fs.renameSync(tmp,t)}
 const hex=n=>"0x"+BigInt(n).toString(16);
 const validAddress=x=>/^0x[0-9a-f]{40}$/.test(String(x||"").toLowerCase());
+// BSC exchange addresses and custody-risk EOAs must not consume our top-recipient slots.
+// Base addresses with BSC exchange labels are only flagged for review; identity is NOT inherited.
+const BSC_CEX=new Set(require("./exchange_inventory.cjs").WALLETS.filter(x=>x.chain==="bsc").map(x=>x.address.toLowerCase()));
+BSC_CEX.add("0x53f78a071d04224b8e254e243fffc6d9f2f3fa23");
+const BSC_CUSTODY_RISK=new Set(["0xadfffc33cdc9970349cbcea3d73ec343d6ed116d",
+"0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17"]);
+const BSC_DEX=new Set(["0x5994814f2c4040b863a0125a45de152a8c2a4dec"]);
+function recipientRisk(chain,address){
+ const a=String(address||"").toLowerCase();
+ if(chain==="bsc"){
+  if(BSC_CEX.has(a))return "KNOWN_LABELED_CEX_ADDRESS";
+  if(BSC_CUSTODY_RISK.has(a))return "EXCHANGE_LINKED_CUSTODY_OWNERSHIP_UNVERIFIED";
+  if(BSC_DEX.has(a))return "DEX_ROUTER_NOT_INDEPENDENT_HOLDER";
+ }
+ if(chain==="base"&&BSC_CEX.has(a))return "BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED";
+ return null;
+}
 function decimal(raw,dec,price){if(raw==null||!Number.isInteger(dec)||!(price>0))return null;try{
  let n=BigInt(raw),sign=n<0n?-1:1;n=n<0n?-n:n;const d=10n**BigInt(dec);
  return sign*(Number(n/d)+Number(n%d)/Number(d))*price;
@@ -75,11 +92,17 @@ async function main(){
  }
  const tokenBy=new Map(coins.map(c=>[c.symbol,{token:c.token,chain:c.network}]));
  const ignore=new Set(coins.flatMap(c=>[c.token,c.pool]).filter(validAddress).map(x=>x.toLowerCase()));
- const candidates=[],cutoff=Date.parse(NOW)-LOOKBACK_MS,proofMap=new Map();
+ const candidates=[],excludedRecipientRoles=[],cutoff=Date.parse(NOW)-LOOKBACK_MS,proofMap=new Map();
  for(const c of coins){
   const tip=tipBy.get(c.network);
-  for(const entry of (c.netRecipients||[]).slice(0,4)){
-   const address=String(entry.address||"").toLowerCase();if(!validAddress(address)||ignore.has(address))continue;
+  const eligible=(c.netRecipients||[]).filter(entry=>{
+   const address=String(entry.address||"").toLowerCase();
+   const reason=recipientRisk(c.network,address);
+   if(reason)excludedRecipientRoles.push({symbol:c.symbol,chain:c.network,address,reason});
+   return validAddress(address)&&!ignore.has(address)&&!reason;
+  });
+  for(const entry of eligible.slice(0,4)){
+   const address=String(entry.address||"").toLowerCase();
    const usd=decimal(entry.rawNetIn,decBy[c.symbol],priceBy.get(c.symbol));
    if(!(usd>=100))continue;
    const key=c.symbol+"|"+address;
@@ -90,7 +113,7 @@ async function main(){
  const bySym=new Map();
  for(const c of candidates){const z=bySym.get(c.symbol)||[];if(!z.some(x=>x.address===c.address))z.push(c);bySym.set(c.symbol,z)}
  for(const prev of old.tracked){
-  if(Date.parse(prev.lastSeenUtc)<cutoff||!tokenBy.has(prev.symbol))continue;
+  if(Date.parse(prev.lastSeenUtc)<cutoff||!tokenBy.has(prev.symbol)||recipientRisk(tokenBy.get(prev.symbol).chain,prev.address))continue;
   const arr=bySym.get(prev.symbol)||[];
   if(arr.length<10&&!arr.some(x=>x.address===prev.address))arr.push({symbol:prev.symbol,chain:tokenBy.get(prev.symbol).chain,address:prev.address,token:tokenBy.get(prev.symbol).token,firstProof:prev.firstProof});
   bySym.set(prev.symbol,arr);
@@ -129,9 +152,9 @@ async function main(){
   }
  }
  // Keep evidence after intermittent RPC outages; mark stale, never call it current.
- for(const prev of old.tracked)if(!tracked.some(x=>x.symbol===prev.symbol&&x.address===prev.address)&&Date.parse(prev.lastSeenUtc)>=cutoff)tracked.push(prev);
+ for(const prev of old.tracked)if(!tracked.some(x=>x.symbol===prev.symbol&&x.address===prev.address)&&Date.parse(prev.lastSeenUtc)>=cutoff&&!recipientRisk(prev.chain||"bsc",prev.address))tracked.push(prev);
  tracked=tracked.sort((a,b)=>Date.parse(b.lastSeenUtc)-Date.parse(a.lastSeenUtc)).slice(0,180);
- const signals=tracked.filter(x=>x.lastSeenUtc===NOW&&x.persistenceEligible&&x.deltaSinceFirstUSD!=null&&x.deltaSinceFirstUSD>=10000)
+ const signals=tracked.filter(x=>x.lastSeenUtc===NOW&&x.persistenceEligible&&!recipientRisk(x.chain,x.address)&&x.deltaSinceFirstUSD!=null&&x.deltaSinceFirstUSD>=10000)
  .map(x=>({symbol:x.symbol,address:x.address,eoaUnverified:true,
   firstSeenUtc:x.firstSeenUtc,chain:x.chain,observations:x.observations,consecutive:x.consecutive,
   netRetainedIncreaseUSD:x.deltaSinceFirstUSD,lastSnapshotBlock:snapshotBlocks[x.chain],
@@ -140,7 +163,8 @@ async function main(){
   source:"Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   dataFresh:Date.parse(NOW)-Date.parse(chain.asOfUtc)<20*60000,
   candidates:signals,recentLargeEoaReceipts,counts:{newRecipients:candidates.length,oneShotLargeEoaReceipts:recentLargeEoaReceipts.length,trackedEOAs:tracked.filter(x=>x.lastSeenUtc===NOW).length,
-  contractCandidatesSkipped:skippedContract,codeReads:eoaChecks,failedRPC:failures.length,qualifiedPersistence:signals.length},
+  contractCandidatesSkipped:skippedContract,codeReads:eoaChecks,failedRPC:failures.length,qualifiedPersistence:signals.length,excludedKnownCustodyCandidates:excludedRecipientRoles.length},
+  excludedRecipientRoles,
   caveats:["EOA != independent private holder, exchange or whale. Candidate labels are unverified",
   "Early stage window excludes unscanned blocks; cumulative balance is not the same as independently funded buying",
   "Only candidates entering the top four net recipients per scanned window and retained tracked addresses are observed"],
@@ -149,4 +173,4 @@ async function main(){
  save("wallet_latest.json",report);save("wallet_track.json",state);
  console.log(JSON.stringify({status:report.status,counts:report.counts,signals:signals.slice(0,6),snapshotBlocks:report.snapshotBlocks}));
 }
-module.exports={evolve,decimal};if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1});
+module.exports={evolve,decimal,recipientRisk};if(require.main===module)main().catch(e=>{console.error(e);process.exitCode=1});
