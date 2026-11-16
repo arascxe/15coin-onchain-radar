@@ -1,11 +1,11 @@
 {
   "schema": "15coin-dynamic-wallet-latest-v1",
-  "asOfUtc": "2026-11-16T13:19:17.113Z",
+  "asOfUtc": "2026-11-16T13:45:51.864Z",
   "status": "SNAPSHOT_ATTEMPTED",
-  "snapshotBlock": 133934377,
+  "snapshotBlock": 133937919,
   "snapshotBlocks": {
-    "bsc": 133934377,
-    "base": 58223904
+    "bsc": 133937919,
+    "base": 58231879
   },
   "source": "Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   "dataFresh": true,
@@ -17,7 +17,7 @@
       "address": "0xc25a28d610bddaab2b472ede425749ddc6ca0a0c",
       "ownerVerified": false,
       "receiptNetUSDApprox": 14087.83,
-      "balanceSnapshotUSDApprox": 13945.19,
+      "balanceSnapshotUSDApprox": 13982.83,
       "txProof": [
         {
           "tx": "0x28aa3a838ae533770ecbde4d6f52f4204f18f9bb3fad3bf40edc6f33d5233d1d",
@@ -28,27 +28,57 @@
           "raw": "198113217718030000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-16T13:19:17.113Z",
+      "firstDetectedUtc": "2026-11-16T13:45:51.864Z",
       "blockWindow": {
         "from": 133682014,
         "to": 133685270
       },
       "caveat": "Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."
+    },
+    {
+      "symbol": "LYN",
+      "chain": "bsc",
+      "address": "0x4982085c9e2f89f2ecb8131eca71afad896e89cb",
+      "ownerVerified": false,
+      "receiptNetUSDApprox": 41797.11,
+      "balanceSnapshotUSDApprox": 380873.44,
+      "txProof": [
+        {
+          "tx": "0x89787acc5ebe2610425ecff66e615e61af03f67d52fbf717b1ad33d3a12e6c9d",
+          "block": 133678500,
+          "logIndex": 74,
+          "from": "0xeade1cbf07c97f874ed58bf26c5626efb9a46623",
+          "to": "0x4982085c9e2f89f2ecb8131eca71afad896e89cb",
+          "raw": "2449998000000000000000000"
+        }
+      ],
+      "firstDetectedUtc": "2026-11-16T13:45:51.864Z",
+      "blockWindow": {
+        "from": 133675668,
+        "to": 133678892
+      },
+      "caveat": "Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."
     }
   ],
   "counts": {
-    "newRecipients": 39,
-    "oneShotLargeEoaReceipts": 1,
-    "trackedEOAs": 101,
-    "contractCandidatesSkipped": 31,
-    "codeReads": 85,
+    "newRecipients": 43,
+    "oneShotLargeEoaReceipts": 2,
+    "trackedEOAs": 103,
+    "contractCandidatesSkipped": 32,
+    "codeReads": 87,
     "failedRPC": 0,
     "qualifiedPersistence": 0,
-    "excludedKnownCustodyCandidates": 2
+    "excludedKnownCustodyCandidates": 3
   },
   "excludedRecipientRoles": [
     {
-      "symbol": "COLLECT",
+      "symbol": "APR",
+      "chain": "bsc",
+      "address": "0x53f78a071d04224b8e254e243fffc6d9f2f3fa23",
+      "reason": "KNOWN_LABELED_CEX_ADDRESS"
+    },
+    {
+      "symbol": "APR",
       "chain": "bsc",
       "address": "0x238a358808379702088667322f80ac48bad5e6c4",
       "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
@@ -56,8 +86,8 @@
     {
       "symbol": "CYS",
       "chain": "bsc",
-      "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
+      "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+      "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     }
   ],
   "caveats": [
