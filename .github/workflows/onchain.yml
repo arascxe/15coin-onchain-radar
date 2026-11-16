@@ -7,7 +7,6 @@ on:
       - "research/test_health_check.cjs"
       - "pool_state.cjs"
       - "spot.cjs"
-      - "alpha_spot.cjs"
       - "evidence_gate.cjs"
       - "exchange_inventory.cjs"
       - "research/test_exchange_inventory.cjs"
@@ -70,13 +69,6 @@ jobs:
       - name: Scan public chain transfer and liquidity events
         run: node scan.cjs
         continue-on-error: true
-      - name: Validate Binance Alpha spot contract mapping, buyer flow and deduplication
-        run: |
-          node --check alpha_spot.cjs
-          node alpha_spot.cjs --self-test
-      - name: Read contract-verified Binance Alpha spot tape and early ignition
-        run: node alpha_spot.cjs
-        continue-on-error: true
       - name: Validate dynamic wallet persistence against continuity controls
         run: |
           node --check wallet_persistence.cjs
@@ -123,8 +115,6 @@ jobs:
           trap 'rm -rf "$SNAPSHOT_DIR"' EXIT
           files=(
             radar_data/spot_latest.json
-            radar_data/alpha_spot_latest.json
-            radar_data/alpha_spot_history.json
             radar_data/health_latest.json
             radar_data/coverage_latest.json
             radar_data/exchange_inventory_latest.json
@@ -160,7 +150,7 @@ jobs:
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
             fi
-            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs alpha_spot.cjs evidence_gate.cjs exchange_inventory.cjs research/test_exchange_inventory.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
+            if ! git diff --quiet "$RADAR_CHECKOUT_SHA" origin/main -- scan.cjs pool_state.cjs spot.cjs evidence_gate.cjs exchange_inventory.cjs research/test_exchange_inventory.cjs wallet_persistence.cjs prep_engine.cjs health_check.cjs probe_receipts.cjs .github/workflows/onchain.yml; then
               echo "::notice::Collector code changed since the checkout; do not publish older-code evidence."
               echo "RADAR_PUBLISHED=false" >> "$GITHUB_ENV"
               exit 0
