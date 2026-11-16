@@ -17,7 +17,7 @@ const BSC_CEX=new Set(require("./exchange_inventory.cjs").WALLETS.filter(x=>x.ch
 BSC_CEX.add("0x53f78a071d04224b8e254e243fffc6d9f2f3fa23");
 const BSC_CUSTODY_RISK=new Set(["0xadfffc33cdc9970349cbcea3d73ec343d6ed116d",
 "0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17"]);
-const BSC_DEX=new Set(["0x5994814f2c4040b863a0125a45de152a8c2a4dec"]);
+const BSC_DEX=new Set(["0x5994814f2c4040b863a0125a45de152a8c2a4dec","0x238a358808379702088667322f80ac48bad5e6c4"]);
 function recipientRisk(chain,address){
  const a=String(address||"").toLowerCase();
  if(chain==="bsc"){
@@ -25,7 +25,10 @@ function recipientRisk(chain,address){
   if(BSC_CUSTODY_RISK.has(a))return "EXCHANGE_LINKED_CUSTODY_OWNERSHIP_UNVERIFIED";
   if(BSC_DEX.has(a))return "DEX_ROUTER_NOT_INDEPENDENT_HOLDER";
  }
- if(chain==="base"&&BSC_CEX.has(a))return "BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED";
+ if(chain==="base"){
+   if(a==="0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17")return "BASE_BITGET_DEPOSIT_CUSTODY_RISK_THIRD_PARTY_LABEL";
+   if(BSC_CEX.has(a))return "BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED";
+ }
  return null;
 }
 function decimal(raw,dec,price){if(raw==null||!Number.isInteger(dec)||!(price>0))return null;try{
