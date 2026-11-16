@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 "use strict";
 const assert=require("node:assert/strict");
-const {evaluate,updateHistory,money,nonIndependentWalletReason}=require("../prep_engine.cjs");
+const {evaluate,updateHistory,money,nonIndependentWalletReason,proofClass}=require("../prep_engine.cjs");
 const NOW="2026-11-13T21:00:00.000Z",AT="2026-11-13T20:59:00.000Z";
 const S=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS","STBL","BSB","AIO","STAR","LYN"];
 const x=String(1e6),watchAddr="0xc882b111a75c0c657fc507c04fbfcd2cc984f071";
@@ -53,10 +53,10 @@ function run(){
  r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"P0_NO_PREPARATION_EVIDENCE","Stale receipt must not alert");
  // Regression: known exchange EOA must never generate private-whale P1.
  const hot={chain:"bsc",address:"0x53f78a071d04224b8e254e243fffc6d9f2f3fa23"};
- assert.equal(nonIndependentWalletReason(hot,"CYS"),"KUCOIN_HOT_WALLET_NOT_PRIVATE_ACCUMULATION");
+ assert.equal(nonIndependentWalletReason(hot,"CYS"),"KUCOIN_LABELED_EXCHANGE_WALLET_NOT_PRIVATE_ACCUMULATION");
  assert.equal(nonIndependentWalletReason({...hot,chain:"base"},"TRUST"),null,"Chain-specific labels must not leak to Base");
  assert.equal(nonIndependentWalletReason({chain:"bsc",address:"0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"},"COLLECT"),"BITGET_LINKED_CUSTODY_OWNERSHIP_UNRESOLVED");
- assert.equal(nonIndependentWalletReason({chain:"bsc",address:"0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771"},"COLLECT"),"BITGET_HOT_WALLET_NOT_PRIVATE_ACCUMULATION");
+ assert.equal(nonIndependentWalletReason({chain:"bsc",address:"0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771"},"COLLECT"),"BITGET_LABELED_EXCHANGE_WALLET_NOT_PRIVATE_ACCUMULATION");
  a=fixture();a.wallet={asOfUtc:AT,dataFresh:true,candidates:[{symbol:"CYS",chain:"bsc",address:hot.address,eoaUnverified:true,netRetainedIncreaseUSD:95000,firstProof:{txProof:[{from:"0x"+"3".repeat(40)}]}}]};
  r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="CYS").stage,"P0_NO_PREPARATION_EVIDENCE","Known CEX must not create P1");
  assert(r.coins.find(x=>x.symbol==="CYS").negativeControls.includes("NON_INDEPENDENT_CUSTODY_OR_EXCHANGE_WALLET_EXCLUDED_FROM_WHALE_COUNT"));
@@ -64,6 +64,18 @@ function run(){
  r=evaluate(a);assert.equal(r.coins.find(x=>x.symbol==="CYS").stage,"P1_ONCHAIN_PREPARATION_WATCH","Unknown EOA still creates low-confidence review");
  a.wallet.candidates[0].firstProof={txProof:[{from:"0x5994814f2c4040b863a0125a45de152a8c2a4dec"}]};
  r=evaluate(a);assert(r.coins.find(x=>x.symbol==="CYS").negativeControls.includes("DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"),"DEX funded EOA is not bourse withdrawal");
-  console.log(JSON.stringify({testsPassed:19,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
+  // Real radar regression: 2026-11-16 B2/CYS Gate Hot -> Gate 5 must NOT count as external accumulation.
+ const gateHot="0x0d0707963952f2fba59dd06f2b425ace40b492fe",gate5="0xc882b111a75c0c657fc507c04fbfcd2cc984f071";
+ assert.equal(proofClass("B2",gateHot,gate5),"SAME_EXCHANGE_INTERNAL_TRANSFER");
+ assert.equal(proofClass("CYS",gateHot,gate5),"SAME_EXCHANGE_INTERNAL_TRANSFER");
+ assert.equal(proofClass("TRUST",gateHot,gate5),"UNKNOWN_OWNERSHIP_ON_BASE","Never copy BSC labels to Base");
+ assert.equal(proofClass("HANA",gateHot,"0x"+"b".repeat(40)),"POSSIBLE_CEX_TO_UNKNOWN_OWNER","Unknown may still be a cold wallet");
+ assert.equal(proofClass("DOS","0x5994814f2c4040b863a0125a45de152a8c2a4dec","0x"+"a".repeat(40)),"DEX_ROUTER_TRANSFER_NOT_CEX_WITHDRAWAL");
+ assert.equal(nonIndependentWalletReason({chain:"bsc",address:gate5},"B2"),"GATE_LABELED_EXCHANGE_WALLET_NOT_PRIVATE_ACCUMULATION");
+ a=fixture();a.wallet={asOfUtc:AT,dataFresh:true,recentLargeEoaReceipts:[{symbol:"B2",chain:"bsc",address:gate5,ownerVerified:false,receiptNetUSDApprox:554303.7,balanceSnapshotUSDApprox:555000,txProof:[{tx:"0x"+"a".repeat(64),from:gateHot,to:gate5,block:200}]}]};
+ r=evaluate(a);
+ assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"P0_NO_PREPARATION_EVIDENCE","Gate internal $554k cannot create P1");
+ assert.equal(r.coins.find(x=>x.symbol==="B2").evidence.immediateReceiptTransferAttribution[0].sourceClassifications[0].category,"SAME_EXCHANGE_INTERNAL_TRANSFER");
+ console.log(JSON.stringify({testsPassed:27,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
 }
 run();
