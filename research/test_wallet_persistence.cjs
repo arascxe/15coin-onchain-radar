@@ -24,4 +24,6 @@ assert.equal(recipientRisk("bsc","0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"),"
 assert.equal(recipientRisk("bsc","0x5994814f2c4040b863a0125a45de152a8c2a4dec"),"DEX_ROUTER_NOT_INDEPENDENT_HOLDER");
 assert.equal(recipientRisk("base","0xc882b111a75c0c657fc507c04fbfcd2cc984f071"),"BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED");
 assert.equal(recipientRisk("base","0x"+"9".repeat(40)),null);
-console.log(JSON.stringify({testsPassed:14,examples:["first observation","second insufficient","third sustained","USD exact","no owner attribution","source retained","time gap reset","6-decimal token"]}));
+assert.equal(recipientRisk("base","0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17"),"BASE_BITGET_DEPOSIT_CUSTODY_RISK_THIRD_PARTY_LABEL");
+assert.equal(recipientRisk("bsc","0x238a358808379702088667322f80ac48bad5e6c4"),"DEX_ROUTER_NOT_INDEPENDENT_HOLDER");
+console.log(JSON.stringify({testsPassed:16,examples:["first observation","second insufficient","third sustained","USD exact","no owner attribution","source retained","time gap reset","6-decimal token"]}));
