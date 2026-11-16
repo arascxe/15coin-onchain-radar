@@ -76,6 +76,8 @@ function run(){
  r=evaluate(a);
  assert.equal(r.coins.find(x=>x.symbol==="B2").stage,"P0_NO_PREPARATION_EVIDENCE","Gate internal $554k cannot create P1");
  assert.equal(r.coins.find(x=>x.symbol==="B2").evidence.immediateReceiptTransferAttribution[0].sourceClassifications[0].category,"SAME_EXCHANGE_INTERNAL_TRANSFER");
- console.log(JSON.stringify({testsPassed:27,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
+ assert.equal(nonIndependentWalletReason({chain:"base",address:"0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17"},"TRUST"),"BASE_BITGET_DEPOSIT_CUSTODY_RISK_THIRD_PARTY_LABEL");
+ assert.equal(proofClass("COLLECT","0x238a358808379702088667322f80ac48bad5e6c4","0x"+"2".repeat(40)),"DEX_ROUTER_TRANSFER_NOT_CEX_WITHDRAWAL");
+ console.log(JSON.stringify({testsPassed:29,designedToCatch:["real watched outflows plus pool shift","dedup","zero-net LP roundtrip","late pump","stale source","spot ignition","single source","gap"]}));
 }
 run();
