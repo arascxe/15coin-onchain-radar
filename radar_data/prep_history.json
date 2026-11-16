@@ -688,6 +688,14 @@
           "returnPct": 2.347,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-16T01:30:00.000Z",
+          "observedAtUtc": "2026-11-16T02:18:31.872Z",
+          "price": 0.4143,
+          "returnPct": 4.542,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -1601,6 +1609,34 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "B2_1794795678784_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "B2",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-16T02:21:18.784Z",
+      "venue": "Gate Spot B2_USDT",
+      "priceAtFirstSeen": 0.4126,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 133843328,
+        "to": 133846490,
+        "head": 133846495,
+        "gap": {
+          "from": 133591581,
+          "to": 133843327
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -2627,6 +2663,26 @@
     },
     {
       "atUtc": "2026-11-16T01:20:31.526Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P0_NO_PREPARATION_EVIDENCE",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P1_ONCHAIN_PREPARATION_WATCH",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-16T02:21:18.784Z",
       "stages": {
         "ON": "P0_NO_PREPARATION_EVIDENCE",
         "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
