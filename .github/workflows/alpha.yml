@@ -1,0 +1,85 @@
+name: Binance Alpha 15-Coin Early Spot Watch
+on:
+  push:
+    paths:
+      - "alpha_spot.cjs"
+      - ".github/workflows/alpha.yml"
+  workflow_dispatch:
+  schedule:
+    - cron: "3,13,23,33,43,53 * * * *"
+permissions:
+  contents: write
+concurrency:
+  group: alpha-spot-fifteen-coin
+  cancel-in-progress: false
+jobs:
+  alpha:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: true
+      - name: Set Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify collector with synthetic positive and negative controls
+        run: |
+          node --check alpha_spot.cjs
+          node alpha_spot.cjs --self-test
+      - name: Fetch real Binance Alpha public trades and book, 15 coin contract check
+        run: node alpha_spot.cjs
+      - name: Verify complete coverage and explicit missing-data labels
+        run: |
+          node - <<'JS'
+          const x=require('./radar_data/alpha_spot_latest.json');
+          const expected=['ON','DOS','HANA','COLLECT','LIGHT','APR','IN','TRUST','B2','CYS','STBL','BSB','AIO','STAR','LYN'];
+          const actual=x.rows.map(c=>c.symbol);
+          if(x.schema!=='15coin-alpha-spot-v1'||actual.length!==15||new Set(actual).size!==15||expected.some(s=>!actual.includes(s)))throw Error("Missing or duplicate token");
+          if(!Number.isFinite(Date.parse(x.asOfUtc))||Math.abs(Date.now()-Date.parse(x.asOfUtc))>600000)throw Error("Stale alpha data");
+          if(!Array.isArray(x.newAlerts)||x.newAlerts.some(a=>!actual.includes(a.symbol)))throw Error("Invalid alert list");
+          console.log(JSON.stringify({asOfUtc:x.asOfUtc,status:x.status,counts:x.counts,newAlerts:x.newAlerts}));
+          JS
+      - name: Publish Alpha data without overwriting the chain scanner
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "onchain-radar-bot"
+          git config user.email "onchain-radar-bot@users.noreply.github.com"
+          ROOT_SHA="$(git rev-parse HEAD)"
+          TMP="$(mktemp -d)"
+          trap 'rm -rf "$TMP"' EXIT
+          cp radar_data/alpha_spot_latest.json "$TMP/latest.json"
+          cp radar_data/alpha_spot_history.json "$TMP/history.json"
+          LOCAL_MS="$(node -e 'console.log(Date.parse(require("./radar_data/alpha_spot_latest.json").asOfUtc)||0)')"
+          for attempt in 1 2 3 4; do
+            if ! git fetch origin main; then
+              sleep "$((attempt*2))"
+              continue
+            fi
+            REMOTE_MS="$(git show origin/main:radar_data/alpha_spot_latest.json 2>/dev/null | node -e 'let b="";process.stdin.on("data",c=>b+=c).on("end",()=>{try{console.log(Date.parse(JSON.parse(b).asOfUtc)||0)}catch{console.log(0)}})')"
+            if test "$REMOTE_MS" -ge "$LOCAL_MS"; then
+              echo "A newer Alpha snapshot already exists; no overwrite."
+              exit 0
+            fi
+            if ! git diff --quiet "$ROOT_SHA" origin/main -- alpha_spot.cjs .github/workflows/alpha.yml; then
+              echo "::warning::Alpha collector code changed during the scan; refuse stale-code snapshot."
+              exit 0
+            fi
+            git reset --hard origin/main
+            cp "$TMP/latest.json" radar_data/alpha_spot_latest.json
+            cp "$TMP/history.json" radar_data/alpha_spot_history.json
+            git add -f radar_data/alpha_spot_latest.json radar_data/alpha_spot_history.json
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m "Alpha spot evidence snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            if git push origin HEAD:main; then
+              echo "Published contract-verified Alpha spot evidence."
+              exit 0
+            fi
+            sleep "$((attempt*2))"
+          done
+          echo "::error::Alpha evidence publish failed."
+          exit 1
