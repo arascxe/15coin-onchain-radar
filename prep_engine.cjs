@@ -12,11 +12,12 @@ const SYMBOLS=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS"
 // the same EVM addresses on Base never inherit BSC identity.
 const BSC_CEX=new Map(require("./exchange_inventory.cjs").WALLETS.filter(x=>x.chain==="bsc").map(x=>[x.address.toLowerCase(),x.exchange]));
 BSC_CEX.set("0x53f78a071d04224b8e254e243fffc6d9f2f3fa23","KuCoin");
-const BSC_DEX_ROUTER="0x5994814f2c4040b863a0125a45de152a8c2a4dec";
+const BSC_DEX_ROUTERS=new Set(["0x5994814f2c4040b863a0125a45de152a8c2a4dec",
+"0x238a358808379702088667322f80ac48bad5e6c4"]); // OKX DEX; PancakeSwap Infinity Vault
 function proofClass(symbol,from,to){
  const chain=symbol==="TRUST"?"base":"bsc",a=String(from||"").toLowerCase(),b=String(to||"").toLowerCase();
  if(chain!=="bsc")return "UNKNOWN_OWNERSHIP_ON_BASE";
- if(a===BSC_DEX_ROUTER||b===BSC_DEX_ROUTER)return "DEX_ROUTER_TRANSFER_NOT_CEX_WITHDRAWAL";
+ if(BSC_DEX_ROUTERS.has(a)||BSC_DEX_ROUTERS.has(b))return "DEX_ROUTER_TRANSFER_NOT_CEX_WITHDRAWAL";
  const f=BSC_CEX.get(a),t=BSC_CEX.get(b);
  if(f&&t)return f===t?"SAME_EXCHANGE_INTERNAL_TRANSFER":"CEX_TO_CEX_TRANSFER";
  if(f)return "POSSIBLE_CEX_TO_UNKNOWN_OWNER";
@@ -31,7 +32,12 @@ function proofOf(x,symbol){
 // These BSC addresses are NOT evidence of independent whale accumulation.
 function nonIndependentWalletReason(x,symbol){
  const chain=x.chain||(symbol==="TRUST"?"base":"bsc"),a=String(x.address||"").toLowerCase();
- if(chain!=="bsc")return null; // Do not carry EVM address labels across chains.
+ if(chain==="base"){
+  // Independently cross-checked Base deposit-risk label, NOT inferred from BSC.
+  if(a==="0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17")return "BASE_BITGET_DEPOSIT_CUSTODY_RISK_THIRD_PARTY_LABEL";
+  return null;
+ }
+ if(chain!=="bsc")return null;
  if(BSC_CEX.has(a))return BSC_CEX.get(a).toUpperCase()+"_LABELED_EXCHANGE_WALLET_NOT_PRIVATE_ACCUMULATION";
  if(a==="0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771")return "BITGET_HOT_WALLET_NOT_PRIVATE_ACCUMULATION";
  if(a==="0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"||a==="0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17")return "BITGET_LINKED_CUSTODY_OWNERSHIP_UNRESOLVED";
@@ -119,13 +125,12 @@ function classify({symbol,spot,chain,pool,wallet,now}){
  const suppressed=[...rawImmediateEoa,...rawDynamicEoa].map(x=>({address:x.address,reason:nonIndependentWalletReason(x,symbol)})).filter(x=>x.reason);
  evidences.nonIndependentOrCustodyRiskCandidates=[...new Map(suppressed.map(x=>[String(x.address).toLowerCase(),x])).values()];
  if(suppressed.length)counter.push("NON_INDEPENDENT_CUSTODY_OR_EXCHANGE_WALLET_EXCLUDED_FROM_WHALE_COUNT");
- const DEX_ROUTER_BSC="0x5994814f2c4040b863a0125a45de152a8c2a4dec";
- if(dynamicEoa.some(x=>(x.firstProof?.txProof||[]).some(p=>String(p.from||"").toLowerCase()===DEX_ROUTER_BSC)))counter.push("DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL");
+ if(dynamicEoa.some(x=>(x.firstProof?.txProof||[]).some(p=>BSC_DEX_ROUTERS.has(String(p.from||"").toLowerCase()))))counter.push("DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL");
  if(dynamicEoa.length)code.push("DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE");
  evidences.dynamicEoaAccumulation=dynamicEoa.map(x=>({
   address:x.address,ownerVerified:false,firstSeenUtc:x.firstSeenUtc,observations:x.observations,
   consecutive:x.consecutive,retainedIncreaseUSD:x.netRetainedIncreaseUSD,
-  initialReceiptEvidence:x.firstProof,
+  initialReceiptEvidence:x.firstProof,originClassifications:proofOf(x,symbol),
   caveat:"Real EOA balance growth, but ownership, buying intent, independent holder count and CEX attribution all UNVERIFIED"
  }));
  if(!wallet||!fresh(wallet.asOfUtc,now))counter.push("DYNAMIC_EOA_TRACKING_UNAVAILABLE");
