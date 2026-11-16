@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 "use strict";
-const assert=require("node:assert/strict"),{evolve,decimal}=require("../wallet_persistence.cjs");
+const assert=require("node:assert/strict"),{evolve,decimal,recipientRisk}=require("../wallet_persistence.cjs");
 const t0="2026-11-13T20:00:00.000Z",t1="2026-11-13T20:15:00.000Z",t2="2026-11-13T20:30:00.000Z",tLate="2026-11-13T23:30:00.000Z";
 const token="0x"+"1".repeat(40),address="0x"+"2".repeat(40);
 const ob=n=>({symbol:"ON",token,address,balanceRaw:String(BigInt(n)*10n**18n),firstProof:{windowFrom:100,windowTo:200}});
@@ -18,4 +18,10 @@ const gap=evolve(c,ob(300000),tLate,0.1,18);
 assert.equal(gap.persistenceEligible,false,"A single reading after hours does not prove uninterrupted persistence");
 assert.equal(gap.consecutive,1);
 assert.equal(decimal("1000000",6,0.2),0.2,"6-decimal token value must be scaled correctly");
-console.log(JSON.stringify({testsPassed:8,examples:["first observation","second insufficient","third sustained","USD exact","no owner attribution","source retained","time gap reset","6-decimal token"]}));
+assert.equal(recipientRisk("bsc","0x0d0707963952f2fba59dd06f2b425ace40b492fe"),"KNOWN_LABELED_CEX_ADDRESS");
+assert.equal(recipientRisk("bsc","0xc882b111a75c0c657fc507c04fbfcd2cc984f071"),"KNOWN_LABELED_CEX_ADDRESS");
+assert.equal(recipientRisk("bsc","0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"),"EXCHANGE_LINKED_CUSTODY_OWNERSHIP_UNVERIFIED");
+assert.equal(recipientRisk("bsc","0x5994814f2c4040b863a0125a45de152a8c2a4dec"),"DEX_ROUTER_NOT_INDEPENDENT_HOLDER");
+assert.equal(recipientRisk("base","0xc882b111a75c0c657fc507c04fbfcd2cc984f071"),"BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED");
+assert.equal(recipientRisk("base","0x"+"9".repeat(40)),null);
+console.log(JSON.stringify({testsPassed:14,examples:["first observation","second insufficient","third sustained","USD exact","no owner attribution","source retained","time gap reset","6-decimal token"]}));
