@@ -8,11 +8,31 @@
 const fs=require("node:fs"),path=require("node:path");
 const DATA=path.join(__dirname,"radar_data");
 const SYMBOLS=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS","STBL","BSB","AIO","STAR","LYN"];
+// Explorer-labeled CEX addresses are NOT full exchange clusters. BSC only;
+// the same EVM addresses on Base never inherit BSC identity.
+const BSC_CEX=new Map(require("./exchange_inventory.cjs").WALLETS.filter(x=>x.chain==="bsc").map(x=>[x.address.toLowerCase(),x.exchange]));
+BSC_CEX.set("0x53f78a071d04224b8e254e243fffc6d9f2f3fa23","KuCoin");
+const BSC_DEX_ROUTER="0x5994814f2c4040b863a0125a45de152a8c2a4dec";
+function proofClass(symbol,from,to){
+ const chain=symbol==="TRUST"?"base":"bsc",a=String(from||"").toLowerCase(),b=String(to||"").toLowerCase();
+ if(chain!=="bsc")return "UNKNOWN_OWNERSHIP_ON_BASE";
+ if(a===BSC_DEX_ROUTER||b===BSC_DEX_ROUTER)return "DEX_ROUTER_TRANSFER_NOT_CEX_WITHDRAWAL";
+ const f=BSC_CEX.get(a),t=BSC_CEX.get(b);
+ if(f&&t)return f===t?"SAME_EXCHANGE_INTERNAL_TRANSFER":"CEX_TO_CEX_TRANSFER";
+ if(f)return "POSSIBLE_CEX_TO_UNKNOWN_OWNER";
+ if(t)return "TRANSFER_TO_KNOWN_CEX";
+ return "UNKNOWN_ORIGIN_AND_OWNER";
+}
+function proofOf(x,symbol){
+ const p=x.txProof||x.firstProof?.txProof||[];
+ return p.map(t=>({hash:t.tx,from:t.from||null,to:t.to||x.address||null,
+  category:proofClass(symbol,t.from,t.to||x.address)}));
+}
 // These BSC addresses are NOT evidence of independent whale accumulation.
 function nonIndependentWalletReason(x,symbol){
  const chain=x.chain||(symbol==="TRUST"?"base":"bsc"),a=String(x.address||"").toLowerCase();
  if(chain!=="bsc")return null; // Do not carry EVM address labels across chains.
- if(a==="0x53f78a071d04224b8e254e243fffc6d9f2f3fa23")return "KUCOIN_HOT_WALLET_NOT_PRIVATE_ACCUMULATION";
+ if(BSC_CEX.has(a))return BSC_CEX.get(a).toUpperCase()+"_LABELED_EXCHANGE_WALLET_NOT_PRIVATE_ACCUMULATION";
  if(a==="0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771")return "BITGET_HOT_WALLET_NOT_PRIVATE_ACCUMULATION";
  if(a==="0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"||a==="0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17")return "BITGET_LINKED_CUSTODY_OWNERSHIP_UNRESOLVED";
  return null;
@@ -74,13 +94,19 @@ function classify({symbol,spot,chain,pool,wallet,now}){
   address:w.address,label:w.thirdPartyLabel,identityVerified:false,
   netOutUSD:money(w.rawNetOut,dec,price),netOutRaw:w.rawNetOut,
   rawNonPoolOut:w.rawNonPoolOut,recipientCount:w.distinctNonPoolRecipients,
-  txProof:w.directProof||[]
- })).filter(w=>w.netOutUSD!=null&&w.netOutUSD>=25000&&w.recipientCount>=1&&w.txProof.length>0);
+  originExchange:symbol==="TRUST"?null:BSC_CEX.get(String(w.address).toLowerCase())||null,
+  txProof:(w.directProof||[]).map(p=>({...p,category:proofClass(symbol,w.address,p.to)}))
+ })).filter(w=>w.netOutUSD!=null&&w.netOutUSD>=25000&&w.recipientCount>=1&&
+   w.originExchange&&w.txProof.some(t=>t.category==="POSSIBLE_CEX_TO_UNKNOWN_OWNER"));
  if(watchMovements.length)code.push("WATCHED_ADDRESS_OUTFLOW_TX");
  evidences.watchedAddressOutflows=watchMovements;
  const rawImmediateEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
  (wallet.recentLargeEoaReceipts||[]).filter(x=>x.symbol===symbol&&x.ownerVerified===false&&x.receiptNetUSDApprox>=10000&&x.txProof?.length):[];
  const immediateEoa=rawImmediateEoa.filter(x=>!nonIndependentWalletReason(x,symbol));
+ evidences.immediateReceiptTransferAttribution=rawImmediateEoa.map(x=>({
+   address:x.address,receiptUSD:x.receiptNetUSDApprox,sourceClassifications:proofOf(x,symbol),
+   privateOwnerVerified:false
+ }));
  if(immediateEoa.length)code.push("ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX");
  evidences.immediateEoaNetReceipts=immediateEoa.map(x=>({
   address:x.address,receiptNetUSDApprox:x.receiptNetUSDApprox,balanceSnapshotUSDApprox:x.balanceSnapshotUSDApprox,
@@ -136,7 +162,9 @@ function classify({symbol,spot,chain,pool,wallet,now}){
    takerSnapshotFresh:tradeFresh,takerSampleComplete:trade?.last15mSampleComplete===true,spotVerdict:p?.verdict??null,indexPriority:p?.indexConstituents?.prioritySpots??null};
  // Stage P2 needs meaningful movement involving two non-identical economic locations,
  // and the onchain address ownership and causal interpretation remain UNVERIFIED.
- const walletEvidence=watchMovements.length>0||significantHolder.some(x=>x.balanceDeltaUSD<=-25000)||dynamicEoa.length>0||immediateEoa.length>0;
+ // Balance loss at a single exchange wallet is NOT standalone evidence of external accumulation:
+ // it can be hot->cold relocation. Retain observed change but never let it promote P1/P2.
+ const walletEvidence=watchMovements.length>0||dynamicEoa.length>0||immediateEoa.length>0;
  const poolEvidence=poolDepletion||lpRemoval.length>0;
  const multi=walletEvidence&&poolEvidence;
  const preliminary=walletEvidence||poolEvidence||lpAdds.length>0;
@@ -206,5 +234,5 @@ function main(){
  save("prep_latest.json",report);save("prep_history.json",history);
  console.log(JSON.stringify({status:report.status,counts:report.counts,newAlerts:report.newAlerts?.map(e=>({symbol:e.symbol,stage:e.stage,firstSeenUtc:e.firstSeenUtc})),problems:report.coins.filter(c=>!c.isFresh).map(c=>c.symbol)}));
 }
-module.exports={evaluate,classify,updateHistory,money,nonIndependentWalletReason};
+module.exports={evaluate,classify,updateHistory,money,nonIndependentWalletReason,proofClass,proofOf};
 if(require.main===module)main();
