@@ -8,6 +8,15 @@
 const fs=require("node:fs"),path=require("node:path");
 const DATA=path.join(__dirname,"radar_data");
 const SYMBOLS=["ON","DOS","HANA","COLLECT","LIGHT","APR","IN","TRUST","B2","CYS","STBL","BSB","AIO","STAR","LYN"];
+// These BSC addresses are NOT evidence of independent whale accumulation.
+function nonIndependentWalletReason(x,symbol){
+ const chain=x.chain||(symbol==="TRUST"?"base":"bsc"),a=String(x.address||"").toLowerCase();
+ if(chain!=="bsc")return null; // Do not carry EVM address labels across chains.
+ if(a==="0x53f78a071d04224b8e254e243fffc6d9f2f3fa23")return "KUCOIN_HOT_WALLET_NOT_PRIVATE_ACCUMULATION";
+ if(a==="0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771")return "BITGET_HOT_WALLET_NOT_PRIVATE_ACCUMULATION";
+ if(a==="0xadfffc33cdc9970349cbcea3d73ec343d6ed116d"||a==="0x4cad1efbfd5f0848e0c3c14fab23f92b2fa81f17")return "BITGET_LINKED_CUSTODY_OWNERSHIP_UNRESOLVED";
+ return null;
+}
 const HOUR=3600000,DAY=24*HOUR,ROUND=(n,d=3)=>Number.isFinite(n)?Number(n.toFixed(d)):null;
 function read(file){return JSON.parse(fs.readFileSync(path.join(DATA,file),"utf8"))}
 function save(file,j){const p=path.join(DATA,file),tmp=p+".tmp";fs.writeFileSync(tmp,JSON.stringify(j,null,2)+"\n");fs.renameSync(tmp,p)}
@@ -69,16 +78,23 @@ function classify({symbol,spot,chain,pool,wallet,now}){
  })).filter(w=>w.netOutUSD!=null&&w.netOutUSD>=25000&&w.recipientCount>=1&&w.txProof.length>0);
  if(watchMovements.length)code.push("WATCHED_ADDRESS_OUTFLOW_TX");
  evidences.watchedAddressOutflows=watchMovements;
- const immediateEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
+ const rawImmediateEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
  (wallet.recentLargeEoaReceipts||[]).filter(x=>x.symbol===symbol&&x.ownerVerified===false&&x.receiptNetUSDApprox>=10000&&x.txProof?.length):[];
+ const immediateEoa=rawImmediateEoa.filter(x=>!nonIndependentWalletReason(x,symbol));
  if(immediateEoa.length)code.push("ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX");
  evidences.immediateEoaNetReceipts=immediateEoa.map(x=>({
   address:x.address,receiptNetUSDApprox:x.receiptNetUSDApprox,balanceSnapshotUSDApprox:x.balanceSnapshotUSDApprox,
   txProof:x.txProof,firstDetectedUtc:x.firstDetectedUtc,
   caution:"One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
  }));
- const dynamicEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
+ const rawDynamicEoa=(wallet&&fresh(wallet.asOfUtc,now)&&wallet.dataFresh===true)?
  (wallet.candidates||[]).filter(x=>x.symbol===symbol&&x.eoaUnverified===true&&x.netRetainedIncreaseUSD>=10000):[];
+ const dynamicEoa=rawDynamicEoa.filter(x=>!nonIndependentWalletReason(x,symbol));
+ const suppressed=[...rawImmediateEoa,...rawDynamicEoa].map(x=>({address:x.address,reason:nonIndependentWalletReason(x,symbol)})).filter(x=>x.reason);
+ evidences.nonIndependentOrCustodyRiskCandidates=[...new Map(suppressed.map(x=>[String(x.address).toLowerCase(),x])).values()];
+ if(suppressed.length)counter.push("NON_INDEPENDENT_CUSTODY_OR_EXCHANGE_WALLET_EXCLUDED_FROM_WHALE_COUNT");
+ const DEX_ROUTER_BSC="0x5994814f2c4040b863a0125a45de152a8c2a4dec";
+ if(dynamicEoa.some(x=>(x.firstProof?.txProof||[]).some(p=>String(p.from||"").toLowerCase()===DEX_ROUTER_BSC)))counter.push("DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL");
  if(dynamicEoa.length)code.push("DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE");
  evidences.dynamicEoaAccumulation=dynamicEoa.map(x=>({
   address:x.address,ownerVerified:false,firstSeenUtc:x.firstSeenUtc,observations:x.observations,
@@ -190,5 +206,5 @@ function main(){
  save("prep_latest.json",report);save("prep_history.json",history);
  console.log(JSON.stringify({status:report.status,counts:report.counts,newAlerts:report.newAlerts?.map(e=>({symbol:e.symbol,stage:e.stage,firstSeenUtc:e.firstSeenUtc})),problems:report.coins.filter(c=>!c.isFresh).map(c=>c.symbol)}));
 }
-module.exports={evaluate,classify,updateHistory,money};
+module.exports={evaluate,classify,updateHistory,money,nonIndependentWalletReason};
 if(require.main===module)main();
