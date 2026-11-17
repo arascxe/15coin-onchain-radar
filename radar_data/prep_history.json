@@ -546,6 +546,14 @@
           "returnPct": -8.08,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-17T07:00:00.000Z",
+          "observedAtUtc": "2026-11-17T07:33:13.482Z",
+          "price": 0.1508,
+          "returnPct": -8.384,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -597,6 +605,14 @@
           "observedAtUtc": "2026-11-15T07:38:48.022Z",
           "price": 0.23549,
           "returnPct": -2.156,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-17T07:00:00.000Z",
+          "observedAtUtc": "2026-11-17T07:33:13.482Z",
+          "price": 0.24949,
+          "returnPct": 3.66,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -2842,6 +2858,94 @@
       "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
       "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "B2_1794900906117_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "B2",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-17T07:35:06.117Z",
+      "venue": "Gate Spot B2_USDT",
+      "priceAtFirstSeen": 0.3813,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134077224,
+        "to": 134080334,
+        "head": 134080339,
+        "gap": {
+          "from": 133699581,
+          "to": 134077223
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "BSB_1794900906117_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "BSB",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-17T07:35:06.117Z",
+      "venue": "Bitget Spot BSBUSDT",
+      "priceAtFirstSeen": 0.07327,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX",
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134077224,
+        "to": 134080334,
+        "head": 134080339,
+        "gap": {
+          "from": 133699581,
+          "to": 134077223
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "LYN_1794900906117_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "LYN",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-17T07:35:06.117Z",
+      "venue": "GeckoTerminal pool 0x302642976506d247c7017b85ddc89e3956f96ba1",
+      "priceAtFirstSeen": 0.016848077548031998,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134077224,
+        "to": 134080334,
+        "head": 134080339,
+        "gap": {
+          "from": 133699581,
+          "to": 134077223
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
   "observations": [
@@ -4467,6 +4571,26 @@
     },
     {
       "atUtc": "2026-11-17T07:02:42.742Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P1_ONCHAIN_PREPARATION_WATCH",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P1_ONCHAIN_PREPARATION_WATCH",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-17T07:35:06.117Z",
       "stages": {
         "ON": "P0_NO_PREPARATION_EVIDENCE",
         "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
