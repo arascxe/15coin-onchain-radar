@@ -3337,6 +3337,14 @@
           "returnPct": -2.19,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-18T09:30:00.000Z",
+          "observedAtUtc": "2026-11-18T10:10:37.204Z",
+          "price": 0.01272,
+          "returnPct": -5.244,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -3921,6 +3929,14 @@
           "returnPct": -1.653,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-18T09:00:00.000Z",
+          "observedAtUtc": "2026-11-18T10:10:37.204Z",
+          "price": 0.24079,
+          "returnPct": -1.714,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -3957,6 +3973,14 @@
           "observedAtUtc": "2026-11-18T04:55:05.689Z",
           "price": 0.026274,
           "returnPct": 0.164,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-18T09:30:00.000Z",
+          "observedAtUtc": "2026-11-18T10:10:37.204Z",
+          "price": 0.026344,
+          "returnPct": 0.431,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -4028,7 +4052,16 @@
         "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
       ],
       "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
-      "followup": {},
+      "followup": {
+        "after1h": {
+          "candleCloseUtc": "2026-11-18T09:15:00.000Z",
+          "observedAtUtc": "2026-11-18T10:10:37.204Z",
+          "price": 0.3991,
+          "returnPct": -0.548,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        }
+      },
       "ruleVersion": "preparation-v1-unvalidated"
     },
     {
@@ -4050,6 +4083,128 @@
         "gap": {
           "from": 133796781,
           "to": 134277306
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {
+        "after1h": {
+          "candleCloseUtc": "2026-11-18T09:45:00.000Z",
+          "observedAtUtc": "2026-11-18T10:10:37.204Z",
+          "price": 0.02257,
+          "returnPct": -1.57,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        }
+      },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "LIGHT_1794996733843_P2_MULTISOURCE_PREPARATION_REVIEW",
+      "symbol": "LIGHT",
+      "stage": "P2_MULTISOURCE_PREPARATION_REVIEW",
+      "firstSeenUtc": "2026-11-18T10:12:13.843Z",
+      "venue": "Gate Spot LIGHT_USDT",
+      "priceAtFirstSeen": 0.25399,
+      "reasons": [
+        "DEX_POOL_INVENTORY_DECLINE",
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134290090,
+        "to": 134293166,
+        "head": 134293171,
+        "gap": {
+          "from": 133800381,
+          "to": 134290089
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "B2_1794996733843_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "B2",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T10:12:13.843Z",
+      "venue": "Gate Spot B2_USDT",
+      "priceAtFirstSeen": 0.3967,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134290090,
+        "to": 134293166,
+        "head": 134293171,
+        "gap": {
+          "from": 133800381,
+          "to": 134290089
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "BSB_1794996733843_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "BSB",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T10:12:13.843Z",
+      "venue": "Bitget Spot BSBUSDT",
+      "priceAtFirstSeen": 0.07698,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134290090,
+        "to": 134293166,
+        "head": 134293171,
+        "gap": {
+          "from": 133800381,
+          "to": 134290089
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "LYN_1794996733843_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "LYN",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T10:12:13.843Z",
+      "venue": "GeckoTerminal pool 0x302642976506d247c7017b85ddc89e3956f96ba1",
+      "priceAtFirstSeen": 0.017283224045940498,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134290090,
+        "to": 134293166,
+        "head": 134293171,
+        "gap": {
+          "from": 133800381,
+          "to": 134290089
         }
       },
       "negativeControls": [
@@ -6258,6 +6413,26 @@
         "BSB": "P1_ONCHAIN_PREPARATION_WATCH",
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
         "STAR": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-18T10:12:13.843Z",
+      "stages": {
+        "ON": "SPOT_ONLY_NOT_PREPARATION",
+        "DOS": "P0_NO_PREPARATION_EVIDENCE",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P2_MULTISOURCE_PREPARATION_REVIEW",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P1_ONCHAIN_PREPARATION_WATCH",
+        "TRUST": "SPOT_ONLY_NOT_PREPARATION",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P0_NO_PREPARATION_EVIDENCE",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P1_ONCHAIN_PREPARATION_WATCH",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P0_NO_PREPARATION_EVIDENCE",
         "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
       }
     }
