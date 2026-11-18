@@ -3437,6 +3437,14 @@
           "returnPct": 0.891,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-17T23:30:00.000Z",
+          "observedAtUtc": "2026-11-17T23:59:34.676Z",
+          "price": 0.04725,
+          "returnPct": 2.65,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -3590,6 +3598,91 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "DOS_1794960146482_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "DOS",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T00:02:26.482Z",
+      "venue": "Gate Spot DOS_USDT",
+      "priceAtFirstSeen": 0.1541,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134208684,
+        "to": 134211865,
+        "head": 134211870,
+        "gap": {
+          "from": 133760781,
+          "to": 134208683
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "CYS_1794960146482_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "CYS",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T00:02:26.482Z",
+      "venue": "Gate Spot CYS_USDT",
+      "priceAtFirstSeen": 0.0619,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134208684,
+        "to": 134211865,
+        "head": 134211870,
+        "gap": {
+          "from": 133760781,
+          "to": 134208683
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "STAR_1794960146482_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "STAR",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-18T00:02:26.482Z",
+      "venue": "GeckoTerminal pool 0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+      "priceAtFirstSeen": 0.03644934091485479,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134208684,
+        "to": 134211865,
+        "head": 134211870,
+        "gap": {
+          "from": 133760781,
+          "to": 134208683
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -5556,6 +5649,26 @@
     },
     {
       "atUtc": "2026-11-17T23:07:59.946Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P1_ONCHAIN_PREPARATION_WATCH",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P1_ONCHAIN_PREPARATION_WATCH",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-18T00:02:26.482Z",
       "stages": {
         "ON": "P0_NO_PREPARATION_EVIDENCE",
         "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
