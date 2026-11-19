@@ -5328,6 +5328,14 @@
           "returnPct": 3.004,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-19T13:45:00.000Z",
+          "observedAtUtc": "2026-11-19T13:47:28.305Z",
+          "price": 0.05242,
+          "returnPct": 5.685,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -5363,6 +5371,14 @@
           "observedAtUtc": "2026-11-19T08:58:46.367Z",
           "price": 0.036668169783000096,
           "returnPct": 0.493,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-19T13:45:00.000Z",
+          "observedAtUtc": "2026-11-19T13:47:28.305Z",
+          "price": 0.036646224369787095,
+          "returnPct": 0.432,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -5577,6 +5593,34 @@
         "gap": {
           "from": 133901181,
           "to": 134508028
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "HANA_1795096168126_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "HANA",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-19T13:49:28.126Z",
+      "venue": "Gate Spot HANA_USDT",
+      "priceAtFirstSeen": 0.012975,
+      "reasons": [
+        "NET_LP_POSITION_ADDITION"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 134510867,
+        "to": 134513972,
+        "head": 134513977,
+        "gap": {
+          "from": 133904781,
+          "to": 134510866
         }
       },
       "negativeControls": [
@@ -8366,6 +8410,26 @@
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
         "STAR": "P0_NO_PREPARATION_EVIDENCE",
         "LYN": "P0_NO_PREPARATION_EVIDENCE"
+      }
+    },
+    {
+      "atUtc": "2026-11-19T13:49:28.126Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "SPOT_ONLY_NOT_PREPARATION",
+        "HANA": "P1_ONCHAIN_PREPARATION_WATCH",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P1_ONCHAIN_PREPARATION_WATCH",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P0_NO_PREPARATION_EVIDENCE",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
       }
     }
   ]
