@@ -1,6 +1,6 @@
 {
   "schema": "15coin-evidence-coverage-v1",
-  "asOfUtc": "2026-11-19T10:09:23.272Z",
+  "asOfUtc": "2026-11-19T10:39:31.923Z",
   "status": "LIVE_SNAPSHOT_WITH_KNOWN_LIMITS",
   "objective": "Evidence review and data coverage for exactly 15 symbols; NO validated 5x/10x predictor or trading signal",
   "meaning": "All coverage fields explicitly typed. UNKNOWN never equals no movement or verified preparation.",
@@ -9,18 +9,19 @@
     "ohlcv": 15,
     "exchangeLabeledWalletSnapshot": 15,
     "exchangeWalletDeltaComparable": 15,
-    "labeledWalletBalanceDecline": 1,
+    "labeledWalletBalanceDecline": 0,
     "poolBalanceSnapshot": 10,
-    "takerTape15mComplete": 13,
-    "orderbookSnapshot": 13,
+    "takerTape15mComplete": 11,
+    "orderbookSnapshot": 12,
     "priorityIndexCurrent": 0,
     "liveChainTip": 15,
     "historicalChainComplete": 0,
     "verifiedCexOutflow": 0,
-    "independentSpotBuyReview": 0,
+    "independentSpotBuyReview": 1,
     "decisions": {
-      "NO_VERIFIED_EARLY_SIGNAL": 9,
-      "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN": 6
+      "NO_VERIFIED_EARLY_SIGNAL": 6,
+      "MULTISOURCE_EARLY_REVIEW_NOT_PROVEN": 1,
+      "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN": 8
     }
   },
   "coins": [
@@ -47,16 +48,16 @@
       "venue": "Gate Spot ON_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.1141,
-        "change24hPct": 2.286,
-        "rvol15m": 0.53,
-        "last15mBuysUSD": 412.5,
-        "last15mSellsUSD": 726.18,
-        "askDepth2pctUSD": 1075.96,
+        "priceUSDT": 0.11461,
+        "change24hPct": 1.506,
+        "rvol15m": 0.107,
+        "last15mBuysUSD": 44.73,
+        "last15mSellsUSD": 141.88,
+        "askDepth2pctUSD": 882.15,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -67,8 +68,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -76,8 +77,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -88,17 +89,17 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:14.043Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:31:01.923Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
       "symbol": "DOS",
-      "decision": "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN",
+      "decision": "MULTISOURCE_EARLY_REVIEW_NOT_PROVEN",
       "preparationStage": "P1_ONCHAIN_PREPARATION_WATCH",
       "signalResearchOnly": true,
       "coverage": {
@@ -113,26 +114,28 @@
         "liveChainTip": true,
         "historicalChainComplete": false,
         "verifiedCexOutflow": false,
-        "independentSpotBuyReview": false,
+        "independentSpotBuyReview": true,
         "orderbookReplenishmentMeasured": false
       },
       "venue": "Gate Spot DOS_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.1758,
-        "change24hPct": 11.125,
-        "rvol15m": 4.212,
-        "last15mBuysUSD": 2632.58,
-        "last15mSellsUSD": 1352.64,
-        "askDepth2pctUSD": 20952.24,
+        "priceUSDT": 0.1738,
+        "change24hPct": 10.279,
+        "rvol15m": 35.743,
+        "last15mBuysUSD": 17624.84,
+        "last15mSellsUSD": 3553.71,
+        "askDepth2pctUSD": 24811.59,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
-        "unverifiedEOAWithGrowth": 3,
+        "historicMissingBlocks": 594301,
+        "unverifiedEOAWithGrowth": 2,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
-          "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+          "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE",
+          "INDEPENDENT_GATE_SPOT_TAKER_BUY",
+          "SPOT_FIRST_IGNITION_CANDIDATE"
         ],
         "exchangeLabeledWalletChanges": [
           {
@@ -141,8 +144,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -150,24 +153,23 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
       "limitations": [
         "INDEX_VENUE_PRIORITY_UNKNOWN",
         "UNSCANNED_HISTORICAL_BLOCK_GAP",
-        "CEX_NET_OUTFLOW_NOT_ATTRIBUTED",
-        "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
+        "CEX_NET_OUTFLOW_NOT_ATTRIBUTED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:14.012Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:35:08.915Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -193,16 +195,16 @@
       "venue": "Gate Spot HANA_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.012839,
-        "change24hPct": 0.848,
-        "rvol15m": 0.123,
-        "last15mBuysUSD": 131.7,
-        "last15mSellsUSD": 0,
-        "askDepth2pctUSD": 94.74,
+        "priceUSDT": 0.012915,
+        "change24hPct": 1.231,
+        "rvol15m": 2.563,
+        "last15mBuysUSD": 1475.68,
+        "last15mSellsUSD": 645.9,
+        "askDepth2pctUSD": 330.07,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -213,8 +215,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -222,8 +224,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -234,12 +236,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:23.214Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:34:03.534Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -265,16 +267,16 @@
       "venue": "Bitget Spot COLLECTUSDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.026003,
-        "change24hPct": -1.223,
-        "rvol15m": 1.023,
-        "last15mBuysUSD": 5365.82,
-        "last15mSellsUSD": 25503.49,
-        "askDepth2pctUSD": 21275.32,
+        "priceUSDT": 0.025997,
+        "change24hPct": -0.741,
+        "rvol15m": 0.866,
+        "last15mBuysUSD": 1558.3,
+        "last15mSellsUSD": 23762.54,
+        "askDepth2pctUSD": 21715.04,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -285,17 +287,17 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
             "trackedWallets": 2,
-            "deltaToken": 0,
-            "deltaUSDAtCurrentPrice": 0,
-            "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "deltaToken": 1344.137109,
+            "deltaUSDAtCurrentPrice": 34.94,
+            "movement": "LABELED_BALANCE_INCREASE",
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -307,12 +309,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:06:30.226Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:35:19.082Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -324,10 +326,10 @@
         "ohlcv": true,
         "exchangeLabeledWalletSnapshot": true,
         "exchangeWalletDeltaComparable": true,
-        "labeledWalletBalanceDecline": true,
+        "labeledWalletBalanceDecline": false,
         "poolBalanceSnapshot": true,
         "takerTape15mComplete": true,
-        "orderbookSnapshot": true,
+        "orderbookSnapshot": false,
         "priorityIndexCurrent": false,
         "liveChainTip": true,
         "historicalChainComplete": false,
@@ -338,16 +340,16 @@
       "venue": "Gate Spot LIGHT_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.23611,
-        "change24hPct": -7.04,
-        "rvol15m": 2.919,
-        "last15mBuysUSD": 836.13,
-        "last15mSellsUSD": 484.85,
-        "askDepth2pctUSD": 2981.91,
+        "priceUSDT": 0.2342,
+        "change24hPct": -8.229,
+        "rvol15m": 1.326,
+        "last15mBuysUSD": 120.39,
+        "last15mSellsUSD": 64.96,
+        "askDepth2pctUSD": null,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -355,37 +357,37 @@
           {
             "exchange": "Gate",
             "trackedWallets": 2,
-            "deltaToken": -9477.041,
-            "deltaUSDAtCurrentPrice": -2237.62,
-            "movement": "LABELED_BALANCE_DECREASE",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "deltaToken": 0,
+            "deltaUSDAtCurrentPrice": 0,
+            "movement": "UNCHANGED",
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
             "trackedWallets": 2,
-            "deltaToken": 9477.041,
-            "deltaUSDAtCurrentPrice": 2237.62,
-            "movement": "LABELED_BALANCE_INCREASE",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "deltaToken": 0,
+            "deltaUSDAtCurrentPrice": 0,
+            "movement": "UNCHANGED",
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
       "limitations": [
-        "LABELED_WALLET_BALANCE_DECREASE_NOT_PROOF_OF_TOTAL_CEX_OUTFLOW",
+        "NO_FRESH_FULLY_MEASURED_BOOK",
         "INDEX_VENUE_PRIORITY_UNKNOWN",
         "UNSCANNED_HISTORICAL_BLOCK_GAP",
         "CEX_NET_OUTFLOW_NOT_ATTRIBUTED",
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:33.050Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:35:19.898Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -411,16 +413,16 @@
       "venue": "Bitget Spot APRUSDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.03046,
-        "change24hPct": 4.962,
-        "rvol15m": 1.326,
-        "last15mBuysUSD": 1712.51,
-        "last15mSellsUSD": 424.98,
-        "askDepth2pctUSD": 4932.36,
+        "priceUSDT": 0.03082,
+        "change24hPct": 6.459,
+        "rvol15m": 0.892,
+        "last15mBuysUSD": 914.91,
+        "last15mSellsUSD": 1180.82,
+        "askDepth2pctUSD": 12236.12,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -431,8 +433,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -440,8 +442,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -453,12 +455,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:06:22.388Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:34:46.866Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -472,7 +474,7 @@
         "exchangeWalletDeltaComparable": true,
         "labeledWalletBalanceDecline": false,
         "poolBalanceSnapshot": true,
-        "takerTape15mComplete": true,
+        "takerTape15mComplete": false,
         "orderbookSnapshot": true,
         "priorityIndexCurrent": false,
         "liveChainTip": true,
@@ -484,16 +486,16 @@
       "venue": "Gate Spot IN_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.02305,
-        "change24hPct": 1.631,
-        "rvol15m": 1.111,
-        "last15mBuysUSD": 27.48,
-        "last15mSellsUSD": 88.2,
-        "askDepth2pctUSD": 5642.81,
+        "priceUSDT": 0.02299,
+        "change24hPct": 0.833,
+        "rvol15m": 0.155,
+        "last15mBuysUSD": null,
+        "last15mSellsUSD": null,
+        "askDepth2pctUSD": 5759.55,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 1,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
@@ -506,8 +508,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -515,30 +517,31 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
       "limitations": [
+        "NO_COMPLETE_FRESH_15M_TAKER_TAPE",
         "INDEX_VENUE_PRIORITY_UNKNOWN",
         "UNSCANNED_HISTORICAL_BLOCK_GAP",
         "CEX_NET_OUTFLOW_NOT_ATTRIBUTED",
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:01:55.853Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:23:12.294Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
       "symbol": "TRUST",
-      "decision": "NO_VERIFIED_EARLY_SIGNAL",
-      "preparationStage": "P0_NO_PREPARATION_EVIDENCE",
+      "decision": "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN",
+      "preparationStage": "P1_ONCHAIN_PREPARATION_WATCH",
       "signalResearchOnly": true,
       "coverage": {
         "ohlcv": true,
@@ -558,19 +561,22 @@
       "venue": "Gate Spot TRUST_USDT",
       "chain": "base",
       "observations": {
-        "priceUSDT": 0.05109,
-        "change24hPct": 5.427,
-        "rvol15m": 1.113,
-        "last15mBuysUSD": 4604.23,
-        "last15mSellsUSD": 3578.35,
-        "askDepth2pctUSD": 2066.57,
+        "priceUSDT": 0.05165,
+        "change24hPct": 9.358,
+        "rvol15m": 7.553,
+        "last15mBuysUSD": 1145.85,
+        "last15mSellsUSD": 4037.46,
+        "askDepth2pctUSD": 24247.11,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 851653,
-        "unverifiedEOAWithGrowth": 0,
+        "historicMissingBlocks": 848669,
+        "unverifiedEOAWithGrowth": 1,
         "netLpRemovalPositions": 0,
-        "evidenceCodes": [],
+        "evidenceCodes": [
+          "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX",
+          "SPOT_FIRST_IGNITION_CANDIDATE"
+        ],
         "exchangeLabeledWalletChanges": [
           {
             "exchange": "Gate",
@@ -578,8 +584,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 59448331,
-            "toBlock": 59462925
+            "fromBlock": 59462925,
+            "toBlock": 59471964
           },
           {
             "exchange": "Bitget",
@@ -587,8 +593,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 59448331,
-            "toBlock": 59462925
+            "fromBlock": 59462925,
+            "toBlock": 59471964
           }
         ]
       },
@@ -600,12 +606,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:06:11.922Z",
-        "chainTipFrom": 59456871,
-        "chainTipTo": 59462875
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:33:08.358Z",
+        "chainTipFrom": 59465887,
+        "chainTipTo": 59471897
       }
     },
     {
@@ -619,7 +625,7 @@
         "exchangeWalletDeltaComparable": true,
         "labeledWalletBalanceDecline": false,
         "poolBalanceSnapshot": true,
-        "takerTape15mComplete": true,
+        "takerTape15mComplete": false,
         "orderbookSnapshot": true,
         "priorityIndexCurrent": false,
         "liveChainTip": true,
@@ -631,16 +637,16 @@
       "venue": "Gate Spot B2_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.3909,
-        "change24hPct": -1.462,
-        "rvol15m": 0.23,
-        "last15mBuysUSD": 0,
-        "last15mSellsUSD": 7.04,
-        "askDepth2pctUSD": 7202.55,
+        "priceUSDT": 0.3911,
+        "change24hPct": -1.635,
+        "rvol15m": 5.371,
+        "last15mBuysUSD": null,
+        "last15mSellsUSD": null,
+        "askDepth2pctUSD": 5900.23,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 2,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
@@ -653,33 +659,34 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
             "trackedWallets": 2,
-            "deltaToken": 0,
-            "deltaUSDAtCurrentPrice": 0,
-            "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "deltaToken": 45.9612,
+            "deltaUSDAtCurrentPrice": 17.98,
+            "movement": "LABELED_BALANCE_INCREASE",
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
       "limitations": [
+        "NO_COMPLETE_FRESH_15M_TAKER_TAPE",
         "INDEX_VENUE_PRIORITY_UNKNOWN",
         "UNSCANNED_HISTORICAL_BLOCK_GAP",
         "CEX_NET_OUTFLOW_NOT_ATTRIBUTED",
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T09:58:30.728Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:22:59.912Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -705,16 +712,16 @@
       "venue": "Gate Spot CYS_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.05843,
-        "change24hPct": -2.956,
-        "rvol15m": 0.046,
-        "last15mBuysUSD": 488.13,
-        "last15mSellsUSD": 132.09,
-        "askDepth2pctUSD": 793.65,
+        "priceUSDT": 0.05774,
+        "change24hPct": -3.751,
+        "rvol15m": 2.696,
+        "last15mBuysUSD": 200.11,
+        "last15mSellsUSD": 1326.23,
+        "askDepth2pctUSD": 997.21,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 2,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
@@ -727,8 +734,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -736,8 +743,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -749,18 +756,18 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:34.434Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:34:53.640Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
       "symbol": "STBL",
-      "decision": "NO_VERIFIED_EARLY_SIGNAL",
-      "preparationStage": "P0_NO_PREPARATION_EVIDENCE",
+      "decision": "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN",
+      "preparationStage": "P1_ONCHAIN_PREPARATION_WATCH",
       "signalResearchOnly": true,
       "coverage": {
         "ohlcv": true,
@@ -780,19 +787,21 @@
       "venue": "Gate Spot STBL_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.01988,
-        "change24hPct": -2.262,
-        "rvol15m": 4.703,
-        "last15mBuysUSD": 297.41,
-        "last15mSellsUSD": 340.19,
-        "askDepth2pctUSD": 4635.01,
+        "priceUSDT": 0.01981,
+        "change24hPct": -3.082,
+        "rvol15m": 1.004,
+        "last15mBuysUSD": 307.61,
+        "last15mSellsUSD": 61.65,
+        "askDepth2pctUSD": 3884.81,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
-        "unverifiedEOAWithGrowth": 0,
+        "historicMissingBlocks": 594301,
+        "unverifiedEOAWithGrowth": 1,
         "netLpRemovalPositions": 0,
-        "evidenceCodes": [],
+        "evidenceCodes": [
+          "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+        ],
         "exchangeLabeledWalletChanges": [
           {
             "exchange": "Gate",
@@ -800,8 +809,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -809,8 +818,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -821,12 +830,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:01:53.140Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:31:56.396Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -852,16 +861,16 @@
       "venue": "Bitget Spot BSBUSDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.07726,
-        "change24hPct": 0.364,
-        "rvol15m": 0.226,
-        "last15mBuysUSD": 50.01,
-        "last15mSellsUSD": 718.36,
-        "askDepth2pctUSD": 7797.32,
+        "priceUSDT": 0.07703,
+        "change24hPct": 0.653,
+        "rvol15m": 0.325,
+        "last15mBuysUSD": 23.24,
+        "last15mSellsUSD": 121.9,
+        "askDepth2pctUSD": 8131.32,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 1,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
@@ -874,8 +883,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -883,8 +892,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -896,12 +905,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:05:05.107Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:33:26.612Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -927,16 +936,16 @@
       "venue": "Gate Spot AIO_USDT",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.0339,
-        "change24hPct": -2.165,
-        "rvol15m": 0.587,
-        "last15mBuysUSD": 517.06,
-        "last15mSellsUSD": 0,
-        "askDepth2pctUSD": 540.59,
+        "priceUSDT": 0.03404,
+        "change24hPct": -2.071,
+        "rvol15m": 0.524,
+        "last15mBuysUSD": 532.79,
+        "last15mSellsUSD": 295.54,
+        "askDepth2pctUSD": 166.4,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 0,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [],
@@ -947,8 +956,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -956,8 +965,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -968,12 +977,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
-        "mostRecentTapeUtc": "2026-11-19T10:00:40.638Z",
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
+        "mostRecentTapeUtc": "2026-11-19T10:34:00.939Z",
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
@@ -999,16 +1008,16 @@
       "venue": "GeckoTerminal pool 0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.03661556051250509,
-        "change24hPct": 2.149,
-        "rvol15m": 0.52,
+        "priceUSDT": 0.036823949795420696,
+        "change24hPct": 3.245,
+        "rvol15m": 1.586,
         "last15mBuysUSD": null,
         "last15mSellsUSD": null,
         "askDepth2pctUSD": null,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
+        "historicMissingBlocks": 594301,
         "unverifiedEOAWithGrowth": 1,
         "netLpRemovalPositions": 0,
         "evidenceCodes": [
@@ -1021,8 +1030,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -1030,8 +1039,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -1044,18 +1053,18 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
         "mostRecentTapeUtc": null,
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     },
     {
       "symbol": "LYN",
-      "decision": "NO_VERIFIED_EARLY_SIGNAL",
-      "preparationStage": "P0_NO_PREPARATION_EVIDENCE",
+      "decision": "ONCHAIN_PREPARATION_REVIEW_NOT_PROVEN",
+      "preparationStage": "P1_ONCHAIN_PREPARATION_WATCH",
       "signalResearchOnly": true,
       "coverage": {
         "ohlcv": true,
@@ -1075,19 +1084,22 @@
       "venue": "GeckoTerminal pool 0x302642976506d247c7017b85ddc89e3956f96ba1",
       "chain": "bsc",
       "observations": {
-        "priceUSDT": 0.0180252918037216,
+        "priceUSDT": 0.0179092535094922,
         "change24hPct": null,
-        "rvol15m": 1.015,
+        "rvol15m": 0.202,
         "last15mBuysUSD": null,
         "last15mSellsUSD": null,
         "askDepth2pctUSD": null,
         "indexAsOfUtc": null,
         "indexSpotPriority": [],
         "trackedSpotIndexWeight": null,
-        "historicMissingBlocks": 594042,
-        "unverifiedEOAWithGrowth": 0,
+        "historicMissingBlocks": 594301,
+        "unverifiedEOAWithGrowth": 2,
         "netLpRemovalPositions": 0,
-        "evidenceCodes": [],
+        "evidenceCodes": [
+          "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX",
+          "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+        ],
         "exchangeLabeledWalletChanges": [
           {
             "exchange": "Gate",
@@ -1095,8 +1107,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           },
           {
             "exchange": "Bitget",
@@ -1104,8 +1116,8 @@
             "deltaToken": 0,
             "deltaUSDAtCurrentPrice": 0,
             "movement": "UNCHANGED",
-            "fromBlock": 134478285,
-            "toBlock": 134484771
+            "fromBlock": 134484771,
+            "toBlock": 134488788
           }
         ]
       },
@@ -1118,12 +1130,12 @@
         "INDEPENDENT_SPOT_BUY_PRESSURE_NOT_CONFIRMED"
       ],
       "evidenceProvenance": {
-        "spotAsOfUtc": "2026-11-19T10:06:30.280Z",
-        "prepAsOfUtc": "2026-11-19T10:09:23.061Z",
-        "healthAsOfUtc": "2026-11-19T10:09:23.162Z",
+        "spotAsOfUtc": "2026-11-19T10:35:25.938Z",
+        "prepAsOfUtc": "2026-11-19T10:39:31.499Z",
+        "healthAsOfUtc": "2026-11-19T10:39:31.610Z",
         "mostRecentTapeUtc": null,
-        "chainTipFrom": 134481423,
-        "chainTipTo": 134484589
+        "chainTipFrom": 134485282,
+        "chainTipTo": 134488528
       }
     }
   ]
