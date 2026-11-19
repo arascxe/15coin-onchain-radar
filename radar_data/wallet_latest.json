@@ -1,47 +1,238 @@
 {
   "schema": "15coin-dynamic-wallet-latest-v1",
-  "asOfUtc": "2026-11-19T07:14:08.181Z",
+  "asOfUtc": "2026-11-19T07:39:36.633Z",
   "status": "SNAPSHOT_ATTEMPTED",
-  "snapshotBlock": 134461419,
+  "snapshotBlock": 134464814,
   "snapshotBlocks": {
-    "bsc": 134461419,
-    "base": 59410360
+    "bsc": 134464814,
+    "base": 59418002
   },
   "source": "Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   "dataFresh": true,
-  "candidates": [],
-  "recentLargeEoaReceipts": [
+  "candidates": [
     {
-      "symbol": "LIGHT",
+      "symbol": "DOS",
+      "address": "0x9e229b12cc9081d6a510b29ccbd6311743e277ed",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-13T21:22:39.127Z",
       "chain": "bsc",
-      "address": "0xb23e4dcd281a5242367c0de48767a47883f3f673",
-      "ownerVerified": false,
-      "receiptNetUSDApprox": 30358.89,
-      "balanceSnapshotUSDApprox": 29478.88,
-      "txProof": [
-        {
-          "tx": "0xcd8eebc7c40eafb0ae5586978eb1736e9d03c87b33b452fc86850feee4f76d9b",
-          "block": 134240876,
-          "logIndex": 583,
-          "from": "0xfe11494ad934ad907446d52c78922188de20c009",
-          "to": "0xb23e4dcd281a5242367c0de48767a47883f3f673",
-          "raw": "125000558214"
-        }
-      ],
-      "firstDetectedUtc": "2026-11-19T07:14:08.181Z",
-      "blockWindow": {
-        "from": 134238841,
-        "to": 134241940
+      "observations": 132,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 12698.05,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "windowFrom": 133421552,
+        "windowTo": 133422889,
+        "positiveNetTransferRaw": "6310896407197865476048",
+        "usdApprox": 969.35,
+        "hashesOnlyIfInObservedTransfers": [],
+        "caution": "Net received in scanned window; does not prove retained balance or unique holder."
       },
-      "caveat": "Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
     },
+    {
+      "symbol": "DOS",
+      "address": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-14T00:53:54.016Z",
+      "chain": "bsc",
+      "observations": 122,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 22871.36,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "chain": "bsc",
+        "windowFrom": 133447959,
+        "windowTo": 133451052,
+        "positiveNetTransferRaw": "1999785887885532020278",
+        "usdApprox": 306.77,
+        "txProof": [
+          {
+            "tx": "0xe4c950e1a2297fe8ba735452424eedb39f2e3274b89d83501459bf78f7309ce7",
+            "block": 133449708,
+            "logIndex": 123,
+            "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
+            "to": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+            "raw": "399973191592284237564"
+          },
+          {
+            "tx": "0xb793fb35a3199f514e31517316e693ad465b15a0d3cc039d67a2a6dc0fb0c3ee",
+            "block": 133450197,
+            "logIndex": 302,
+            "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
+            "to": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+            "raw": "399973127326690460794"
+          },
+          {
+            "tx": "0x26897978d615ca5863f6f5e0b4b6c900ead0362d3c6b3c6f3b607706ca55e6b1",
+            "block": 133450776,
+            "logIndex": 334,
+            "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
+            "to": "0xb743d3f5e241b842a92cd16ded1344ba8749453e",
+            "raw": "399893146965050519315"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "CYS",
+      "address": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-13T21:22:39.127Z",
+      "chain": "bsc",
+      "observations": 107,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 10854.28,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "windowFrom": 133421552,
+        "windowTo": 133422889,
+        "positiveNetTransferRaw": "1435576160672840966029",
+        "usdApprox": 105.54,
+        "hashesOnlyIfInObservedTransfers": [],
+        "caution": "Net received in scanned window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "CYS",
+      "address": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-13T22:20:37.579Z",
+      "chain": "bsc",
+      "observations": 119,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 167940.08,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "chain": "bsc",
+        "windowFrom": 133427267,
+        "windowTo": 133430495,
+        "positiveNetTransferRaw": "21446066949730000000000",
+        "usdApprox": 1569.21,
+        "txProof": [
+          {
+            "tx": "0xd0c62f68c63eedd214d91e1645236f72997eaefd757a80d1f1988790fb930214",
+            "block": 133430463,
+            "logIndex": 71,
+            "from": "0x0f80d0668a6f82ad9b97b82459f3ba1b91a1819f",
+            "to": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+            "raw": "14540819999730000000000"
+          },
+          {
+            "tx": "0x8a90abd9aad21b8458472335e8b890d35bc1c0797ee088992698e6623bc648a6",
+            "block": 133430485,
+            "logIndex": 124,
+            "from": "0x5fa29c78aaf58cc966782f482296275911c06e1b",
+            "to": "0xa509c4a077558468e809de0bd7f8a090bcf58d47",
+            "raw": "6905246950000000000000"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "STAR",
+      "address": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-15T22:51:29.573Z",
+      "chain": "bsc",
+      "observations": 79,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 16851.64,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "chain": "bsc",
+        "windowFrom": 133815499,
+        "windowTo": 133818625,
+        "positiveNetTransferRaw": "3321356063373947719379",
+        "usdApprox": 112.14,
+        "txProof": [
+          {
+            "tx": "0x4d34c04d626f6ad2285cf37641d1a7a896d94dde2092a4753607273768a935fd",
+            "block": 133818500,
+            "logIndex": 30,
+            "from": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+            "to": "0x7817dbf38e9d1c95671625f0052c147864692fe0",
+            "raw": "3321356063373947719379"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "LYN",
+      "address": "0xd4acd38de8f461cba9d7f5742ca115da4ad3d96f",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-14T03:00:33.047Z",
+      "chain": "bsc",
+      "observations": 123,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 27082.07,
+      "lastSnapshotBlock": 134464814,
+      "firstProof": {
+        "chain": "bsc",
+        "windowFrom": 133464586,
+        "windowTo": 133467804,
+        "positiveNetTransferRaw": "9965207412340332562005",
+        "usdApprox": 196.08,
+        "txProof": [
+          {
+            "tx": "0x62f3804ab01c6e2c9db1a9486f9e19faa97c0ad8c55dbaa0627d11941fa31610",
+            "block": 133464953,
+            "logIndex": 703,
+            "from": "0x5994814f2c4040b863a0125a45de152a8c2a4dec",
+            "to": "0xd4acd38de8f461cba9d7f5742ca115da4ad3d96f",
+            "raw": "9965207412340332562005"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    },
+    {
+      "symbol": "TRUST",
+      "address": "0xca14284607e470054f185ba14a33f095b0fdf881",
+      "eoaUnverified": true,
+      "firstSeenUtc": "2026-11-17T12:15:18.564Z",
+      "chain": "base",
+      "observations": 25,
+      "consecutive": 3,
+      "netRetainedIncreaseUSD": 409022.73,
+      "lastSnapshotBlock": 59418002,
+      "firstProof": {
+        "chain": "base",
+        "windowFrom": 58630693,
+        "windowTo": 58636701,
+        "positiveNetTransferRaw": "142816816128959058850000",
+        "usdApprox": 6408.19,
+        "txProof": [
+          {
+            "tx": "0x92fde78ecd83b017b097f7b5b7300510d684e3d5e1890d582d2a989cd1b0274e",
+            "block": 58633002,
+            "logIndex": 0,
+            "from": "0xd44f05427fab669e5180cf31365dc1b1f272164b",
+            "to": "0xca14284607e470054f185ba14a33f095b0fdf881",
+            "raw": "142816816128959058850000"
+          }
+        ],
+        "caution": "Net received in a scanned block window; does not prove retained balance or unique holder."
+      },
+      "caveat": "Observed growing EOA balance over >=30min in >=3 snapshots with up to 90m gaps; origin/owner unknown; NOT exchange net withdrawal."
+    }
+  ],
+  "recentLargeEoaReceipts": [
     {
       "symbol": "IN",
       "chain": "bsc",
       "address": "0x06fded4c9b2fe24df5629cfcaba606d0f52b06ba",
       "ownerVerified": false,
       "receiptNetUSDApprox": 29452.05,
-      "balanceSnapshotUSDApprox": 31740.44,
+      "balanceSnapshotUSDApprox": 31754.14,
       "txProof": [
         {
           "tx": "0x1451d405658c9895631d780107b92acf33d15505b05fd1ada964395986ebb4d3",
@@ -52,7 +243,7 @@
           "raw": "1369863013698630136986300"
         }
       ],
-      "firstDetectedUtc": "2026-11-19T07:14:08.181Z",
+      "firstDetectedUtc": "2026-11-19T07:39:36.633Z",
       "blockWindow": {
         "from": 133972879,
         "to": 133976097
@@ -65,7 +256,7 @@
       "address": "0x0529ea5885702715e83923c59746ae8734c553b7",
       "ownerVerified": false,
       "receiptNetUSDApprox": 13828.1,
-      "balanceSnapshotUSDApprox": 15209.09,
+      "balanceSnapshotUSDApprox": 15201.3,
       "txProof": [
         {
           "tx": "0x83664bea04ac2d609716bd6cc9ec557e5da7b7d0e44bb7c9b76f879f422b4f22",
@@ -76,7 +267,7 @@
           "raw": "35069995000000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-19T07:14:08.181Z",
+      "firstDetectedUtc": "2026-11-19T07:39:36.633Z",
       "blockWindow": {
         "from": 134322873,
         "to": 134325971
@@ -89,7 +280,7 @@
       "address": "0xf8191d98ae98d2f7abdfb63a9b0b812b93c873aa",
       "ownerVerified": false,
       "receiptNetUSDApprox": 50650.61,
-      "balanceSnapshotUSDApprox": 451724.2,
+      "balanceSnapshotUSDApprox": 451492.73,
       "txProof": [
         {
           "tx": "0x00b88d93a72ea776b94a5be326a89beb16afd58ad895dfa632923adb61b6b0f0",
@@ -100,7 +291,7 @@
           "raw": "124235000000000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-19T07:14:08.181Z",
+      "firstDetectedUtc": "2026-11-19T07:39:36.633Z",
       "blockWindow": {
         "from": 134277307,
         "to": 134280542
@@ -113,7 +304,7 @@
       "address": "0xd49ba2f0bdde24ed9d6aff716ca8262264828541",
       "ownerVerified": false,
       "receiptNetUSDApprox": 14790.87,
-      "balanceSnapshotUSDApprox": 15824.3,
+      "balanceSnapshotUSDApprox": 15824.05,
       "txProof": [
         {
           "tx": "0x006b173ebebbd1a08b1c7783329cb600f654ded8183f178cfa6a9dfbe597eaef",
@@ -124,7 +315,7 @@
           "raw": "899997000000000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-19T07:14:08.181Z",
+      "firstDetectedUtc": "2026-11-19T07:39:36.633Z",
       "blockWindow": {
         "from": 134186002,
         "to": 134189268
@@ -133,33 +324,27 @@
     }
   ],
   "counts": {
-    "newRecipients": 35,
-    "oneShotLargeEoaReceipts": 5,
-    "trackedEOAs": 124,
-    "contractCandidatesSkipped": 26,
-    "codeReads": 98,
+    "newRecipients": 32,
+    "oneShotLargeEoaReceipts": 4,
+    "trackedEOAs": 127,
+    "contractCandidatesSkipped": 23,
+    "codeReads": 101,
     "failedRPC": 0,
-    "qualifiedPersistence": 0,
-    "excludedKnownCustodyCandidates": 3
+    "qualifiedPersistence": 7,
+    "excludedKnownCustodyCandidates": 2
   },
   "excludedRecipientRoles": [
     {
-      "symbol": "HANA",
-      "chain": "bsc",
-      "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
-    },
-    {
       "symbol": "COLLECT",
       "chain": "bsc",
-      "address": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
+      "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+      "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     },
     {
-      "symbol": "CYS",
+      "symbol": "APR",
       "chain": "bsc",
-      "address": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
+      "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+      "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     }
   ],
   "caveats": [
