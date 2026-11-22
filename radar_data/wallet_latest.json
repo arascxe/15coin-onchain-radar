@@ -1,37 +1,45 @@
 {
   "schema": "15coin-dynamic-wallet-latest-v1",
-  "asOfUtc": "2026-11-22T09:14:51.557Z",
+  "asOfUtc": "2026-11-22T10:28:15.614Z",
   "status": "SNAPSHOT_ATTEMPTED",
-  "snapshotBlock": 135053302,
+  "snapshotBlock": 135063086,
   "snapshotBlocks": {
-    "bsc": 135053302,
-    "base": 60742575
+    "bsc": 135063086,
+    "base": 60764596
   },
   "source": "Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   "dataFresh": true,
   "candidates": [],
   "recentLargeEoaReceipts": [
     {
-      "symbol": "IN",
+      "symbol": "COLLECT",
       "chain": "bsc",
-      "address": "0x06fded4c9b2fe24df5629cfcaba606d0f52b06ba",
+      "address": "0xc5a47e5894f8f2476a17422796e7ecd5044e72d2",
       "ownerVerified": false,
-      "receiptNetUSDApprox": 29452.05,
-      "balanceSnapshotUSDApprox": 31877.43,
+      "receiptNetUSDApprox": 11212.38,
+      "balanceSnapshotUSDApprox": 30789.73,
       "txProof": [
         {
-          "tx": "0x1451d405658c9895631d780107b92acf33d15505b05fd1ada964395986ebb4d3",
-          "block": 133973014,
-          "logIndex": 144,
-          "from": "0xacdab8149c1968be4dc88245e164146b5f6332cf",
-          "to": "0x06fded4c9b2fe24df5629cfcaba606d0f52b06ba",
-          "raw": "1369863013698630136986300"
+          "tx": "0xb12ea985c5d696848c51d0b555843739473a780ff30599cd47ad446daf61a34d",
+          "block": 134612261,
+          "logIndex": 387,
+          "from": "0x70f9be52103feede0c20c7f9d8de1309d14c1895",
+          "to": "0xc5a47e5894f8f2476a17422796e7ecd5044e72d2",
+          "raw": "400084925662000000000000"
+        },
+        {
+          "tx": "0x7ca684fc4e2d97dd9dbcdc46d5a7d6ead2a357bee22b82b97035d5be3f1ec50a",
+          "block": 134613260,
+          "logIndex": 540,
+          "from": "0x70f9be52103feede0c20c7f9d8de1309d14c1895",
+          "to": "0xc5a47e5894f8f2476a17422796e7ecd5044e72d2",
+          "raw": "49940175414000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-22T09:14:51.557Z",
+      "firstDetectedUtc": "2026-11-22T10:28:15.614Z",
       "blockWindow": {
-        "from": 133972879,
-        "to": 133976097
+        "from": 134611967,
+        "to": 134615155
       },
       "caveat": "Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."
     },
@@ -41,7 +49,7 @@
       "address": "0x48c614e16700d716d82377ad0b30b993da8bc9d0",
       "ownerVerified": false,
       "receiptNetUSDApprox": 343625.73,
-      "balanceSnapshotUSDApprox": 1841756.79,
+      "balanceSnapshotUSDApprox": 1882516.32,
       "txProof": [
         {
           "tx": "0xb56bfd5f218a4eac7a3e55bfcf8fba5d98ea1d6bc693e116d67b579a0dec21cc",
@@ -52,7 +60,7 @@
           "raw": "19999997000000000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-22T09:14:51.557Z",
+      "firstDetectedUtc": "2026-11-22T10:28:15.614Z",
       "blockWindow": {
         "from": 134920661,
         "to": 134923776
@@ -61,30 +69,24 @@
     }
   ],
   "counts": {
-    "newRecipients": 34,
+    "newRecipients": 44,
     "oneShotLargeEoaReceipts": 2,
-    "trackedEOAs": 123,
-    "contractCandidatesSkipped": 27,
-    "codeReads": 112,
+    "trackedEOAs": 119,
+    "contractCandidatesSkipped": 31,
+    "codeReads": 105,
     "failedRPC": 0,
     "qualifiedPersistence": 0,
-    "excludedKnownCustodyCandidates": 3
+    "excludedKnownCustodyCandidates": 2
   },
   "excludedRecipientRoles": [
     {
-      "symbol": "APR",
+      "symbol": "COLLECT",
       "chain": "bsc",
       "address": "0x238a358808379702088667322f80ac48bad5e6c4",
       "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     },
     {
-      "symbol": "CYS",
-      "chain": "bsc",
-      "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
-    },
-    {
-      "symbol": "BSB",
+      "symbol": "APR",
       "chain": "bsc",
       "address": "0x238a358808379702088667322f80ac48bad5e6c4",
       "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
