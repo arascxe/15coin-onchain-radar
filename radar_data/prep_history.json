@@ -9030,6 +9030,14 @@
           "returnPct": 0.817,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-23T09:15:00.000Z",
+          "observedAtUtc": "2026-11-23T09:18:02.434Z",
+          "price": 0.02374,
+          "returnPct": 2.02,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -9073,6 +9081,14 @@
           "observedAtUtc": "2026-11-22T15:44:31.651Z",
           "price": 0.017977065522174297,
           "returnPct": 4.358,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-23T09:15:00.000Z",
+          "observedAtUtc": "2026-11-23T09:18:02.434Z",
+          "price": 0.0186730608488025,
+          "returnPct": 8.398,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -9716,6 +9732,34 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "STAR_1795425593854_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "STAR",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-23T09:19:53.854Z",
+      "venue": "GeckoTerminal pool 0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
+      "priceAtFirstSeen": 0.031795638413743395,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135242698,
+        "to": 135245795,
+        "head": 135245800,
+        "gap": {
+          "from": 134221581,
+          "to": 135242697
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -14257,6 +14301,26 @@
         "BSB": "P0_NO_PREPARATION_EVIDENCE",
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
         "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-23T09:19:53.854Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "SPOT_ONLY_NOT_PREPARATION",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "SPOT_ONLY_NOT_PREPARATION",
+        "IN": "P1_ONCHAIN_PREPARATION_WATCH",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P0_NO_PREPARATION_EVIDENCE",
+        "CYS": "LATE_ACTIVITY_NOT_EARLY",
+        "STBL": "P1_ONCHAIN_PREPARATION_WATCH",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P1_ONCHAIN_PREPARATION_WATCH",
+        "STAR": "P1_ONCHAIN_PREPARATION_WATCH",
         "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
       }
     }
