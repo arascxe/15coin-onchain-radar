@@ -10050,6 +10050,14 @@
           "returnPct": 1.994,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-24T05:45:00.000Z",
+          "observedAtUtc": "2026-11-24T08:23:01.865Z",
+          "price": 0.3906,
+          "returnPct": 1.139,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -10591,6 +10599,14 @@
           "returnPct": 0.859,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-24T05:00:00.000Z",
+          "observedAtUtc": "2026-11-24T08:23:01.865Z",
+          "price": 0.0174901342065266,
+          "returnPct": -0.889,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -10667,6 +10683,67 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "DOS_1795508812488_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "DOS",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-24T08:26:52.488Z",
+      "venue": "Gate Spot DOS_USDT",
+      "priceAtFirstSeen": 0.1335,
+      "reasons": [
+        "DEX_POOL_INVENTORY_DECLINE",
+        "INDEPENDENT_GATE_SPOT_TAKER_BUY",
+        "SPOT_FIRST_IGNITION_CANDIDATE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135427215,
+        "to": 135430446,
+        "head": 135430451,
+        "gap": {
+          "from": 134289981,
+          "to": 135427214
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "LP_ROUND_TRIP_ZERO_NET",
+        "POOL_MOVEMENT_ONLY_NOT_INDEPENDENT_ACCUMULATION",
+        "BUY_FLOW_NOT_PROOF_OF_PREPARATION"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "STBL_1795508812488_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "STBL",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-24T08:26:52.488Z",
+      "venue": "Gate Spot STBL_USDT",
+      "priceAtFirstSeen": 0.01877,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135427215,
+        "to": 135430446,
+        "head": 135430451,
+        "gap": {
+          "from": 134289981,
+          "to": 135427214
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -15585,6 +15662,26 @@
         "B2": "P0_NO_PREPARATION_EVIDENCE",
         "CYS": "LATE_ACTIVITY_NOT_EARLY",
         "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-24T08:26:52.488Z",
+      "stages": {
+        "ON": "SPOT_ONLY_NOT_PREPARATION",
+        "DOS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P0_NO_PREPARATION_EVIDENCE",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P0_NO_PREPARATION_EVIDENCE",
+        "CYS": "P0_NO_PREPARATION_EVIDENCE",
+        "STBL": "P1_ONCHAIN_PREPARATION_WATCH",
         "BSB": "P0_NO_PREPARATION_EVIDENCE",
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
         "STAR": "P0_NO_PREPARATION_EVIDENCE",
