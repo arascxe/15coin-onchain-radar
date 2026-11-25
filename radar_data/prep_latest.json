@@ -1,6 +1,6 @@
 {
   "schema": "15coin-preparation-evidence-v1",
-  "asOfUtc": "2026-11-25T03:44:37.889Z",
+  "asOfUtc": "2026-11-25T08:26:50.020Z",
   "status": "DATA_FRESH",
   "objective": "Observational early preparation hypothesis screening on exactly 15 preselected symbols. Not a validated predictive or profitable signal.",
   "caveats": [
@@ -26,31 +26,34 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [],
+      "signalReasons": [
+        "WATCHED_ADDRESS_BALANCE_CHANGE"
+      ],
       "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP"
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "WALLET_BALANCE_NOT_TRACED_TO_DIRECT_TX_IN_RECENT_WINDOW"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0x4620f5c127a6055fbebb1f71327d60ff079c9060",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "6118609899377058787052",
-          "deltaPct": 0.185,
-          "deltaUSD": 634.13,
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "153867214898647345947256",
+          "deltaPct": 4.644,
+          "deltaUSD": 14749.71,
           "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
@@ -58,7 +61,26 @@
         "immediateEoaNetReceipts": [],
         "nonIndependentOrCustodyRiskCandidates": [],
         "dynamicEoaAccumulation": [],
-        "watchedBalanceChanges": [],
+        "watchedBalanceChanges": [
+          {
+            "address": "0xc882b111a75c0c657fc507c04fbfcd2cc984f071",
+            "label": "Gate.io 5 candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": -865032.0381051637,
+            "rawDelta": "-9023910266066802614308840",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          },
+          {
+            "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+            "label": "Gate hot wallet candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": 864943.961858358,
+            "rawDelta": "9022991465244711002702756",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          }
+        ],
         "lp": {
           "eventCount": 0,
           "netPositions": 0,
@@ -68,27 +90,27 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "183103776596815891437494",
-          "rawOut": "171233399854302199008108",
-          "rawNetOut": "-11870376742513692429386",
-          "inCount": 147,
-          "outCount": 119,
+          "rawIn": "87395741032888649965412",
+          "rawOut": "95405127318516854576346",
+          "rawNetOut": "8009386285628204610934",
+          "inCount": 87,
+          "outCount": 63,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": -1230.25
+          "netOutUSD": 767.78
         },
         "spot": {
           "venue": "Gate Spot ON_USDT",
-          "priceUSDT": 0.10364,
-          "price24hPct": -31.5,
-          "price6hPct": -12.125,
-          "price1hPct": -0.202,
-          "rvol15m": 7.642,
-          "volume15mUSD": 9032.97,
-          "takerBuysUSD": 2853.13,
-          "takerSellsUSD": 6598.49,
+          "priceUSDT": 0.09586,
+          "price24hPct": -24.496,
+          "price6hPct": -7.854,
+          "price1hPct": -0.817,
+          "rvol15m": 4.469,
+          "volume15mUSD": 5606.96,
+          "takerBuysUSD": 2550.82,
+          "takerSellsUSD": 2502.93,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "SPOT_EARLY_STRONG_REVIEW_ONLY",
+          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
       }
@@ -101,34 +123,31 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [
-        "INDEPENDENT_GATE_SPOT_TAKER_BUY"
-      ],
+      "signalReasons": [],
       "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP",
-        "BUY_FLOW_NOT_PROOF_OF_PREPARATION"
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0xcbeaad783ffd2cea125e9d9b2ec21e639d20fa59",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "69595849673986544031886",
-          "deltaPct": 1.593,
-          "deltaUSD": 6757.76,
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "307319230772935701774557",
+          "deltaPct": 6.926,
+          "deltaUSD": 30363.14,
           "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
@@ -146,26 +165,26 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "161894196810554796611617",
-          "rawOut": "185105127191199438338136",
-          "rawNetOut": "23210930380644641726519",
-          "inCount": 140,
-          "outCount": 111,
+          "rawIn": "2755215158739644131081970",
+          "rawOut": "2444431531127651438843707",
+          "rawNetOut": "-310783627611992692238263",
+          "inCount": 817,
+          "outCount": 720,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 2253.78
+          "netOutUSD": -30705.42
         },
         "spot": {
           "venue": "Gate Spot DOS_USDT",
-          "priceUSDT": 0.0971,
-          "price24hPct": -22.875,
-          "price6hPct": -2.117,
-          "price1hPct": -2.216,
-          "rvol15m": 11.308,
-          "volume15mUSD": 48512.31,
-          "takerBuysUSD": 28889.31,
-          "takerSellsUSD": 5180.59,
+          "priceUSDT": 0.0988,
+          "price24hPct": -25.993,
+          "price6hPct": -0.903,
+          "price1hPct": -2.081,
+          "rvol15m": 5.937,
+          "volume15mUSD": 28623.82,
+          "takerBuysUSD": 12928.65,
+          "takerSellsUSD": 50497.47,
           "takerSnapshotFresh": true,
-          "takerSampleComplete": true,
+          "takerSampleComplete": false,
           "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
@@ -179,7 +198,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -188,22 +207,22 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0xd21bc2291c1aef340f5265e257b18aa5dafed759",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-212318155249971687554020",
-          "deltaPct": -0.507,
-          "deltaUSD": -2421.06,
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "-409495469454241328038910",
+          "deltaPct": -0.983,
+          "deltaUSD": -4769.8,
           "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
@@ -221,27 +240,27 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "401440479924149857943050",
-          "rawOut": "354494453142593517537716",
-          "rawNetOut": "-46946026781556340405334",
-          "inCount": 59,
-          "outCount": 39,
+          "rawIn": "563117819144782725666047",
+          "rawOut": "490480272552147415093408",
+          "rawNetOut": "-72637546592635310572639",
+          "inCount": 82,
+          "outCount": 51,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": -535.33
+          "netOutUSD": -846.08
         },
         "spot": {
           "venue": "Gate Spot HANA_USDT",
-          "priceUSDT": 0.011403,
-          "price24hPct": -4.313,
-          "price6hPct": 1.722,
-          "price1hPct": 0.556,
-          "rvol15m": 3.965,
-          "volume15mUSD": 1816.8,
-          "takerBuysUSD": 8.36,
-          "takerSellsUSD": 2579.3,
+          "priceUSDT": 0.011648,
+          "price24hPct": -4.673,
+          "price6hPct": 2.816,
+          "price1hPct": -0.248,
+          "rvol15m": 3.455,
+          "volume15mUSD": 1697.16,
+          "takerBuysUSD": 0,
+          "takerSellsUSD": 74.89,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
+          "spotVerdict": "LOW_NOTIONAL_SPIKE_NOT_EDGE",
           "indexPriority": null
         }
       }
@@ -254,7 +273,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -263,12 +282,12 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
@@ -290,14 +309,14 @@
         "poolTransferFlow": null,
         "spot": {
           "venue": "Bitget Spot COLLECTUSDT",
-          "priceUSDT": 0.025447,
-          "price24hPct": 4.449,
-          "price6hPct": 0.525,
-          "price1hPct": 2.242,
-          "rvol15m": 1.073,
-          "volume15mUSD": 33414.31,
-          "takerBuysUSD": 4910.56,
-          "takerSellsUSD": 19390.35,
+          "priceUSDT": 0.025576,
+          "price24hPct": -0.895,
+          "price6hPct": 2.843,
+          "price1hPct": 0.697,
+          "rvol15m": 0.838,
+          "volume15mUSD": 26254.72,
+          "takerBuysUSD": 10120.76,
+          "takerSellsUSD": 14875.18,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
           "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
@@ -313,7 +332,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -322,23 +341,23 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0xae02717e94c9b5bae817601a49b4584f58324015",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-4737087680",
-          "deltaPct": -0.093,
-          "deltaUSD": -994.74,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "19776374320",
+          "deltaPct": 0.387,
+          "deltaUSD": 4122.58,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [],
@@ -355,24 +374,24 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "55509699429",
-          "rawOut": "62389529833",
-          "rawNetOut": "6879830404",
-          "inCount": 85,
-          "outCount": 91,
+          "rawIn": "42819809482",
+          "rawOut": "54037616740",
+          "rawNetOut": "11217807258",
+          "inCount": 88,
+          "outCount": 99,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 1444.7
+          "netOutUSD": 2338.46
         },
         "spot": {
           "venue": "Gate Spot LIGHT_USDT",
-          "priceUSDT": 0.20999,
-          "price24hPct": -2.348,
-          "price6hPct": 0.191,
-          "price1hPct": -0.705,
-          "rvol15m": 1.619,
-          "volume15mUSD": 905.46,
-          "takerBuysUSD": 605.32,
-          "takerSellsUSD": 855.56,
+          "priceUSDT": 0.20846,
+          "price24hPct": -2.145,
+          "price6hPct": -1.138,
+          "price1hPct": -0.615,
+          "rvol15m": 2.605,
+          "volume15mUSD": 1449.05,
+          "takerBuysUSD": 575.76,
+          "takerSellsUSD": 569.18,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
           "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
@@ -388,7 +407,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -397,12 +416,12 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
@@ -424,14 +443,14 @@
         "poolTransferFlow": null,
         "spot": {
           "venue": "Bitget Spot APRUSDT",
-          "priceUSDT": 0.03055,
-          "price24hPct": -7.312,
-          "price6hPct": 0.46,
-          "price1hPct": 0.394,
-          "rvol15m": 0.505,
-          "volume15mUSD": 883.01,
-          "takerBuysUSD": 546.88,
-          "takerSellsUSD": 263.44,
+          "priceUSDT": 0.03079,
+          "price24hPct": -3.298,
+          "price6hPct": 0.852,
+          "price1hPct": -0.13,
+          "rvol15m": 1.778,
+          "volume15mUSD": 3108.55,
+          "takerBuysUSD": 11.42,
+          "takerSellsUSD": 307.89,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
           "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
@@ -447,7 +466,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -456,22 +475,22 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0x5bd808ab85c124f99080da5f864edcb39950ede5",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "8461492409911013146795",
-          "deltaPct": 0.027,
-          "deltaUSD": 185.39,
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "146581923634723933372286",
+          "deltaPct": 0.461,
+          "deltaUSD": 3150.05,
           "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
@@ -489,27 +508,27 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "81357486766319647577828",
-          "rawOut": "63512021487518643589413",
-          "rawNetOut": "-17845465278801003988415",
-          "inCount": 29,
-          "outCount": 26,
+          "rawIn": "127833329173149675195449",
+          "rawOut": "71873614342750142489731",
+          "rawNetOut": "-55959714830399532705718",
+          "inCount": 46,
+          "outCount": 37,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": -390.99
+          "netOutUSD": -1202.57
         },
         "spot": {
           "venue": "Gate Spot IN_USDT",
-          "priceUSDT": 0.02191,
-          "price24hPct": -4.24,
-          "price6hPct": -2.838,
-          "price1hPct": -0.182,
-          "rvol15m": 0,
-          "volume15mUSD": 0,
-          "takerBuysUSD": null,
-          "takerSellsUSD": null,
-          "takerSnapshotFresh": false,
+          "priceUSDT": 0.02149,
+          "price24hPct": -8.553,
+          "price6hPct": -2.229,
+          "price1hPct": -1.962,
+          "rvol15m": 9.401,
+          "volume15mUSD": 900.38,
+          "takerBuysUSD": 448.63,
+          "takerSellsUSD": 454.59,
+          "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
       }
@@ -522,10 +541,11 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": true,
       "signalReasons": [
-        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX",
+        "SPOT_FIRST_IGNITION_CANDIDATE"
       ],
       "negativeControls": [
         "UNSCANNED_MIDDLE_BLOCK_GAP"
@@ -533,12 +553,12 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 61933444,
-        "to": 61939453,
-        "head": 61939458,
+        "from": 62018104,
+        "to": 62024110,
+        "head": 62024115,
         "gap": {
-          "from": 60027218,
-          "to": 61933443
+          "from": 60039218,
+          "to": 62018103
         }
       },
       "evidence": {
@@ -570,26 +590,13 @@
               }
             ],
             "privateOwnerVerified": false
-          },
-          {
-            "address": "0xcc282e2004428939ee5149a9e7872f0b4d5d5ec7",
-            "receiptUSD": 10617.13,
-            "sourceClassifications": [
-              {
-                "hash": "0x377ec3d939a20baacacf9c40638d093a87d0337ca11d5ab1d6cea2c3d375cb53",
-                "from": "0x5c29b4e68a54ab093084aa6bcd376abcc8029b7b",
-                "to": "0xcc282e2004428939ee5149a9e7872f0b4d5d5ec7",
-                "category": "UNKNOWN_OWNERSHIP_ON_BASE"
-              }
-            ],
-            "privateOwnerVerified": false
           }
         ],
         "immediateEoaNetReceipts": [
           {
             "address": "0x2b0e29f2dad15aa5b7613f1f4457b0435630cb8d",
             "receiptNetUSDApprox": 50614.67,
-            "balanceSnapshotUSDApprox": 94348.61,
+            "balanceSnapshotUSDApprox": 93354.16,
             "txProof": [
               {
                 "tx": "0xe577f0ef82a173d966b4665d9fe9fa13b98c5aee3c84115284e0a55fe0cf8978",
@@ -600,13 +607,13 @@
                 "raw": "2800000000000000000000000"
               }
             ],
-            "firstDetectedUtc": "2026-11-25T03:44:27.906Z",
+            "firstDetectedUtc": "2026-11-25T08:26:39.924Z",
             "caution": "One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
           },
           {
             "address": "0xd44f05427fab669e5180cf31365dc1b1f272164b",
             "receiptNetUSDApprox": 50614.67,
-            "balanceSnapshotUSDApprox": 95397.87,
+            "balanceSnapshotUSDApprox": 93254.98,
             "txProof": [
               {
                 "tx": "0xa550dff4c6de655b08b45c41f811aa583ea0faf6804f3758082bf558a18357cf",
@@ -617,24 +624,7 @@
                 "raw": "933333333333330000000000"
               }
             ],
-            "firstDetectedUtc": "2026-11-25T03:44:27.906Z",
-            "caution": "One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
-          },
-          {
-            "address": "0xcc282e2004428939ee5149a9e7872f0b4d5d5ec7",
-            "receiptNetUSDApprox": 10617.13,
-            "balanceSnapshotUSDApprox": 31986.36,
-            "txProof": [
-              {
-                "tx": "0x377ec3d939a20baacacf9c40638d093a87d0337ca11d5ab1d6cea2c3d375cb53",
-                "block": 61232068,
-                "logIndex": 0,
-                "from": "0x5c29b4e68a54ab093084aa6bcd376abcc8029b7b",
-                "to": "0xcc282e2004428939ee5149a9e7872f0b4d5d5ec7",
-                "raw": "201005886910000000000000"
-              }
-            ],
-            "firstDetectedUtc": "2026-11-25T03:44:27.906Z",
+            "firstDetectedUtc": "2026-11-25T08:26:39.924Z",
             "caution": "One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
           }
         ],
@@ -660,17 +650,17 @@
         },
         "spot": {
           "venue": "Gate Spot TRUST_USDT",
-          "priceUSDT": 0.04897,
-          "price24hPct": -6.367,
-          "price6hPct": -3.126,
-          "price1hPct": -0.143,
-          "rvol15m": 0.043,
-          "volume15mUSD": 72.42,
-          "takerBuysUSD": 0,
-          "takerSellsUSD": 58.22,
+          "priceUSDT": 0.04925,
+          "price24hPct": -5.669,
+          "price6hPct": 0.449,
+          "price1hPct": 0.305,
+          "rvol15m": 7.219,
+          "volume15mUSD": 11504.55,
+          "takerBuysUSD": 152.31,
+          "takerSellsUSD": 382.22,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
       }
@@ -683,39 +673,61 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [],
+      "signalReasons": [
+        "WATCHED_ADDRESS_BALANCE_CHANGE"
+      ],
       "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP"
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "WALLET_BALANCE_NOT_TRACED_TO_DIRECT_TX_IN_RECENT_WINDOW"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0xc1a780989734a0e5df875cebe410748562e1c5e6",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-800178108320094168021",
-          "deltaPct": -0.089,
-          "deltaUSD": -308.79,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "10837997756091819440624",
+          "deltaPct": 1.203,
+          "deltaUSD": 4120.61,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [],
         "immediateEoaNetReceipts": [],
         "nonIndependentOrCustodyRiskCandidates": [],
         "dynamicEoaAccumulation": [],
-        "watchedBalanceChanges": [],
+        "watchedBalanceChanges": [
+          {
+            "address": "0xc882b111a75c0c657fc507c04fbfcd2cc984f071",
+            "label": "Gate.io 5 candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": 98761.13919567999,
+            "rawDelta": "259761018400000000000000",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          },
+          {
+            "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+            "label": "Gate hot wallet candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": -98761.13919567999,
+            "rawDelta": "-259761018400000000000000",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          }
+        ],
         "lp": {
           "eventCount": 0,
           "netPositions": 0,
@@ -725,27 +737,27 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "9690284183613481293926",
-          "rawOut": "10641929301597440603773",
-          "rawNetOut": "951645117983959309847",
-          "inCount": 44,
-          "outCount": 40,
+          "rawIn": "9919940294495710230350",
+          "rawOut": "5417330427958342347351",
+          "rawNetOut": "-4502609866537367882999",
+          "inCount": 48,
+          "outCount": 28,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 367.24
+          "netOutUSD": -1711.89
         },
         "spot": {
           "venue": "Gate Spot B2_USDT",
-          "priceUSDT": 0.3859,
-          "price24hPct": -0.052,
-          "price6hPct": -0.924,
-          "price1hPct": 0.364,
-          "rvol15m": 2.42,
-          "volume15mUSD": 1033.1,
-          "takerBuysUSD": 251.95,
-          "takerSellsUSD": 464.08,
+          "priceUSDT": 0.3802,
+          "price24hPct": -2.413,
+          "price6hPct": -1.015,
+          "price1hPct": -0.731,
+          "rvol15m": 3.466,
+          "volume15mUSD": 1611.85,
+          "takerBuysUSD": 631.7,
+          "takerSellsUSD": 923.13,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
       }
@@ -758,21 +770,24 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [],
+      "signalReasons": [
+        "WATCHED_ADDRESS_BALANCE_CHANGE"
+      ],
       "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP"
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "WALLET_BALANCE_NOT_TRACED_TO_DIRECT_TX_IN_RECENT_WINDOW"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
@@ -782,7 +797,26 @@
         "immediateEoaNetReceipts": [],
         "nonIndependentOrCustodyRiskCandidates": [],
         "dynamicEoaAccumulation": [],
-        "watchedBalanceChanges": [],
+        "watchedBalanceChanges": [
+          {
+            "address": "0xc882b111a75c0c657fc507c04fbfcd2cc984f071",
+            "label": "Gate.io 5 candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": 490201.11396550847,
+            "rawDelta": "10157503397544726041785612",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          },
+          {
+            "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+            "label": "Gate hot wallet candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": -486153.4940753241,
+            "rawDelta": "-10073632285025366041785612",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          }
+        ],
         "lp": {
           "eventCount": 0,
           "netPositions": 0,
@@ -794,17 +828,17 @@
         "poolTransferFlow": null,
         "spot": {
           "venue": "Gate Spot CYS_USDT",
-          "priceUSDT": 0.04979,
-          "price24hPct": -14.582,
-          "price6hPct": 0.892,
-          "price1hPct": 1.158,
-          "rvol15m": 1.093,
-          "volume15mUSD": 3583.03,
-          "takerBuysUSD": 3598.98,
-          "takerSellsUSD": 5517.14,
+          "priceUSDT": 0.04826,
+          "price24hPct": -11.596,
+          "price6hPct": -0.72,
+          "price1hPct": -0.351,
+          "rvol15m": 4.072,
+          "volume15mUSD": 14470.38,
+          "takerBuysUSD": 4943.86,
+          "takerSellsUSD": 1809.72,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+          "spotVerdict": "SPOT_EARLY_WATCH",
           "indexPriority": null
         }
       }
@@ -817,39 +851,52 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [],
+      "signalReasons": [
+        "WATCHED_ADDRESS_BALANCE_CHANGE"
+      ],
       "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP"
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "WALLET_BALANCE_NOT_TRACED_TO_DIRECT_TX_IN_RECENT_WINDOW"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0x90166b5795250fe7f0831e844121cc91799787e9",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-107893329042878412372280",
-          "deltaPct": -0.247,
-          "deltaUSD": -1931.29,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "225948371625841485530431",
+          "deltaPct": 0.518,
+          "deltaUSD": 4003.81,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [],
         "immediateEoaNetReceipts": [],
         "nonIndependentOrCustodyRiskCandidates": [],
         "dynamicEoaAccumulation": [],
-        "watchedBalanceChanges": [],
+        "watchedBalanceChanges": [
+          {
+            "address": "0x0d0707963952f2fba59dd06f2b425ace40b492fe",
+            "label": "Gate hot wallet candidate",
+            "verifiedOwner": false,
+            "balanceDeltaUSD": -36608.810406973025,
+            "rawDelta": "-2065959955246784942043163",
+            "fromBlock": 135584633,
+            "toBlock": 135622223
+          }
+        ],
         "lp": {
           "eventCount": 0,
           "netPositions": 0,
@@ -859,56 +906,54 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "656819817767332440700277",
-          "rawOut": "541505481724858557521491",
-          "rawNetOut": "-115314336042473883178786",
-          "inCount": 74,
-          "outCount": 57,
+          "rawIn": "665765169100486011644120",
+          "rawOut": "545644958050207382415571",
+          "rawNetOut": "-120120211050278629228549",
+          "inCount": 76,
+          "outCount": 51,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": -2064.13
+          "netOutUSD": -2128.53
         },
         "spot": {
           "venue": "Gate Spot STBL_USDT",
-          "priceUSDT": 0.0179,
-          "price24hPct": -4.584,
-          "price6hPct": -0.112,
-          "price1hPct": 0.845,
-          "rvol15m": 4.047,
-          "volume15mUSD": 2971.06,
-          "takerBuysUSD": 1287.51,
-          "takerSellsUSD": 1169.91,
+          "priceUSDT": 0.01772,
+          "price24hPct": -5.594,
+          "price6hPct": -0.617,
+          "price1hPct": -1.281,
+          "rvol15m": 1.323,
+          "volume15mUSD": 1021.26,
+          "takerBuysUSD": 1374.61,
+          "takerSellsUSD": 394.19,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
-          "spotVerdict": "LOW_NOTIONAL_SPIKE_NOT_EDGE",
+          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
           "indexPriority": null
         }
       }
     },
     {
       "symbol": "BSB",
-      "stage": "SPOT_ONLY_NOT_PREPARATION",
+      "stage": "P0_NO_PREPARATION_EVIDENCE",
       "isFresh": true,
       "eligibleForEarlyResearch": true,
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
-      "signalReasons": [
-        "SPOT_FIRST_IGNITION_CANDIDATE"
-      ],
+      "signalReasons": [],
       "negativeControls": [
         "UNSCANNED_MIDDLE_BLOCK_GAP"
       ],
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
@@ -930,14 +975,14 @@
         "poolTransferFlow": null,
         "spot": {
           "venue": "Bitget Spot BSBUSDT",
-          "priceUSDT": 0.06524,
-          "price24hPct": -4.045,
-          "price6hPct": -1.241,
-          "price1hPct": 0.586,
-          "rvol15m": 6.513,
-          "volume15mUSD": 5694.52,
-          "takerBuysUSD": 940.29,
-          "takerSellsUSD": 559.76,
+          "priceUSDT": 0.06444,
+          "price24hPct": -5.624,
+          "price6hPct": -0.831,
+          "price1hPct": -1.211,
+          "rvol15m": 0.854,
+          "volume15mUSD": 779,
+          "takerBuysUSD": 668.11,
+          "takerSellsUSD": 557.81,
           "takerSnapshotFresh": true,
           "takerSampleComplete": true,
           "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
@@ -953,7 +998,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -962,23 +1007,23 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0x97620e003c03381eacbde7135f28d94303bb5672",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-3524206895609106227581",
-          "deltaPct": -1.118,
-          "deltaUSD": -98.96,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "226239058486697667808",
+          "deltaPct": 0.073,
+          "deltaUSD": 6.33,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [],
@@ -995,22 +1040,22 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "2538163271984303511748",
-          "rawOut": "3321640364480232137596",
-          "rawNetOut": "783477092495928625848",
+          "rawIn": "5834547877705211055734",
+          "rawOut": "4970489865267342920825",
+          "rawNetOut": "-864058012437868134909",
           "inCount": 14,
-          "outCount": 10,
+          "outCount": 15,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 22
+          "netOutUSD": -24.19
         },
         "spot": {
           "venue": "Gate Spot AIO_USDT",
-          "priceUSDT": 0.02808,
-          "price24hPct": -4.878,
-          "price6hPct": -1.784,
-          "price1hPct": 1.189,
-          "rvol15m": 2.081,
-          "volume15mUSD": 207.62,
+          "priceUSDT": 0.028,
+          "price24hPct": -6.667,
+          "price6hPct": 0.575,
+          "price1hPct": -1.339,
+          "rvol15m": 0.142,
+          "volume15mUSD": 14.14,
           "takerBuysUSD": null,
           "takerSellsUSD": null,
           "takerSnapshotFresh": false,
@@ -1028,7 +1073,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": false,
       "signalReasons": [],
       "negativeControls": [
@@ -1037,23 +1082,23 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-120386441784511669420446",
-          "deltaPct": -0.769,
-          "deltaUSD": -3547.8,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "193826102666454381605566",
+          "deltaPct": 1.248,
+          "deltaUSD": 5642.6,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [],
@@ -1070,22 +1115,22 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "78290176512637746312001",
-          "rawOut": "85097589786187834294000",
-          "rawNetOut": "6807413273550087981999",
-          "inCount": 36,
-          "outCount": 32,
+          "rawIn": "195426557203952190751702",
+          "rawOut": "160585986033675714610619",
+          "rawNetOut": "-34840571170276476141083",
+          "inCount": 75,
+          "outCount": 45,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 200.62
+          "netOutUSD": -1014.27
         },
         "spot": {
           "venue": "GeckoTerminal pool 0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-          "priceUSDT": 0.029470135923110298,
-          "price24hPct": -4.958,
-          "price6hPct": -0.816,
-          "price1hPct": 0.991,
-          "rvol15m": 0.382,
-          "volume15mUSD": 2860.28,
+          "priceUSDT": 0.029111651043690196,
+          "price24hPct": -8.562,
+          "price6hPct": -0.03,
+          "price1hPct": -0.687,
+          "rvol15m": 0.79,
+          "volume15mUSD": 5866.13,
           "takerBuysUSD": null,
           "takerSellsUSD": null,
           "takerSnapshotFresh": false,
@@ -1103,7 +1148,7 @@
       "signalResearchOnly": true,
       "verifiedCexOutflow": false,
       "predicted10x": false,
-      "observedAtUtc": "2026-11-25T03:44:37.889Z",
+      "observedAtUtc": "2026-11-25T08:26:50.020Z",
       "earlyCandidate": true,
       "signalReasons": [
         "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
@@ -1114,23 +1159,23 @@
       "chainWindow": {
         "source": "LIVE_TIP",
         "coverage": "SUCCESS",
-        "from": 135581642,
-        "to": 135584855,
-        "head": 135584860,
+        "from": 135619231,
+        "to": 135622449,
+        "head": 135622454,
         "gap": {
-          "from": 134315181,
-          "to": 135581641
+          "from": 134318781,
+          "to": 135619230
         }
       },
       "evidence": {
         "poolBalance": {
           "pool": "0x302642976506d247c7017b85ddc89e3956f96ba1",
-          "fromBlock": 135574517,
-          "toBlock": 135584633,
-          "rawDelta": "-29997334711028241301894",
-          "deltaPct": -1.764,
-          "deltaUSD": -498.83,
-          "interpretation": "Pool token balance DECREASED; swaps, LP and transfers unresolved"
+          "fromBlock": 135584633,
+          "toBlock": 135622223,
+          "rawDelta": "18049706561713439754003",
+          "deltaPct": 1.081,
+          "deltaUSD": 299.47,
+          "interpretation": "Pool token balance INCREASED; swaps, LP and transfers unresolved"
         },
         "watchedAddressOutflows": [],
         "immediateReceiptTransferAttribution": [
@@ -1152,7 +1197,7 @@
           {
             "address": "0x93fcdbb510c345a7e14e9ea84daad14eb2869181",
             "receiptNetUSDApprox": 11106.66,
-            "balanceSnapshotUSDApprox": 9977.45,
+            "balanceSnapshotUSDApprox": 9955,
             "txProof": [
               {
                 "tx": "0x76b3f5b33b0ed8752e9a5cbe7c3eb867ff9863a586418a3dd7a3e02a30ebbaa1",
@@ -1163,7 +1208,7 @@
                 "raw": "699997000000000000000000"
               }
             ],
-            "firstDetectedUtc": "2026-11-25T03:44:27.906Z",
+            "firstDetectedUtc": "2026-11-25T08:26:39.924Z",
             "caution": "One-shot EOA net receipt; identity unknown and balance may predate receipt. P1 observational watch only unless independent evidence exists."
           }
         ],
@@ -1179,61 +1224,32 @@
           "caveat": "LP position delta is liquidity-unit change within the scanned window, NOT USD market depth or confirmed directional intent."
         },
         "poolTransferFlow": {
-          "rawIn": "3883618608605391759872",
-          "rawOut": "5502199626967650784290",
-          "rawNetOut": "1618581018362259024418",
-          "inCount": 2,
+          "rawIn": "0",
+          "rawOut": "3590807051688359624765",
+          "rawNetOut": "3590807051688359624765",
+          "inCount": 0,
           "outCount": 3,
           "caution": "Token pool net flow includes swaps AND LP activity, not independent evidence of depletion by trading",
-          "netOutUSD": 26.92
+          "netOutUSD": 59.58
         },
         "spot": {
           "venue": "GeckoTerminal pool 0x302642976506d247c7017b85ddc89e3956f96ba1",
-          "priceUSDT": 0.016629091438509196,
+          "priceUSDT": 0.0165916695625314,
           "price24hPct": 0,
           "price6hPct": 0,
-          "price1hPct": 0.798,
-          "rvol15m": 2.396,
-          "volume15mUSD": 400.26,
+          "price1hPct": -1.23,
+          "rvol15m": 0.351,
+          "volume15mUSD": 59.5,
           "takerBuysUSD": null,
           "takerSellsUSD": null,
           "takerSnapshotFresh": false,
           "takerSampleComplete": false,
-          "spotVerdict": "VOLUME_ONLY_NOT_EDGE",
+          "spotVerdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
           "indexPriority": null
         }
       }
     }
   ],
-  "newAlerts": [
-    {
-      "id": "TRUST_1795578277889_P1_ONCHAIN_PREPARATION_WATCH",
-      "symbol": "TRUST",
-      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
-      "firstSeenUtc": "2026-11-25T03:44:37.889Z",
-      "venue": "Gate Spot TRUST_USDT",
-      "priceAtFirstSeen": 0.04897,
-      "reasons": [
-        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
-      ],
-      "proofWindow": {
-        "source": "LIVE_TIP",
-        "coverage": "SUCCESS",
-        "from": 61933444,
-        "to": 61939453,
-        "head": 61939458,
-        "gap": {
-          "from": 60027218,
-          "to": 61933443
-        }
-      },
-      "negativeControls": [
-        "UNSCANNED_MIDDLE_BLOCK_GAP"
-      ],
-      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
-      "followup": {},
-      "ruleVersion": "preparation-v1-unvalidated"
-    }
-  ],
+  "newAlerts": [],
   "previousAlertCount": 189
 }
