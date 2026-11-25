@@ -11227,6 +11227,14 @@
           "returnPct": 0.393,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after6h": {
+          "candleCloseUtc": "2026-11-25T08:30:00.000Z",
+          "observedAtUtc": "2026-11-25T09:06:09.780Z",
+          "price": 0.01769,
+          "returnPct": -0.785,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -11266,6 +11274,91 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "COLLECT_1795597840568_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "COLLECT",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-25T09:10:40.568Z",
+      "venue": "Bitget Spot COLLECTUSDT",
+      "priceAtFirstSeen": 0.025831,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135624917,
+        "to": 135628192,
+        "head": 135628197,
+        "gap": {
+          "from": 134325981,
+          "to": 135624916
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "DEX_ROUTER_SOURCE_IS_NOT_CEX_WITHDRAWAL"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "CYS_1795597840568_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "CYS",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-25T09:10:40.568Z",
+      "venue": "Gate Spot CYS_USDT",
+      "priceAtFirstSeen": 0.04981,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135624917,
+        "to": 135628192,
+        "head": 135628197,
+        "gap": {
+          "from": 134325981,
+          "to": 135624916
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "AIO_1795597840568_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "AIO",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-25T09:10:40.568Z",
+      "venue": "Gate Spot AIO_USDT",
+      "priceAtFirstSeen": 0.02799,
+      "reasons": [
+        "DYNAMIC_EOA_PERSISTENT_BALANCE_INCREASE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135624917,
+        "to": 135628192,
+        "head": 135628197,
+        "gap": {
+          "from": 134325981,
+          "to": 135624916
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -16386,6 +16479,26 @@
         "STBL": "P0_NO_PREPARATION_EVIDENCE",
         "BSB": "P0_NO_PREPARATION_EVIDENCE",
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-25T09:10:40.568Z",
+      "stages": {
+        "ON": "SPOT_ONLY_NOT_PREPARATION",
+        "DOS": "P0_NO_PREPARATION_EVIDENCE",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P1_ONCHAIN_PREPARATION_WATCH",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P0_NO_PREPARATION_EVIDENCE",
+        "TRUST": "P1_ONCHAIN_PREPARATION_WATCH",
+        "B2": "P0_NO_PREPARATION_EVIDENCE",
+        "CYS": "P1_ONCHAIN_PREPARATION_WATCH",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P1_ONCHAIN_PREPARATION_WATCH",
         "STAR": "P0_NO_PREPARATION_EVIDENCE",
         "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
       }
