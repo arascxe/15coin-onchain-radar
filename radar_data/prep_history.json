@@ -10030,6 +10030,14 @@
           "returnPct": -4.612,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-26T04:15:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.027689,
+          "returnPct": 8.122,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -10081,6 +10089,14 @@
           "observedAtUtc": "2026-11-24T04:55:01.946Z",
           "price": 0.05818,
           "returnPct": 43.089,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-26T04:15:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.04931,
+          "returnPct": 21.274,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -10136,6 +10152,14 @@
           "returnPct": 9.496,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-26T04:15:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.01912,
+          "returnPct": 10.712,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -10187,6 +10211,14 @@
           "observedAtUtc": "2026-11-24T04:55:01.946Z",
           "price": 0.0299,
           "returnPct": -1.353,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-26T04:15:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.02909,
+          "returnPct": -4.025,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -11363,6 +11395,14 @@
           "returnPct": -0.785,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-26T02:30:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.01861,
+          "returnPct": 4.375,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -11406,6 +11446,14 @@
           "observedAtUtc": "2026-11-25T12:07:28.883Z",
           "price": 0.04933,
           "returnPct": 0.735,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        },
+        "after24h": {
+          "candleCloseUtc": "2026-11-26T03:45:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.05074,
+          "returnPct": 3.614,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
         }
@@ -11836,6 +11884,45 @@
       },
       "negativeControls": [
         "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {
+        "after1h": {
+          "candleCloseUtc": "2026-11-26T03:00:00.000Z",
+          "observedAtUtc": "2026-11-26T05:08:54.244Z",
+          "price": 0.017122894587529098,
+          "returnPct": -1.079,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
+        }
+      },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "B2_1795670001437_P1_ONCHAIN_PREPARATION_WATCH",
+      "symbol": "B2",
+      "stage": "P1_ONCHAIN_PREPARATION_WATCH",
+      "firstSeenUtc": "2026-11-26T05:13:21.437Z",
+      "venue": "Gate Spot B2_USDT",
+      "priceAtFirstSeen": 0.383,
+      "reasons": [
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX",
+        "WATCHED_ADDRESS_BALANCE_CHANGE"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 135785182,
+        "to": 135788431,
+        "head": 135788436,
+        "gap": {
+          "from": 134365581,
+          "to": 135785181
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP",
+        "WALLET_BALANCE_NOT_TRACED_TO_DIRECT_TX_IN_RECENT_WINDOW"
       ],
       "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
       "followup": {},
@@ -17165,6 +17252,26 @@
     },
     {
       "atUtc": "2026-11-26T02:03:53.565Z",
+      "stages": {
+        "ON": "P0_NO_PREPARATION_EVIDENCE",
+        "DOS": "P0_NO_PREPARATION_EVIDENCE",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P0_NO_PREPARATION_EVIDENCE",
+        "TRUST": "P0_NO_PREPARATION_EVIDENCE",
+        "B2": "P1_ONCHAIN_PREPARATION_WATCH",
+        "CYS": "P0_NO_PREPARATION_EVIDENCE",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P1_ONCHAIN_PREPARATION_WATCH"
+      }
+    },
+    {
+      "atUtc": "2026-11-26T05:13:21.437Z",
       "stages": {
         "ON": "P0_NO_PREPARATION_EVIDENCE",
         "DOS": "P0_NO_PREPARATION_EVIDENCE",
