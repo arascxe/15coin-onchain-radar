@@ -1,6 +1,6 @@
 {
   "schema": "15coin-spot-ohlcv-v1",
-  "asOfUtc": "2026-11-26T10:25:35.468Z",
+  "asOfUtc": "2026-11-26T10:48:52.009Z",
   "meaning": "Public real venue/pool OHLCV RVOL; not futures, not direct evidence of CEX inventory or LP event",
   "coins": [
     {
@@ -9,23 +9,23 @@
       "venue": "Gate Spot ON_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/ON_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:36.824Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.1034,
-      "close1hChangePct": -1.213,
-      "change15mPct": -0.653,
-      "change6hPct": -3.047,
-      "change24hPct": 8.739,
+      "measuredAtUtc": "2026-11-26T10:48:54.602Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.1023,
+      "close1hChangePct": -2.996,
+      "change15mPct": -0.554,
+      "change6hPct": -3.39,
+      "change24hPct": 7.605,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 2852.06,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 7313.51,
         "baselineN": 672,
-        "medianVolumeUSD": 1607.59,
-        "rvol": 1.774,
-        "previousBarRvol": 3.901
+        "medianVolumeUSD": 1629.74,
+        "rvol": 4.488,
+        "previousBarRvol": 3.736
       },
       "rvol1h": {
         "status": "OK",
@@ -55,33 +55,75 @@
       "verdict": "VOLUME_ONLY_NOT_EDGE",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:36.368Z",
+        "asOfUtc": "2026-11-26T10:48:53.754Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T09:26:09.073Z",
-          "lastSampleUtc": "2026-11-26T10:24:23.316Z",
+          "firstSampleUtc": "2026-11-26T09:37:50.110Z",
+          "lastSampleUtc": "2026-11-26T10:48:06.238Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 2554.94,
-          "last15mSellsUSD": 2997.01,
-          "last15mNetTakerBuyUSD": -442.07,
+          "last15mBuysUSD": 2416.21,
+          "last15mSellsUSD": 3598.65,
+          "last15mNetTakerBuyUSD": -1182.44,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.10321,
-          "spreadPct": 0.0969,
-          "askDepth2pctUSD": 4448.2,
-          "askDepth5pctUSD": 5249.57,
-          "bidDepth2pctUSD": 3402.44,
-          "bidDepth5pctUSD": 5583.56,
-          "askMaxDistancePct": 10.735,
-          "bidMaxDistancePct": 7.877,
+          "midUSDT": 0.10231000000000001,
+          "spreadPct": 0.0977,
+          "askDepth2pctUSD": 3568.05,
+          "askDepth5pctUSD": 3986.54,
+          "bidDepth2pctUSD": 2938.67,
+          "bidDepth5pctUSD": 5414.72,
+          "askMaxDistancePct": 16.841,
+          "bidMaxDistancePct": 7.946,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.192Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=ONUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "ON_USDT",
+            "weight": 0.25117739,
+            "price": 0.10238
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "ONUSDT",
+            "weight": 0.09576138,
+            "price": 0.10238
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "ONUSDT",
+            "weight": 0.15070644,
+            "price": 0.1026
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "ONUSDT",
+            "weight": 0.50235479,
+            "price": 0.10210986
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.502355
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.251177
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.095761
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -91,23 +133,23 @@
       "venue": "Gate Spot DOS_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/DOS_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:36.863Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.0778,
-      "close1hChangePct": 0.129,
-      "change15mPct": 0.013,
-      "change6hPct": -2.506,
-      "change24hPct": -7.16,
+      "measuredAtUtc": "2026-11-26T10:48:54.602Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.07785,
+      "close1hChangePct": 0.064,
+      "change15mPct": -0.282,
+      "change6hPct": -1.828,
+      "change24hPct": -5.636,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 11147.55,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 2722.05,
         "baselineN": 672,
         "medianVolumeUSD": 8108.36,
-        "rvol": 1.375,
-        "previousBarRvol": 1.048
+        "rvol": 0.336,
+        "previousBarRvol": 0.72
       },
       "rvol1h": {
         "status": "OK",
@@ -137,33 +179,91 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:36.684Z",
+        "asOfUtc": "2026-11-26T10:48:54.048Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T09:42:23.174Z",
-          "lastSampleUtc": "2026-11-26T10:25:00.552Z",
+          "firstSampleUtc": "2026-11-26T10:02:47.156Z",
+          "lastSampleUtc": "2026-11-26T10:48:02.025Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 4176.82,
-          "last15mSellsUSD": 2161.66,
-          "last15mNetTakerBuyUSD": 2015.15,
+          "last15mBuysUSD": 1155.45,
+          "last15mSellsUSD": 2154.59,
+          "last15mNetTakerBuyUSD": -999.14,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.07814499999999999,
-          "spreadPct": 0.0896,
-          "askDepth2pctUSD": 36681.56,
-          "askDepth5pctUSD": 77526.59,
-          "bidDepth2pctUSD": 5867.37,
-          "bidDepth5pctUSD": 10350.12,
-          "askMaxDistancePct": 118.056,
+          "midUSDT": 0.077825,
+          "spreadPct": 0.0899,
+          "askDepth2pctUSD": 7137.05,
+          "askDepth5pctUSD": 77373.88,
+          "bidDepth2pctUSD": 9476.72,
+          "bidDepth5pctUSD": 10359.73,
+          "askMaxDistancePct": 113.299,
           "bidMaxDistancePct": 99.872,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.191Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=DOSUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "okex",
+            "symbol": "DOS-USDT",
+            "weight": 0.02857143,
+            "price": 0.078
+          },
+          {
+            "exchange": "gateio",
+            "symbol": "DOS_USDT",
+            "weight": 0.11428571,
+            "price": 0.07776
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "DOS-USDT",
+            "weight": 0.17142857,
+            "price": 0.0777
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "DOSUSDT",
+            "weight": 0.17142857,
+            "price": 0.07822
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "DOSUSDT",
+            "weight": 0.17142857,
+            "price": 0.0783
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "DOSUSDT",
+            "weight": 0.34285714,
+            "price": 0.07782009
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.342857
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.171429
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.171429
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.171429
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -173,23 +273,23 @@
       "venue": "Gate Spot HANA_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/HANA_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:36.823Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.01192,
-      "close1hChangePct": 0.676,
-      "change15mPct": 0.076,
-      "change6hPct": -0.409,
-      "change24hPct": 2.397,
+      "measuredAtUtc": "2026-11-26T10:48:54.619Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.011868,
+      "close1hChangePct": 0.406,
+      "change15mPct": -0.428,
+      "change6hPct": -0.311,
+      "change24hPct": 1.985,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 52.44,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 0,
         "baselineN": 672,
-        "medianVolumeUSD": 437.81,
-        "rvol": 0.12,
-        "previousBarRvol": 1.919
+        "medianVolumeUSD": 432.44,
+        "rvol": 0,
+        "previousBarRvol": 0.087
       },
       "rvol1h": {
         "status": "OK",
@@ -219,33 +319,79 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:36.420Z",
+        "asOfUtc": "2026-11-26T10:48:54.081Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-25T19:04:41.182Z",
-          "lastSampleUtc": "2026-11-26T10:09:46.280Z",
+          "firstSampleUtc": "2026-11-25T19:05:51.851Z",
+          "lastSampleUtc": "2026-11-26T10:48:16.644Z",
           "last15mSampleComplete": true,
           "last15mBuysUSD": 0,
-          "last15mSellsUSD": 0,
-          "last15mNetTakerBuyUSD": 0,
+          "last15mSellsUSD": 14.56,
+          "last15mNetTakerBuyUSD": -14.56,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.011931,
-          "spreadPct": 0.285,
-          "askDepth2pctUSD": 381.09,
-          "askDepth5pctUSD": 2897.46,
-          "bidDepth2pctUSD": 142.53,
-          "bidDepth5pctUSD": 628.7,
-          "askMaxDistancePct": 370.707,
+          "midUSDT": 0.011835,
+          "spreadPct": 0.1859,
+          "askDepth2pctUSD": 213.93,
+          "askDepth5pctUSD": 1930.58,
+          "bidDepth2pctUSD": 225.82,
+          "bidDepth5pctUSD": 769.91,
+          "askMaxDistancePct": 365.425,
           "bidMaxDistancePct": 99.992,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.197Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=HANAUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "HANA_USDT",
+            "weight": 0.3,
+            "price": 0.011919
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "HANA-USDT",
+            "weight": 0.2,
+            "price": 0.01187
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "HANAUSDT",
+            "weight": 0.2,
+            "price": 0.011942
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "HANAUSDT",
+            "weight": 0.3,
+            "price": 0.01183973
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "gateio",
+            "weight": 0.3
+          },
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.3
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.2
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.2
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -255,23 +401,23 @@
       "venue": "Bitget Spot COLLECTUSDT",
       "source": "Bitget v3 SPOT candles",
       "sourceUrl": "https://www.bitget.com/spot/COLLECTUSDT",
-      "measuredAtUtc": "2026-11-26T10:25:36.865Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.026433,
-      "close1hChangePct": -0.811,
-      "change15mPct": -0.045,
-      "change6hPct": -4.536,
-      "change24hPct": 3.31,
+      "measuredAtUtc": "2026-11-26T10:48:55.156Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.026261,
+      "close1hChangePct": -0.741,
+      "change15mPct": -0.444,
+      "change6hPct": -5.28,
+      "change24hPct": 2.506,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 14992.42,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 15727.93,
         "baselineN": 672,
-        "medianVolumeUSD": 32443.33,
-        "rvol": 0.462,
-        "previousBarRvol": 0.655
+        "medianVolumeUSD": 32427.37,
+        "rvol": 0.485,
+        "previousBarRvol": 0.64
       },
       "rvol1h": {
         "status": "OK",
@@ -301,35 +447,67 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Bitget v3 public SPOT fills + orderbook",
-        "asOfUtc": "2026-11-26T10:25:36.475Z",
+        "asOfUtc": "2026-11-26T10:48:54.370Z",
         "takerTradeSample": {
-          "sampleCount": 343,
-          "firstSampleUtc": "2026-11-26T10:05:38.904Z",
-          "lastSampleUtc": "2026-11-26T10:25:31.060Z",
+          "sampleCount": 313,
+          "firstSampleUtc": "2026-11-26T10:29:01.728Z",
+          "lastSampleUtc": "2026-11-26T10:48:37.680Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 6921.34,
-          "last15mSellsUSD": 13394.5,
-          "last15mNetTakerBuyUSD": -6473.16,
+          "last15mBuysUSD": 3767.64,
+          "last15mSellsUSD": 14226.19,
+          "last15mNetTakerBuyUSD": -10458.55,
           "coverageNote": "Public V2 history paginated to cover the full 15-minute window",
           "provenance": "Bitget public /api/v2/spot/market/fills-history, no credentials"
         },
         "orderbook": {
-          "midUSDT": 0.026399,
-          "spreadPct": 0.0076,
-          "askDepth2pctUSD": 15490.92,
-          "askDepth5pctUSD": 43929.09,
-          "bidDepth2pctUSD": 21452.48,
-          "bidDepth5pctUSD": 40012.35,
-          "askMaxDistancePct": 8.47,
-          "bidMaxDistancePct": 9.447,
-          "exchangeAsOfUtc": "2026-11-26T10:25:36.571Z",
+          "midUSDT": 0.0262155,
+          "spreadPct": 0.0038,
+          "askDepth2pctUSD": 15325.29,
+          "askDepth5pctUSD": 41723.72,
+          "bidDepth2pctUSD": 19291.41,
+          "bidDepth5pctUSD": 37775.75,
+          "askMaxDistancePct": 9.027,
+          "bidMaxDistancePct": 9.824,
+          "exchangeAsOfUtc": "2026-11-26T10:48:54.493Z",
           "warning": "One snapshot; NULL when 100 depth levels do not reach band. No proof of replenishment."
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.191Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=COLLECTUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "bitget",
+            "symbol": "COLLECTUSDT",
+            "weight": 0.33333333,
+            "price": 0.026243
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "COLLECTUSDT",
+            "weight": 0.33333333,
+            "price": 0.02633
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "COLLECTUSDT",
+            "weight": 0.33333333,
+            "price": 0.02624209
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "bitget",
+            "weight": 0.333333
+          },
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.333333
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": [
         "GATE HTTP 400"
@@ -341,23 +519,23 @@
       "venue": "Gate Spot LIGHT_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/LIGHT_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:37.598Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.20371,
-      "close1hChangePct": 0.098,
-      "change15mPct": 0.029,
-      "change6hPct": -1.618,
-      "change24hPct": -0.634,
+      "measuredAtUtc": "2026-11-26T10:48:56.047Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.20301,
+      "close1hChangePct": 0.138,
+      "change15mPct": 0.039,
+      "change6hPct": -2.112,
+      "change24hPct": -1,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 18.74,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 0,
         "baselineN": 672,
-        "medianVolumeUSD": 602.96,
-        "rvol": 0.031,
-        "previousBarRvol": 0.327
+        "medianVolumeUSD": 598.64,
+        "rvol": 0,
+        "previousBarRvol": 0.516
       },
       "rvol1h": {
         "status": "OK",
@@ -387,33 +565,85 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.385Z",
+        "asOfUtc": "2026-11-26T10:48:55.466Z",
         "takerTradeSample": {
           "sampleCount": 1000,
           "firstSampleUtc": "2026-11-25T10:45:07.427Z",
           "lastSampleUtc": "2026-11-26T10:24:48.800Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 120.47,
-          "last15mSellsUSD": 188.65,
-          "last15mNetTakerBuyUSD": -68.19,
+          "last15mBuysUSD": 0,
+          "last15mSellsUSD": 0,
+          "last15mNetTakerBuyUSD": 0,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.203225,
-          "spreadPct": 0.2313,
-          "askDepth2pctUSD": 2352.61,
-          "askDepth5pctUSD": 2562.12,
-          "bidDepth2pctUSD": 1509.64,
-          "bidDepth5pctUSD": 1676.97,
-          "askMaxDistancePct": 60.148,
+          "midUSDT": 0.20244,
+          "spreadPct": 0.3063,
+          "askDepth2pctUSD": 2684.59,
+          "askDepth5pctUSD": 2948.25,
+          "bidDepth2pctUSD": 851.17,
+          "bidDepth5pctUSD": 1945.16,
+          "askMaxDistancePct": 53.769,
           "bidMaxDistancePct": 99.995,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.196Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=LIGHTUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "LIGHT_USDT",
+            "weight": 0.11111111,
+            "price": 0.20293
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "LIGHT-USDT",
+            "weight": 0.11111111,
+            "price": 0.2034
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "LIGHTUSDT",
+            "weight": 0.11111111,
+            "price": 0.2033
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "LIGHTUSDT",
+            "weight": 0.33333333,
+            "price": 0.20321
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "LIGHTUSDT",
+            "weight": 0.33333333,
+            "price": 0.20249726
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "bitget",
+            "weight": 0.333333
+          },
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.333333
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.111111
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.111111
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -423,23 +653,23 @@
       "venue": "Bitget Spot APRUSDT",
       "source": "Bitget v3 SPOT candles",
       "sourceUrl": "https://www.bitget.com/spot/APRUSDT",
-      "measuredAtUtc": "2026-11-26T10:25:37.409Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.03206,
-      "close1hChangePct": 0.849,
-      "change15mPct": 0.094,
-      "change6hPct": 1.008,
-      "change24hPct": 5.599,
+      "measuredAtUtc": "2026-11-26T10:48:56.195Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.03189,
+      "close1hChangePct": 0.22,
+      "change15mPct": -0.313,
+      "change6hPct": 1.046,
+      "change24hPct": 4.455,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 1369.11,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 163.89,
         "baselineN": 672,
         "medianVolumeUSD": 1628.7,
-        "rvol": 0.841,
-        "previousBarRvol": 1.371
+        "rvol": 0.101,
+        "previousBarRvol": 0.282
       },
       "rvol1h": {
         "status": "OK",
@@ -469,34 +699,76 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Bitget v3 public SPOT fills + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.210Z",
+        "asOfUtc": "2026-11-26T10:48:55.663Z",
         "takerTradeSample": {
           "sampleCount": 100,
-          "firstSampleUtc": "2026-11-26T09:56:54.021Z",
-          "lastSampleUtc": "2026-11-26T10:24:33.149Z",
+          "firstSampleUtc": "2026-11-26T10:00:09.638Z",
+          "lastSampleUtc": "2026-11-26T10:47:04.500Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 70.98,
-          "last15mSellsUSD": 221.81,
-          "last15mNetTakerBuyUSD": -150.83,
+          "last15mBuysUSD": 43.47,
+          "last15mSellsUSD": 181.93,
+          "last15mNetTakerBuyUSD": -138.45,
           "coverageNote": "Last 15m spans all returned fills; only 100 fills are available"
         },
         "orderbook": {
-          "midUSDT": 0.031925,
-          "spreadPct": 0.094,
-          "askDepth2pctUSD": 8699.35,
-          "askDepth5pctUSD": 8706.52,
-          "bidDepth2pctUSD": 8013.47,
-          "bidDepth5pctUSD": 8618.17,
-          "askMaxDistancePct": 122.396,
+          "midUSDT": 0.031875,
+          "spreadPct": 0.0314,
+          "askDepth2pctUSD": 8221.27,
+          "askDepth5pctUSD": 8228.44,
+          "bidDepth2pctUSD": 8961.17,
+          "bidDepth5pctUSD": 9565.84,
+          "askMaxDistancePct": 131.467,
           "bidMaxDistancePct": 99.969,
-          "exchangeAsOfUtc": "2026-11-26T10:25:37.303Z",
+          "exchangeAsOfUtc": "2026-11-26T10:48:55.789Z",
           "warning": "One snapshot; NULL when 100 depth levels do not reach band. No proof of replenishment."
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.194Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=APRUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "mexc",
+            "symbol": "APRUSDT",
+            "weight": 0.15,
+            "price": 0.03184
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "APRUSDT",
+            "weight": 0.3,
+            "price": 0.03188
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "APRUSDT",
+            "weight": 0.15,
+            "price": 0.0319
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "APRUSDT",
+            "weight": 0.4,
+            "price": 0.03177252
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.4
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.3
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.15
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": [
         "GATE HTTP 400"
@@ -508,23 +780,23 @@
       "venue": "Gate Spot IN_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/IN_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:37.719Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.02242,
-      "close1hChangePct": -0.134,
-      "change15mPct": 0,
-      "change6hPct": 0.628,
-      "change24hPct": 6.206,
+      "measuredAtUtc": "2026-11-26T10:48:56.213Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.02246,
+      "close1hChangePct": 0.357,
+      "change15mPct": 0.672,
+      "change6hPct": 0.313,
+      "change24hPct": 6.749,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 179.36,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 213.57,
         "baselineN": 672,
-        "medianVolumeUSD": 62.1,
-        "rvol": 2.888,
-        "previousBarRvol": 9.78
+        "medianVolumeUSD": 63.04,
+        "rvol": 3.388,
+        "previousBarRvol": 1.793
       },
       "rvol1h": {
         "status": "OK",
@@ -554,33 +826,85 @@
       "verdict": "LOW_NOTIONAL_SPIKE_NOT_EDGE",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.378Z",
+        "asOfUtc": "2026-11-26T10:48:55.432Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-24T02:07:33.259Z",
-          "lastSampleUtc": "2026-11-26T10:21:23.537Z",
+          "firstSampleUtc": "2026-11-24T02:07:36.457Z",
+          "lastSampleUtc": "2026-11-26T10:43:53.086Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 0,
-          "last15mSellsUSD": 153.33,
-          "last15mNetTakerBuyUSD": -153.33,
+          "last15mBuysUSD": 4,
+          "last15mSellsUSD": 0,
+          "last15mNetTakerBuyUSD": 4,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.02234,
-          "spreadPct": 0.3581,
-          "askDepth2pctUSD": 4331.4,
-          "askDepth5pctUSD": 4953.43,
-          "bidDepth2pctUSD": 3383.37,
-          "bidDepth5pctUSD": 5638.26,
-          "askMaxDistancePct": 235.721,
+          "midUSDT": 0.022435,
+          "spreadPct": 0.312,
+          "askDepth2pctUSD": 4772.3,
+          "askDepth5pctUSD": 5381.8,
+          "bidDepth2pctUSD": 3390.69,
+          "bidDepth5pctUSD": 5899.19,
+          "askMaxDistancePct": 234.299,
           "bidMaxDistancePct": 99.955,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.193Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=INUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "IN_USDT",
+            "weight": 0.13333333,
+            "price": 0.02246
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "IN-USDT",
+            "weight": 0.13333333,
+            "price": 0.02234
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "INUSDT",
+            "weight": 0.06666667,
+            "price": 0.02222
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "INUSDT",
+            "weight": 0.26666667,
+            "price": 0.02242
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "INUSDT",
+            "weight": 0.4,
+            "price": 0.02238055
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.4
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.266667
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.133333
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.133333
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -590,23 +914,23 @@
       "venue": "Gate Spot TRUST_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/TRUST_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:37.612Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.04999,
-      "close1hChangePct": -0.239,
-      "change15mPct": -0.239,
-      "change6hPct": -2,
-      "change24hPct": 1.896,
+      "measuredAtUtc": "2026-11-26T10:48:56.285Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.04984,
+      "close1hChangePct": -0.559,
+      "change15mPct": -0.18,
+      "change6hPct": -2.313,
+      "change24hPct": 2.721,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 517.98,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 4431.33,
         "baselineN": 672,
-        "medianVolumeUSD": 1271,
-        "rvol": 0.408,
-        "previousBarRvol": 1.696
+        "medianVolumeUSD": 1268.13,
+        "rvol": 3.494,
+        "previousBarRvol": 0.445
       },
       "rvol1h": {
         "status": "OK",
@@ -633,36 +957,88 @@
           }
         ]
       },
-      "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+      "verdict": "VOLUME_ONLY_NOT_EDGE",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.199Z",
+        "asOfUtc": "2026-11-26T10:48:55.673Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T01:00:46.533Z",
-          "lastSampleUtc": "2026-11-26T10:23:04.387Z",
+          "firstSampleUtc": "2026-11-26T02:02:35.500Z",
+          "lastSampleUtc": "2026-11-26T10:48:23.258Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 564.62,
-          "last15mSellsUSD": 0,
-          "last15mNetTakerBuyUSD": 564.62,
+          "last15mBuysUSD": 3518.33,
+          "last15mSellsUSD": 1865.04,
+          "last15mNetTakerBuyUSD": 1653.3,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.049925,
-          "spreadPct": 0.0601,
-          "askDepth2pctUSD": 34819.51,
-          "askDepth5pctUSD": 35473.58,
-          "bidDepth2pctUSD": 39976.17,
-          "bidDepth5pctUSD": 40233.25,
-          "askMaxDistancePct": 690.065,
+          "midUSDT": 0.049865,
+          "spreadPct": 0.1003,
+          "askDepth2pctUSD": 28785.42,
+          "askDepth5pctUSD": 35671.77,
+          "bidDepth2pctUSD": 41653.67,
+          "bidDepth5pctUSD": 41930.42,
+          "askMaxDistancePct": 702.166,
           "bidMaxDistancePct": 99.98,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:47:57.192Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=TRUSTUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "TRUST_USDT",
+            "weight": 0.125,
+            "price": 0.04991
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "TRUST-USDT",
+            "weight": 0.1875,
+            "price": 0.05006
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "TRUSTUSDT",
+            "weight": 0.1875,
+            "price": 0.05014
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "TRUSTUSDT",
+            "weight": 0.1875,
+            "price": 0.0498
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "TRUSTUSDT",
+            "weight": 0.3125,
+            "price": 0.04963291
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.3125
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.1875
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.1875
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.1875
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -672,23 +1048,23 @@
       "venue": "Gate Spot B2_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/B2_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:38.224Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.4144,
-      "close1hChangePct": 1.768,
-      "change15mPct": 0.901,
-      "change6hPct": 7.889,
-      "change24hPct": 7.917,
+      "measuredAtUtc": "2026-11-26T10:48:57.447Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.4218,
+      "close1hChangePct": 3.18,
+      "change15mPct": 0.789,
+      "change6hPct": 10.246,
+      "change24hPct": 9.473,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 798.07,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 1314.42,
         "baselineN": 672,
-        "medianVolumeUSD": 647.6,
-        "rvol": 1.232,
-        "previousBarRvol": 0.82
+        "medianVolumeUSD": 648.86,
+        "rvol": 2.026,
+        "previousBarRvol": 1.71
       },
       "rvol1h": {
         "status": "OK",
@@ -718,33 +1094,85 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:38.017Z",
+        "asOfUtc": "2026-11-26T10:48:56.820Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T06:29:38.808Z",
-          "lastSampleUtc": "2026-11-26T10:24:05.838Z",
+          "firstSampleUtc": "2026-11-26T06:30:45.743Z",
+          "lastSampleUtc": "2026-11-26T10:48:04.863Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 1029.07,
-          "last15mSellsUSD": 649,
-          "last15mNetTakerBuyUSD": 380.07,
+          "last15mBuysUSD": 1047.13,
+          "last15mSellsUSD": 443.9,
+          "last15mNetTakerBuyUSD": 603.24,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.4159,
-          "spreadPct": 0.1924,
-          "askDepth2pctUSD": 2790.69,
-          "askDepth5pctUSD": 7319.45,
-          "bidDepth2pctUSD": 7021.5,
-          "bidDepth5pctUSD": 7446.97,
-          "askMaxDistancePct": 21.952,
-          "bidMaxDistancePct": 23.082,
+          "midUSDT": 0.42,
+          "spreadPct": 0.2857,
+          "askDepth2pctUSD": 6362.83,
+          "askDepth5pctUSD": 7685.79,
+          "bidDepth2pctUSD": 7292.97,
+          "bidDepth5pctUSD": 8113.58,
+          "askMaxDistancePct": 23.357,
+          "bidMaxDistancePct": 20.357,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.200Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=B2USDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "B2_USDT",
+            "weight": 0.14285714,
+            "price": 0.4207
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "B2-USDT",
+            "weight": 0.21428571,
+            "price": 0.4205
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "B2USDT",
+            "weight": 0.21428571,
+            "price": 0.41775
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "B2USDT",
+            "weight": 0.21428571,
+            "price": 0.41967
+          },
+          {
+            "exchange": "pancakeswapV3",
+            "symbol": "B2-WBNB*uindex(BNBUSDT)",
+            "weight": 0.21428571,
+            "price": 0.42012577
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "kucoin",
+            "weight": 0.214286
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.214286
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.214286
+          },
+          {
+            "exchange": "pancakeswapV3",
+            "weight": 0.214286
+          }
+        ],
+        "hasFuturesSelf": false,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -754,23 +1182,23 @@
       "venue": "Gate Spot CYS_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/CYS_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:38.277Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.05101,
-      "close1hChangePct": 1.09,
-      "change15mPct": 0.611,
-      "change6hPct": 3.448,
-      "change24hPct": 3.092,
+      "measuredAtUtc": "2026-11-26T10:48:57.697Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.05038,
+      "close1hChangePct": -0.885,
+      "change15mPct": -0.788,
+      "change6hPct": 0.379,
+      "change24hPct": 1.655,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 4119.33,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 3538.6,
         "baselineN": 672,
-        "medianVolumeUSD": 4159.41,
-        "rvol": 0.99,
-        "previousBarRvol": 0.075
+        "medianVolumeUSD": 4170.71,
+        "rvol": 0.848,
+        "previousBarRvol": 1.52
       },
       "rvol1h": {
         "status": "OK",
@@ -800,33 +1228,91 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.978Z",
+        "asOfUtc": "2026-11-26T10:48:56.562Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T05:43:57.373Z",
-          "lastSampleUtc": "2026-11-26T10:25:23.935Z",
+          "firstSampleUtc": "2026-11-26T06:23:33.154Z",
+          "lastSampleUtc": "2026-11-26T10:47:53.168Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 1435.16,
-          "last15mSellsUSD": 5920.57,
-          "last15mNetTakerBuyUSD": -4485.42,
+          "last15mBuysUSD": 3192.6,
+          "last15mSellsUSD": 794.37,
+          "last15mNetTakerBuyUSD": 2398.23,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.05091,
-          "spreadPct": 0.1964,
-          "askDepth2pctUSD": 2021.67,
-          "askDepth5pctUSD": 3323.51,
-          "bidDepth2pctUSD": 4165.42,
-          "bidDepth5pctUSD": 5965.75,
-          "askMaxDistancePct": 214.477,
+          "midUSDT": 0.05054500000000001,
+          "spreadPct": 0.1781,
+          "askDepth2pctUSD": 960.31,
+          "askDepth5pctUSD": 1233.21,
+          "bidDepth2pctUSD": 3417.28,
+          "bidDepth5pctUSD": 5273.05,
+          "askMaxDistancePct": 279.662,
           "bidMaxDistancePct": 99.98,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.198Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=CYSUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "CYS_USDT",
+            "weight": 0.1,
+            "price": 0.05051
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "CYS-USDT",
+            "weight": 0.1,
+            "price": 0.0505
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "CYSUSDT",
+            "weight": 0.1,
+            "price": 0.0507
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "CYSUSDT",
+            "weight": 0.3,
+            "price": 0.05058
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "CYSUSDT",
+            "weight": 0.3,
+            "price": 0.0506
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "CYSUSDT",
+            "weight": 0.1,
+            "price": 0.05047077
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "bitget",
+            "weight": 0.3
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.1
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.1
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.1
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -836,23 +1322,23 @@
       "venue": "Gate Spot STBL_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/STBL_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:38.174Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.01915,
-      "close1hChangePct": -0.26,
-      "change15mPct": 0.209,
-      "change6hPct": 0.157,
-      "change24hPct": 5.626,
+      "measuredAtUtc": "2026-11-26T10:48:57.413Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.01928,
+      "close1hChangePct": 0.89,
+      "change15mPct": 0.26,
+      "change6hPct": 0.26,
+      "change24hPct": 6.637,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 216.56,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 1507.3,
         "baselineN": 672,
-        "medianVolumeUSD": 848.37,
-        "rvol": 0.255,
-        "previousBarRvol": 0.75
+        "medianVolumeUSD": 857.41,
+        "rvol": 1.758,
+        "previousBarRvol": 1.042
       },
       "rvol1h": {
         "status": "OK",
@@ -882,33 +1368,85 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:37.985Z",
+        "asOfUtc": "2026-11-26T10:48:56.614Z",
         "takerTradeSample": {
           "sampleCount": 1000,
-          "firstSampleUtc": "2026-11-26T02:00:00.320Z",
-          "lastSampleUtc": "2026-11-26T10:23:08.879Z",
+          "firstSampleUtc": "2026-11-26T02:00:38.881Z",
+          "lastSampleUtc": "2026-11-26T10:47:33.218Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 179.07,
-          "last15mSellsUSD": 0,
-          "last15mNetTakerBuyUSD": 179.07,
+          "last15mBuysUSD": 1123.49,
+          "last15mSellsUSD": 750.83,
+          "last15mNetTakerBuyUSD": 372.66,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.019215000000000003,
-          "spreadPct": 0.052,
-          "askDepth2pctUSD": 1848.1,
-          "askDepth5pctUSD": 16882.83,
-          "bidDepth2pctUSD": 2797.4,
-          "bidDepth5pctUSD": 11508.21,
-          "askMaxDistancePct": 992.896,
+          "midUSDT": 0.01935,
+          "spreadPct": 0.2067,
+          "askDepth2pctUSD": 11361.1,
+          "askDepth5pctUSD": 18387.83,
+          "bidDepth2pctUSD": 4141.38,
+          "bidDepth5pctUSD": 11098.56,
+          "askMaxDistancePct": 1016.279,
           "bidMaxDistancePct": 99.948,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.200Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=STBLUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "STBL_USDT",
+            "weight": 0.2,
+            "price": 0.01934
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "STBL-USDT",
+            "weight": 0.1,
+            "price": 0.01936
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "STBLUSDT",
+            "weight": 0.1,
+            "price": 0.01933
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "STBLUSDT",
+            "weight": 0.1,
+            "price": 0.01939
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "STBLUSDT",
+            "weight": 0.5,
+            "price": 0.01930829
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.5
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.2
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.1
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.1
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -918,23 +1456,23 @@
       "venue": "Bitget Spot BSBUSDT",
       "source": "Bitget v3 SPOT candles",
       "sourceUrl": "https://www.bitget.com/spot/BSBUSDT",
-      "measuredAtUtc": "2026-11-26T10:25:38.226Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.06522,
-      "close1hChangePct": -0.107,
-      "change15mPct": 0.046,
-      "change6hPct": -1.57,
-      "change24hPct": 2.709,
+      "measuredAtUtc": "2026-11-26T10:48:57.511Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.06523,
+      "close1hChangePct": -0.367,
+      "change15mPct": -0.138,
+      "change6hPct": -1.271,
+      "change24hPct": 2.644,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 37.37,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 130.63,
         "baselineN": 672,
-        "medianVolumeUSD": 940.82,
-        "rvol": 0.04,
-        "previousBarRvol": 1.301
+        "medianVolumeUSD": 927.01,
+        "rvol": 0.141,
+        "previousBarRvol": 0.066
       },
       "rvol1h": {
         "status": "OK",
@@ -964,34 +1502,86 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Bitget v3 public SPOT fills + orderbook",
-        "asOfUtc": "2026-11-26T10:25:38.048Z",
+        "asOfUtc": "2026-11-26T10:48:56.888Z",
         "takerTradeSample": {
           "sampleCount": 100,
-          "firstSampleUtc": "2026-11-26T08:02:47.256Z",
-          "lastSampleUtc": "2026-11-26T10:25:21.481Z",
+          "firstSampleUtc": "2026-11-26T08:19:23.789Z",
+          "lastSampleUtc": "2026-11-26T10:44:25.151Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 24.92,
-          "last15mSellsUSD": 36.02,
-          "last15mNetTakerBuyUSD": -11.1,
+          "last15mBuysUSD": 101.93,
+          "last15mSellsUSD": 28.7,
+          "last15mNetTakerBuyUSD": 73.22,
           "coverageNote": "Last 15m spans all returned fills; only 100 fills are available"
         },
         "orderbook": {
-          "midUSDT": 0.065315,
-          "spreadPct": 0.1072,
-          "askDepth2pctUSD": 7835.68,
-          "askDepth5pctUSD": 7909.25,
-          "bidDepth2pctUSD": 7754.56,
-          "bidDepth5pctUSD": 7817.88,
-          "askMaxDistancePct": 73.681,
+          "midUSDT": 0.06519,
+          "spreadPct": 0.1227,
+          "askDepth2pctUSD": 8043.72,
+          "askDepth5pctUSD": 8162.77,
+          "bidDepth2pctUSD": 7593,
+          "bidDepth5pctUSD": 7656.33,
+          "askMaxDistancePct": 69.213,
           "bidMaxDistancePct": 99.985,
-          "exchangeAsOfUtc": "2026-11-26T10:25:38.135Z",
+          "exchangeAsOfUtc": "2026-11-26T10:48:57.079Z",
           "warning": "One snapshot; NULL when 100 depth levels do not reach band. No proof of replenishment."
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.201Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=BSBUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "mexc",
+            "symbol": "BSBUSDT",
+            "weight": 0.1,
+            "price": 0.06493
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "BSBUSDT",
+            "weight": 0.2,
+            "price": 0.06523
+          },
+          {
+            "exchange": "bybit",
+            "symbol": "BSBUSDT",
+            "weight": 0.2,
+            "price": 0.0651
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "BSBUSDT",
+            "weight": 0.1,
+            "price": 0.06527
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "BSBUSDT",
+            "weight": 0.4,
+            "price": 0.06510905
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.4
+          },
+          {
+            "exchange": "bitget",
+            "weight": 0.2
+          },
+          {
+            "exchange": "bybit",
+            "weight": 0.2
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.1
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": [
         "GATE HTTP 400"
@@ -1003,23 +1593,23 @@
       "venue": "Gate Spot AIO_USDT",
       "source": "Gate V4 /spot/candlesticks",
       "sourceUrl": "https://www.gate.com/trade/AIO_USDT",
-      "measuredAtUtc": "2026-11-26T10:25:38.825Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.02857,
-      "close1hChangePct": -0.175,
-      "change15mPct": 0,
-      "change6hPct": -1.788,
-      "change24hPct": 4.118,
+      "measuredAtUtc": "2026-11-26T10:48:59.225Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.02865,
+      "close1hChangePct": 0.421,
+      "change15mPct": -0.452,
+      "change6hPct": -1.411,
+      "change24hPct": 4.486,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
         "volumeUSD": 0,
         "baselineN": 672,
-        "medianVolumeUSD": 67.16,
+        "medianVolumeUSD": 66,
         "rvol": 0,
-        "previousBarRvol": 0
+        "previousBarRvol": 7.172
       },
       "rvol1h": {
         "status": "OK",
@@ -1049,33 +1639,85 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": {
         "source": "Gate public recent trades + orderbook",
-        "asOfUtc": "2026-11-26T10:25:38.455Z",
+        "asOfUtc": "2026-11-26T10:48:58.052Z",
         "takerTradeSample": {
           "sampleCount": 1000,
           "firstSampleUtc": "2026-11-24T02:54:50.337Z",
-          "lastSampleUtc": "2026-11-26T10:24:19.645Z",
+          "lastSampleUtc": "2026-11-26T10:26:14.621Z",
           "last15mSampleComplete": true,
-          "last15mBuysUSD": 470.41,
+          "last15mBuysUSD": 0,
           "last15mSellsUSD": 0,
-          "last15mNetTakerBuyUSD": 470.41,
+          "last15mNetTakerBuyUSD": 0,
           "coverageNote": "Full trailing 15m likely covered by 1000 trades"
         },
         "orderbook": {
-          "midUSDT": 0.028755,
-          "spreadPct": 0.1739,
-          "askDepth2pctUSD": 377.31,
-          "askDepth5pctUSD": 602.95,
-          "bidDepth2pctUSD": 429.44,
-          "bidDepth5pctUSD": 1562.87,
-          "askMaxDistancePct": 321.04,
+          "midUSDT": 0.028685000000000002,
+          "spreadPct": 0.4532,
+          "askDepth2pctUSD": 299.07,
+          "askDepth5pctUSD": 601.93,
+          "bidDepth2pctUSD": 313.62,
+          "bidDepth5pctUSD": 1413.78,
+          "askMaxDistancePct": 471.727,
           "bidMaxDistancePct": 99.965,
           "warning": "Null when 100 levels do not cover band; current snapshot only, not historical depth change"
         }
       },
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.198Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=AIOUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "gateio",
+            "symbol": "AIO_USDT",
+            "weight": 0.05263158,
+            "price": 0.02878
+          },
+          {
+            "exchange": "kucoin",
+            "symbol": "AIO-USDT",
+            "weight": 0.10526316,
+            "price": 0.02791
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "AIOUSDT",
+            "weight": 0.21052632,
+            "price": 0.02829
+          },
+          {
+            "exchange": "bitget",
+            "symbol": "AIOUSDT",
+            "weight": 0.31578947,
+            "price": 0.028342
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "AIOUSDT",
+            "weight": 0.31578947,
+            "price": 0.02845
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "bitget",
+            "weight": 0.315789
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.210526
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.105263
+          },
+          {
+            "exchange": "gateio",
+            "weight": 0.052632
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": []
     },
@@ -1085,23 +1727,23 @@
       "venue": "GeckoTerminal pool 0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
       "source": "GeckoTerminal public DEX spot pool OHLCV",
       "sourceUrl": "https://www.geckoterminal.com/bsc/pools/0xb4db9fcda97fd7b02eaf1e8317e6ddb04bacc1af",
-      "measuredAtUtc": "2026-11-26T10:25:40.729Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.028588590518448698,
-      "close1hChangePct": -0.055,
-      "change15mPct": -0.54,
-      "change6hPct": -1.263,
-      "change24hPct": -0.176,
+      "measuredAtUtc": "2026-11-26T10:49:00.783Z",
+      "lastCandleUtc": "2026-11-26T10:30:00.000Z",
+      "priceUSDT": 0.0286040934251638,
+      "close1hChangePct": -1.036,
+      "change15mPct": 0.257,
+      "change6hPct": -1.098,
+      "change24hPct": 1.03,
       "bar15mCount": 689,
       "bar1hCount": 239,
       "rvol15m": {
         "status": "OK",
-        "timestampUtc": "2026-11-26T10:00:00.000Z",
-        "volumeUSD": 3984.63,
+        "timestampUtc": "2026-11-26T10:30:00.000Z",
+        "volumeUSD": 2466.89,
         "baselineN": 672,
-        "medianVolumeUSD": 6950.45,
-        "rvol": 0.573,
-        "previousBarRvol": 0.661
+        "medianVolumeUSD": 6926.7,
+        "rvol": 0.356,
+        "previousBarRvol": 0.586
       },
       "rvol1h": {
         "status": "OK",
@@ -1131,9 +1773,51 @@
       "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
       "microstructure": null,
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.198Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=STARUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "kucoin",
+            "symbol": "STAR-USDT",
+            "weight": 0.15384615,
+            "price": 0.0288
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "STARUSDT",
+            "weight": 0.15384615,
+            "price": 0.0289
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "STARUSDT",
+            "weight": 0.23076923,
+            "price": 0.02863
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "STARUSDT",
+            "weight": 0.46153846,
+            "price": 0.0285753
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.461538
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.153846
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.153846
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": [
         "GATE HTTP 400",
@@ -1146,20 +1830,23 @@
       "venue": "GeckoTerminal pool 0x302642976506d247c7017b85ddc89e3956f96ba1",
       "source": "GeckoTerminal public DEX spot pool OHLCV",
       "sourceUrl": "https://www.geckoterminal.com/bsc/pools/0x302642976506d247c7017b85ddc89e3956f96ba1",
-      "measuredAtUtc": "2026-11-26T10:25:40.834Z",
-      "lastCandleUtc": "2026-11-26T10:00:00.000Z",
-      "priceUSDT": 0.017048504465990398,
-      "close1hChangePct": 0.849,
-      "change15mPct": null,
+      "measuredAtUtc": "2026-11-26T10:49:00.789Z",
+      "lastCandleUtc": "2026-11-26T10:15:00.000Z",
+      "priceUSDT": 0.017018208488994498,
+      "close1hChangePct": -0.59,
+      "change15mPct": -0.178,
       "change6hPct": null,
       "change24hPct": null,
-      "bar15mCount": 689,
+      "bar15mCount": 690,
       "bar1hCount": 239,
       "rvol15m": {
-        "status": "GAP_OR_BASELINE_INVALID",
-        "n": 574,
-        "gap": 1800,
-        "medianVolumeUSD": 161.6061
+        "status": "OK",
+        "timestampUtc": "2026-11-26T10:15:00.000Z",
+        "volumeUSD": 599.01,
+        "baselineN": 574,
+        "medianVolumeUSD": 161.61,
+        "rvol": 3.707,
+        "previousBarRvol": 0.326
       },
       "rvol1h": {
         "status": "OK",
@@ -1186,12 +1873,54 @@
           }
         ]
       },
-      "verdict": "NO_VERIFIED_EARLY_SPOT_SIGNAL",
+      "verdict": "VOLUME_ONLY_NOT_EDGE",
       "microstructure": null,
       "indexConstituents": {
-        "status": "UNKNOWN",
+        "status": "OK",
+        "asOfUtc": "2026-11-26T10:48:57.202Z",
         "source": "https://fapi.binance.com/fapi/v1/constituents?symbol=LYNUSDT",
-        "error": "HTTP 451"
+        "venues": [
+          {
+            "exchange": "kucoin",
+            "symbol": "LYN-USDT",
+            "weight": 0.15,
+            "price": 0.017088
+          },
+          {
+            "exchange": "mexc",
+            "symbol": "LYNUSDT",
+            "weight": 0.15,
+            "price": 0.017
+          },
+          {
+            "exchange": "binance_future",
+            "symbol": "LYNUSDT",
+            "weight": 0.1,
+            "price": 0.01707
+          },
+          {
+            "exchange": "binance_alpha",
+            "symbol": "LYNUSDT",
+            "weight": 0.6,
+            "price": 0.01701145
+          }
+        ],
+        "prioritySpots": [
+          {
+            "exchange": "binance_alpha",
+            "weight": 0.6
+          },
+          {
+            "exchange": "kucoin",
+            "weight": 0.15
+          },
+          {
+            "exchange": "mexc",
+            "weight": 0.15
+          }
+        ],
+        "hasFuturesSelf": true,
+        "caution": "CURRENT index composition only; not historical proof of spot order flow or market maker identity"
       },
       "failures": [
         "GATE HTTP 400",
@@ -1203,7 +1932,7 @@
   "counts": {
     "requested": 15,
     "ohlcvReceived": 15,
-    "validRvol15m": 14,
+    "validRvol15m": 15,
     "validRvol1h": 15,
     "validHigherLows": 15,
     "earlyWatch": 0
