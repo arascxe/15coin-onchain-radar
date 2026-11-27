@@ -11386,6 +11386,14 @@
           "returnPct": -5.77,
           "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
           "toleranceMinutes": 15
+        },
+        "after72h": {
+          "candleCloseUtc": "2026-11-27T15:30:00.000Z",
+          "observedAtUtc": "2026-11-27T16:07:07.600Z",
+          "price": 0.04813,
+          "returnPct": -4.238,
+          "basis": "ACTUAL_VENUE_15M_CANDLE_AT_TARGET",
+          "toleranceMinutes": 15
         }
       },
       "ruleVersion": "preparation-v1-unvalidated"
@@ -12585,6 +12593,35 @@
           "toleranceMinutes": 15
         }
       },
+      "ruleVersion": "preparation-v1-unvalidated"
+    },
+    {
+      "id": "B2_1795795729843_P2_MULTISOURCE_PREPARATION_REVIEW",
+      "symbol": "B2",
+      "stage": "P2_MULTISOURCE_PREPARATION_REVIEW",
+      "firstSeenUtc": "2026-11-27T16:08:49.843Z",
+      "venue": "Gate Spot B2_USDT",
+      "priceAtFirstSeen": 0.4183,
+      "reasons": [
+        "DEX_POOL_INVENTORY_DECLINE",
+        "ONE_SHOT_LARGE_EOA_NET_RECEIPT_WITH_TX"
+      ],
+      "proofWindow": {
+        "source": "LIVE_TIP",
+        "coverage": "SUCCESS",
+        "from": 136064776,
+        "to": 136067860,
+        "head": 136067865,
+        "gap": {
+          "from": 134397981,
+          "to": 136064775
+        }
+      },
+      "negativeControls": [
+        "UNSCANNED_MIDDLE_BLOCK_GAP"
+      ],
+      "caveat": "Research alert only. CEX attribution unverified. No trading recommendation.",
+      "followup": {},
       "ruleVersion": "preparation-v1-unvalidated"
     }
   ],
@@ -18106,6 +18143,26 @@
         "BSB": "P0_NO_PREPARATION_EVIDENCE",
         "AIO": "P0_NO_PREPARATION_EVIDENCE",
         "STAR": "P0_NO_PREPARATION_EVIDENCE",
+        "LYN": "P0_NO_PREPARATION_EVIDENCE"
+      }
+    },
+    {
+      "atUtc": "2026-11-27T16:08:49.843Z",
+      "stages": {
+        "ON": "SPOT_ONLY_NOT_PREPARATION",
+        "DOS": "P0_NO_PREPARATION_EVIDENCE",
+        "HANA": "P0_NO_PREPARATION_EVIDENCE",
+        "COLLECT": "P0_NO_PREPARATION_EVIDENCE",
+        "LIGHT": "P0_NO_PREPARATION_EVIDENCE",
+        "APR": "P0_NO_PREPARATION_EVIDENCE",
+        "IN": "P0_NO_PREPARATION_EVIDENCE",
+        "TRUST": "P0_NO_PREPARATION_EVIDENCE",
+        "B2": "P2_MULTISOURCE_PREPARATION_REVIEW",
+        "CYS": "P0_NO_PREPARATION_EVIDENCE",
+        "STBL": "P0_NO_PREPARATION_EVIDENCE",
+        "BSB": "P0_NO_PREPARATION_EVIDENCE",
+        "AIO": "P0_NO_PREPARATION_EVIDENCE",
+        "STAR": "SPOT_ONLY_NOT_PREPARATION",
         "LYN": "P0_NO_PREPARATION_EVIDENCE"
       }
     }
