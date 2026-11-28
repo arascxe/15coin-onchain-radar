@@ -1,11 +1,11 @@
 {
   "schema": "15coin-dynamic-wallet-latest-v1",
-  "asOfUtc": "2026-11-28T09:46:04.865Z",
+  "asOfUtc": "2026-11-28T11:06:22.490Z",
   "status": "SNAPSHOT_ATTEMPTED",
-  "snapshotBlock": 136208890,
+  "snapshotBlock": 136219593,
   "snapshotBlocks": {
-    "bsc": 136208890,
-    "base": 63343943
+    "bsc": 136219593,
+    "base": 63368030
   },
   "source": "Read-only BSC official and Base public eth_getCode / ERC20.balanceOf; candidate recipients from BSC block receipts and Base eth_getLogs",
   "dataFresh": true,
@@ -17,7 +17,7 @@
       "address": "0x84a297bf4f0cf69b908db13722b62d807c107f02",
       "ownerVerified": false,
       "receiptNetUSDApprox": 71159.82,
-      "balanceSnapshotUSDApprox": 153079.84,
+      "balanceSnapshotUSDApprox": 155666.78,
       "txProof": [
         {
           "tx": "0x16a0c78c2ccd9cba03beb546d6686589cb24c8c3884b7f8141980703ccb4aa73",
@@ -44,31 +44,7 @@
           "raw": "19460000000000000000000"
         }
       ],
-      "firstDetectedUtc": "2026-11-28T09:46:04.865Z",
-      "blockWindow": {
-        "from": 135670619,
-        "to": 135673740
-      },
-      "caveat": "Receipt net positive + current EOA token holdings. These need not be the same tokens, wallet owner UNKNOWN, trade/custody intent UNVERIFIED."
-    },
-    {
-      "symbol": "B2",
-      "chain": "bsc",
-      "address": "0xf1d48f9a423060551d43c1cc38a47340cdfc591e",
-      "ownerVerified": false,
-      "receiptNetUSDApprox": 34915.61,
-      "balanceSnapshotUSDApprox": 189071.19,
-      "txProof": [
-        {
-          "tx": "0x6be9060ae88a6b79b90348fd2de957736f5f9d204e62b244308687c9733ef227",
-          "block": 135671405,
-          "logIndex": 305,
-          "from": "0xc6ae2fa75624d7172d8dd0325194721e72113042",
-          "to": "0xf1d48f9a423060551d43c1cc38a47340cdfc591e",
-          "raw": "91980000000000000000000"
-        }
-      ],
-      "firstDetectedUtc": "2026-11-28T09:46:04.865Z",
+      "firstDetectedUtc": "2026-11-28T11:06:22.490Z",
       "blockWindow": {
         "from": 135670619,
         "to": 135673740
@@ -77,28 +53,16 @@
     }
   ],
   "counts": {
-    "newRecipients": 36,
-    "oneShotLargeEoaReceipts": 2,
-    "trackedEOAs": 125,
-    "contractCandidatesSkipped": 25,
-    "codeReads": 96,
+    "newRecipients": 33,
+    "oneShotLargeEoaReceipts": 1,
+    "trackedEOAs": 124,
+    "contractCandidatesSkipped": 26,
+    "codeReads": 95,
     "failedRPC": 0,
     "qualifiedPersistence": 0,
-    "excludedKnownCustodyCandidates": 6
+    "excludedKnownCustodyCandidates": 3
   },
   "excludedRecipientRoles": [
-    {
-      "symbol": "COLLECT",
-      "chain": "bsc",
-      "address": "0x238a358808379702088667322f80ac48bad5e6c4",
-      "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
-    },
-    {
-      "symbol": "COLLECT",
-      "chain": "bsc",
-      "address": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
-    },
     {
       "symbol": "APR",
       "chain": "bsc",
@@ -112,16 +76,10 @@
       "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     },
     {
-      "symbol": "CYS",
+      "symbol": "BSB",
       "chain": "bsc",
-      "address": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-      "reason": "KNOWN_LABELED_CEX_ADDRESS"
-    },
-    {
-      "symbol": "TRUST",
-      "chain": "base",
-      "address": "0xed9ab5bc05a0152b9dc2f7902e8369af7bc18771",
-      "reason": "BSC_EXCHANGE_TAG_CANNOT_BE_REUSED_ON_BASE_OWNERSHIP_UNVERIFIED"
+      "address": "0x238a358808379702088667322f80ac48bad5e6c4",
+      "reason": "DEX_ROUTER_NOT_INDEPENDENT_HOLDER"
     }
   ],
   "caveats": [
